@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+		<PackageReference Include="CloudinaryDotNet" Version="1.26.2" />
+		<PackageReference Include="FluentValidation" Version="11.10.0" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
+		<PackageReference Include="MailKit" Version="4.7.1.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+		<PackageReference Include="MimeKit" Version="4.7.1" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExamProctoringManagement.Repository\ExamProctoringManagement.Repository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="Usecases\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+</Project>

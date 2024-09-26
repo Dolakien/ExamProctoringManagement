@@ -1,0 +1,70 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35303.130
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DE806F1D-7B5F-48FD-8854-E6601EBD5D30}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExamProctoringManagement.API", "ExamProctoringManagement.API\ExamProctoringManagement.API.csproj", "{46A2D15E-8C8D-48CC-8F6A-628859F59085}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExamProctoringManagement.Repository", "ExamProctoringManagement.Repository\ExamProctoringManagement.Repository.csproj", "{5B34B3FF-1096-4161-BF29-9342412C7E3D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExamProctoringManagement.Service", "ExamProctoringManagement.Service\ExamProctoringManagement.Service.csproj", "{93A43102-E254-4344-984A-DE03571CDB45}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExamProctoringManagement.DAO", "ExamProctoringManagement.DAO\ExamProctoringManagement.DAO.csproj", "{55DC9232-79AE-4FA6-A095-09EAB0D52762}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExamProctoringManagement.Contract", "ExamProctoringManagement.Contract\ExamProctoringManagement.Contract.csproj", "{E38FE0B2-ED6A-43D2-9389-F9C53B47C343}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExamProctoringManagement.Data", "ExamProctoringManagement.Data\ExamProctoringManagement.Data.csproj", "{EE1C99FF-B909-4761-8C27-CFFE969D010F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8E3F2B81-0402-403E-93BE-943D8C688610}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Chuyên Ngành\Kì 7\Backend\.gitignore = ..\..\Chuyên Ngành\Kì 7\Backend\.gitignore
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{46A2D15E-8C8D-48CC-8F6A-628859F59085}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46A2D15E-8C8D-48CC-8F6A-628859F59085}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46A2D15E-8C8D-48CC-8F6A-628859F59085}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46A2D15E-8C8D-48CC-8F6A-628859F59085}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B34B3FF-1096-4161-BF29-9342412C7E3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B34B3FF-1096-4161-BF29-9342412C7E3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B34B3FF-1096-4161-BF29-9342412C7E3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B34B3FF-1096-4161-BF29-9342412C7E3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93A43102-E254-4344-984A-DE03571CDB45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93A43102-E254-4344-984A-DE03571CDB45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93A43102-E254-4344-984A-DE03571CDB45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93A43102-E254-4344-984A-DE03571CDB45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55DC9232-79AE-4FA6-A095-09EAB0D52762}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55DC9232-79AE-4FA6-A095-09EAB0D52762}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55DC9232-79AE-4FA6-A095-09EAB0D52762}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55DC9232-79AE-4FA6-A095-09EAB0D52762}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E38FE0B2-ED6A-43D2-9389-F9C53B47C343}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E38FE0B2-ED6A-43D2-9389-F9C53B47C343}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E38FE0B2-ED6A-43D2-9389-F9C53B47C343}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E38FE0B2-ED6A-43D2-9389-F9C53B47C343}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE1C99FF-B909-4761-8C27-CFFE969D010F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE1C99FF-B909-4761-8C27-CFFE969D010F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE1C99FF-B909-4761-8C27-CFFE969D010F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE1C99FF-B909-4761-8C27-CFFE969D010F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{46A2D15E-8C8D-48CC-8F6A-628859F59085} = {DE806F1D-7B5F-48FD-8854-E6601EBD5D30}
+		{5B34B3FF-1096-4161-BF29-9342412C7E3D} = {DE806F1D-7B5F-48FD-8854-E6601EBD5D30}
+		{93A43102-E254-4344-984A-DE03571CDB45} = {DE806F1D-7B5F-48FD-8854-E6601EBD5D30}
+		{55DC9232-79AE-4FA6-A095-09EAB0D52762} = {DE806F1D-7B5F-48FD-8854-E6601EBD5D30}
+		{E38FE0B2-ED6A-43D2-9389-F9C53B47C343} = {DE806F1D-7B5F-48FD-8854-E6601EBD5D30}
+		{EE1C99FF-B909-4761-8C27-CFFE969D010F} = {DE806F1D-7B5F-48FD-8854-E6601EBD5D30}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2B7E351F-C770-4D91-8F6D-E7749AAF2E32}
+	EndGlobalSection
+EndGlobal
