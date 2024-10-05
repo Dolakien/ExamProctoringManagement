@@ -23,4 +23,9 @@
 	</ItemGroup>
 
 
+	<ItemGroup>
+	  <ProjectReference Include="..\ExamProctoringManagement.Data\ExamProctoringManagement.Data.csproj" />
+	</ItemGroup>
+
+
 </Project>
