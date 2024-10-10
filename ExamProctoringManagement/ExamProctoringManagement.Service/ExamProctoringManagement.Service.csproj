@@ -21,10 +21,4 @@
     <ProjectReference Include="..\ExamProctoringManagement.Repository\ExamProctoringManagement.Repository.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="Usecases\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>

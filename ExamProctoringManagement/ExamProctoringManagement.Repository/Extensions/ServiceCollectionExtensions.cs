@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ExamProctoringManagement.Repository.Repositories;
 
 namespace ExamProctoringManagement.Repository.Extensions
 {
@@ -14,6 +15,8 @@ namespace ExamProctoringManagement.Repository.Extensions
         public static IServiceCollection AddRepositoryLayer(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(ServiceProfile));
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
 
 

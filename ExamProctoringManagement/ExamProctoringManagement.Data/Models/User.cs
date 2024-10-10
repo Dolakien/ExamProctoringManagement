@@ -11,7 +11,9 @@ public partial class User
 
     public string UserName { get; set; }
 
-    public string Password { get; set; }
+    public byte[] PasswordSalt { get; set; }
+
+    public byte[] PasswordHash { get; set; }
 
     public string FullName { get; set; }
 
@@ -23,7 +25,7 @@ public partial class User
 
     public bool? Gender { get; set; }
 
-    public DateOnly? DoB { get; set; }
+    public DateTime? DoB { get; set; }
 
     public string PhoneNumber { get; set; }
 
@@ -36,6 +38,8 @@ public partial class User
     public virtual ICollection<ProctoringSchedule> ProctoringSchedules { get; set; } = new List<ProctoringSchedule>();
 
     public virtual ICollection<RegistrationForm> RegistrationForms { get; set; } = new List<RegistrationForm>();
+
+    public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 
     public virtual ICollection<Report> Reports { get; set; } = new List<Report>();
 

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ExamProctoringManagement.Data.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -12,13 +14,11 @@ namespace ExamProctoringManagement.DAO.Extensions
     {
         public static IServiceCollection AddDAOLayer(this IServiceCollection services, IConfiguration configuration)
         {
-            //Add DBContext
-            //services.AddDbContext<>(opt =>
-            //{
-            //    configure the options for this Database
-
-            //   opt.UseSqlServer(configuration["ConnectionString:DefaultConnection"]);
-            //});
+            // Add DBContext
+            services.AddDbContext<ExamProctoringManagementDBContext>(opt => {
+                // configure the options for this Database
+                opt.UseSqlServer(configuration["ConnectionString:DefaultConnection"]);
+            });
 
             return services;
         }
