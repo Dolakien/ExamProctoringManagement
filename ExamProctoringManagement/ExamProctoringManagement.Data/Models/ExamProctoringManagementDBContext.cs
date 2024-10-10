@@ -43,6 +43,8 @@ public partial class ExamProctoringManagementDBContext : DbContext
 
     public virtual DbSet<Subject> Subjects { get; set; }
 
+    public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -360,6 +362,28 @@ public partial class ExamProctoringManagementDBContext : DbContext
                 .HasConstraintName("FK__Subject__ExamID__656C112C");
         });
 
+        modelBuilder.Entity<RefreshToken>(entity =>
+        {
+            entity.HasKey(e => e.RefreshTokenId).HasName("PK__RefreshT__F5845E59E5047C5C");
+
+            entity.ToTable("RefreshToken");
+
+            entity.Property(e => e.RefreshTokenId).HasColumnName("RefreshTokenID");
+            entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
+            entity.Property(e => e.UserID)
+                .IsRequired()
+                .HasMaxLength(8)
+                .HasColumnName("UserID");
+            entity.Property(e => e.Token)
+                .IsRequired()
+                .HasMaxLength(255);
+
+            entity.HasOne(d => d.user).WithMany(p => p.RefreshTokens)
+                .HasForeignKey(d => d.UserID)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__RefreshTok__FeID__5EBF139D");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.UserId).HasName("PK__User__1788CCACE5F13170");
@@ -373,8 +397,12 @@ public partial class ExamProctoringManagementDBContext : DbContext
             entity.Property(e => e.Email).HasMaxLength(50);
             entity.Property(e => e.FullName).HasMaxLength(50);
             entity.Property(e => e.MainMajor).HasMaxLength(50);
-            entity.Property(e => e.Password).HasMaxLength(255);
-            entity.Property(e => e.PhoneNumber)
+            entity.Property(e => e.PasswordHash)
+                .IsRequired()
+                .HasMaxLength(128);
+            entity.Property(e => e.PasswordSalt)
+                .IsRequired()
+                .HasMaxLength(128); entity.Property(e => e.PhoneNumber)
                 .HasMaxLength(12)
                 .IsUnicode(false);
             entity.Property(e => e.RoleId).HasColumnName("RoleID");
