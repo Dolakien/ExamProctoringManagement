@@ -23,5 +23,4 @@ public partial class Report
 
     public bool? IsPaid { get; set; }
 
-    public virtual User User { get; set; }
 }
