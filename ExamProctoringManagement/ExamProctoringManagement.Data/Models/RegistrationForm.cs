@@ -13,7 +13,7 @@ public partial class RegistrationForm
 
     public bool? Status { get; set; }
 
-    public virtual ICollection<FormSlot> FormSlots { get; set; } = new List<FormSlot>();
+    public DateTime? CreateDate { get; set; }
 
-    public virtual User User { get; set; }
+    public virtual ICollection<FormSlot> FormSlots { get; set; } = new List<FormSlot>();
 }

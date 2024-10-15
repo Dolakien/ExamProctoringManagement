@@ -117,6 +117,7 @@ CREATE TABLE [dbo].[FormSwap](
 	[FromSlot] [nvarchar](20) NULL,
 	[ToSlot] [nvarchar](20) NULL,
 	[Status] [bit] NULL,
+	[CreateDate] [datetime2](6) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[FormID] ASC
@@ -178,6 +179,7 @@ CREATE TABLE [dbo].[RegistrationForm](
 	[FormID] [nvarchar](20) NOT NULL,
 	[UserID] [nvarchar](20) NULL,
 	[Status] [bit] NULL,
+	[CreateDate] [datetime2](6) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[FormID] ASC

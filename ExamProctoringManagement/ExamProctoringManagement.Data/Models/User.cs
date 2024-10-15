@@ -33,15 +33,7 @@ public partial class User
 
     public bool? Status { get; set; }
 
-    public virtual ICollection<FormSwap> FormSwaps { get; set; } = new List<FormSwap>();
-
-    public virtual ICollection<ProctoringSchedule> ProctoringSchedules { get; set; } = new List<ProctoringSchedule>();
-
-    public virtual ICollection<RegistrationForm> RegistrationForms { get; set; } = new List<RegistrationForm>();
-
     public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
-
-    public virtual ICollection<Report> Reports { get; set; } = new List<Report>();
 
     public virtual Role Role { get; set; }
 }

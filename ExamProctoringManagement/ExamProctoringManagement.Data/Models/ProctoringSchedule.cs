@@ -20,6 +20,4 @@ public partial class ProctoringSchedule
     public bool? IsFinished { get; set; }
 
     public virtual SlotReference SlotReference { get; set; }
-
-    public virtual User User { get; set; }
 }

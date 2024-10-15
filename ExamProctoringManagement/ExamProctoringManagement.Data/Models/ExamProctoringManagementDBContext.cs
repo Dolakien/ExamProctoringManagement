@@ -25,6 +25,8 @@ public partial class ExamProctoringManagementDBContext : DbContext
 
     public virtual DbSet<ProctoringSchedule> ProctoringSchedules { get; set; }
 
+    public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+
     public virtual DbSet<RegistrationForm> RegistrationForms { get; set; }
 
     public virtual DbSet<Report> Reports { get; set; }
@@ -43,15 +45,13 @@ public partial class ExamProctoringManagementDBContext : DbContext
 
     public virtual DbSet<Subject> Subjects { get; set; }
 
-    public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
-
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Exam>(entity =>
         {
-            entity.HasKey(e => e.ExamId).HasName("PK__Exam__297521A7867255E3");
+            entity.HasKey(e => e.ExamId).HasName("PK__Exam__297521A7BA1DD1A0");
 
             entity.ToTable("Exam");
 
@@ -70,12 +70,12 @@ public partial class ExamProctoringManagementDBContext : DbContext
 
             entity.HasOne(d => d.Semester).WithMany(p => p.Exams)
                 .HasForeignKey(d => d.SemesterId)
-                .HasConstraintName("FK__Exam__SemesterID__5441852A");
+                .HasConstraintName("FK__Exam__SemesterID__571DF1D5");
         });
 
         modelBuilder.Entity<FormSlot>(entity =>
         {
-            entity.HasKey(e => e.FormSlotId).HasName("PK__FormSlot__EDD09F51A3E4238E");
+            entity.HasKey(e => e.FormSlotId).HasName("PK__FormSlot__EDD09F517228C40A");
 
             entity.ToTable("FormSlot");
 
@@ -91,22 +91,23 @@ public partial class ExamProctoringManagementDBContext : DbContext
 
             entity.HasOne(d => d.Form).WithMany(p => p.FormSlots)
                 .HasForeignKey(d => d.FormId)
-                .HasConstraintName("FK__FormSlot__FormID__5535A963");
+                .HasConstraintName("FK__FormSlot__FormID__5812160E");
 
             entity.HasOne(d => d.Slot).WithMany(p => p.FormSlots)
                 .HasForeignKey(d => d.SlotId)
-                .HasConstraintName("FK__FormSlot__SlotID__5629CD9C");
+                .HasConstraintName("FK__FormSlot__SlotID__59063A47");
         });
 
         modelBuilder.Entity<FormSwap>(entity =>
         {
-            entity.HasKey(e => e.FormId).HasName("PK__FormSwap__FB05B7BD7EF7CA17");
+            entity.HasKey(e => e.FormId).HasName("PK__FormSwap__FB05B7BDABBC30BB");
 
             entity.ToTable("FormSwap");
 
             entity.Property(e => e.FormId)
                 .HasMaxLength(20)
                 .HasColumnName("FormID");
+            entity.Property(e => e.CreateDate).HasPrecision(6);
             entity.Property(e => e.FromSlot).HasMaxLength(20);
             entity.Property(e => e.ToSlot).HasMaxLength(20);
             entity.Property(e => e.UserId)
@@ -115,20 +116,16 @@ public partial class ExamProctoringManagementDBContext : DbContext
 
             entity.HasOne(d => d.FromSlotNavigation).WithMany(p => p.FormSwapFromSlotNavigations)
                 .HasForeignKey(d => d.FromSlot)
-                .HasConstraintName("FK__FormSwap__FromSl__571DF1D5");
+                .HasConstraintName("FK__FormSwap__FromSl__59FA5E80");
 
             entity.HasOne(d => d.ToSlotNavigation).WithMany(p => p.FormSwapToSlotNavigations)
                 .HasForeignKey(d => d.ToSlot)
-                .HasConstraintName("FK__FormSwap__ToSlot__5812160E");
-
-            entity.HasOne(d => d.User).WithMany(p => p.FormSwaps)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__FormSwap__UserID__66603565");
+                .HasConstraintName("FK__FormSwap__ToSlot__5AEE82B9");
         });
 
         modelBuilder.Entity<Group>(entity =>
         {
-            entity.HasKey(e => e.GroupId).HasName("PK__Group__149AF30A17BD28C7");
+            entity.HasKey(e => e.GroupId).HasName("PK__Group__149AF30AA68D5008");
 
             entity.ToTable("Group");
 
@@ -139,7 +136,7 @@ public partial class ExamProctoringManagementDBContext : DbContext
 
         modelBuilder.Entity<GroupRoom>(entity =>
         {
-            entity.HasKey(e => e.GroupRoomId).HasName("PK__GroupRoo__EE872850D1781F45");
+            entity.HasKey(e => e.GroupRoomId).HasName("PK__GroupRoo__EE87285069BF4B78");
 
             entity.ToTable("GroupRoom");
 
@@ -164,7 +161,7 @@ public partial class ExamProctoringManagementDBContext : DbContext
 
         modelBuilder.Entity<ProctoringSchedule>(entity =>
         {
-            entity.HasKey(e => e.ScheduleId).HasName("PK__Proctori__9C8A5B69602F039C");
+            entity.HasKey(e => e.ScheduleId).HasName("PK__Proctori__9C8A5B6995FF748D");
 
             entity.ToTable("ProctoringSchedule");
 
@@ -181,34 +178,49 @@ public partial class ExamProctoringManagementDBContext : DbContext
 
             entity.HasOne(d => d.SlotReference).WithMany(p => p.ProctoringSchedules)
                 .HasForeignKey(d => d.SlotReferenceId)
-                .HasConstraintName("FK__Proctorin__SlotR__5BE2A6F2");
+                .HasConstraintName("FK__Proctorin__SlotR__5EBF139D");
+        });
 
-            entity.HasOne(d => d.User).WithMany(p => p.ProctoringSchedules)
+        modelBuilder.Entity<RefreshToken>(entity =>
+        {
+            entity.HasKey(e => e.RefreshTokenId).HasName("PK__RefreshT__F5845E593839C609");
+
+            entity.ToTable("RefreshToken");
+
+            entity.Property(e => e.RefreshTokenId).HasColumnName("RefreshTokenID");
+            entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
+            entity.Property(e => e.Token)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.UserId)
+                .IsRequired()
+                .HasMaxLength(20)
+                .HasColumnName("UserID");
+
+            entity.HasOne(d => d.User).WithMany(p => p.RefreshTokens)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Proctorin__UserI__6E01572D");
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__RefreshTo__UserI__5629CD9C");
         });
 
         modelBuilder.Entity<RegistrationForm>(entity =>
         {
-            entity.HasKey(e => e.FormId).HasName("PK__Registra__FB05B7BD199FBFD1");
+            entity.HasKey(e => e.FormId).HasName("PK__Registra__FB05B7BD53D61528");
 
             entity.ToTable("RegistrationForm");
 
             entity.Property(e => e.FormId)
                 .HasMaxLength(20)
                 .HasColumnName("FormID");
+            entity.Property(e => e.CreateDate).HasPrecision(6);
             entity.Property(e => e.UserId)
                 .HasMaxLength(20)
                 .HasColumnName("UserID");
-
-            entity.HasOne(d => d.User).WithMany(p => p.RegistrationForms)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Registrat__UserI__656C112C");
         });
 
         modelBuilder.Entity<Report>(entity =>
         {
-            entity.HasKey(e => e.ReportId).HasName("PK__Report__D5BD48E5FA73B842");
+            entity.HasKey(e => e.ReportId).HasName("PK__Report__D5BD48E5552C4147");
 
             entity.ToTable("Report");
 
@@ -222,15 +234,11 @@ public partial class ExamProctoringManagementDBContext : DbContext
             entity.Property(e => e.UserId)
                 .HasMaxLength(20)
                 .HasColumnName("UserID");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Reports)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Report__UserID__6EF57B66");
         });
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.RoleId).HasName("PK__Role__8AFACE3A0CE413E9");
+            entity.HasKey(e => e.RoleId).HasName("PK__Role__8AFACE3A3A7CC931");
 
             entity.ToTable("Role");
 
@@ -243,7 +251,7 @@ public partial class ExamProctoringManagementDBContext : DbContext
 
         modelBuilder.Entity<Room>(entity =>
         {
-            entity.HasKey(e => e.RoomId).HasName("PK__Room__328639190910B790");
+            entity.HasKey(e => e.RoomId).HasName("PK__Room__32863919FE023100");
 
             entity.ToTable("Room");
 
@@ -255,7 +263,7 @@ public partial class ExamProctoringManagementDBContext : DbContext
 
         modelBuilder.Entity<Semester>(entity =>
         {
-            entity.HasKey(e => e.SemesterId).HasName("PK__Semester__043301BD51F09148");
+            entity.HasKey(e => e.SemesterId).HasName("PK__Semester__043301BDDC7AE7D9");
 
             entity.ToTable("Semester");
 
@@ -269,7 +277,7 @@ public partial class ExamProctoringManagementDBContext : DbContext
 
         modelBuilder.Entity<Slot>(entity =>
         {
-            entity.HasKey(e => e.SlotId).HasName("PK__Slot__0A124A4F17126E1F");
+            entity.HasKey(e => e.SlotId).HasName("PK__Slot__0A124A4FF16C250E");
 
             entity.ToTable("Slot");
 
@@ -283,12 +291,12 @@ public partial class ExamProctoringManagementDBContext : DbContext
 
             entity.HasOne(d => d.Exam).WithMany(p => p.Slots)
                 .HasForeignKey(d => d.ExamId)
-                .HasConstraintName("FK__Slot__ExamID__5FB337D6");
+                .HasConstraintName("FK__Slot__ExamID__628FA481");
         });
 
         modelBuilder.Entity<SlotReference>(entity =>
         {
-            entity.HasKey(e => e.SlotReferenceId).HasName("PK__SlotRefe__E569EEA923B723E3");
+            entity.HasKey(e => e.SlotReferenceId).HasName("PK__SlotRefe__E569EEA900D80AB3");
 
             entity.ToTable("SlotReference");
 
@@ -315,12 +323,12 @@ public partial class ExamProctoringManagementDBContext : DbContext
 
             entity.HasOne(d => d.Slot).WithMany(p => p.SlotReferences)
                 .HasForeignKey(d => d.SlotId)
-                .HasConstraintName("FK__SlotRefer__SlotI__60A75C0F");
+                .HasConstraintName("FK__SlotRefer__SlotI__6383C8BA");
         });
 
         modelBuilder.Entity<SlotRoomSubject>(entity =>
         {
-            entity.HasKey(e => e.SlotRoomSubjectId).HasName("PK__SlotRoom__19C36CC22DAB5273");
+            entity.HasKey(e => e.SlotRoomSubjectId).HasName("PK__SlotRoom__19C36CC21068B1B4");
 
             entity.ToTable("SlotRoomSubject");
 
@@ -336,16 +344,16 @@ public partial class ExamProctoringManagementDBContext : DbContext
 
             entity.HasOne(d => d.SlotReference).WithMany(p => p.SlotRoomSubjects)
                 .HasForeignKey(d => d.SlotReferenceId)
-                .HasConstraintName("FK__SlotRoomS__SlotR__6383C8BA");
+                .HasConstraintName("FK__SlotRoomS__SlotR__66603565");
 
             entity.HasOne(d => d.Subject).WithMany(p => p.SlotRoomSubjects)
                 .HasForeignKey(d => d.SubjectId)
-                .HasConstraintName("FK__SlotRoomS__Subje__6477ECF3");
+                .HasConstraintName("FK__SlotRoomS__Subje__6754599E");
         });
 
         modelBuilder.Entity<Subject>(entity =>
         {
-            entity.HasKey(e => e.SubjectId).HasName("PK__Subject__AC1BA388B7B4A954");
+            entity.HasKey(e => e.SubjectId).HasName("PK__Subject__AC1BA388F8E46A72");
 
             entity.ToTable("Subject");
 
@@ -359,29 +367,7 @@ public partial class ExamProctoringManagementDBContext : DbContext
 
             entity.HasOne(d => d.Exam).WithMany(p => p.Subjects)
                 .HasForeignKey(d => d.ExamId)
-                .HasConstraintName("FK__Subject__ExamID__656C112C");
-        });
-
-        modelBuilder.Entity<RefreshToken>(entity =>
-        {
-            entity.HasKey(e => e.RefreshTokenId).HasName("PK__RefreshT__F5845E59E5047C5C");
-
-            entity.ToTable("RefreshToken");
-
-            entity.Property(e => e.RefreshTokenId).HasColumnName("RefreshTokenID");
-            entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
-            entity.Property(e => e.UserID)
-                .IsRequired()
-                .HasMaxLength(8)
-                .HasColumnName("UserID");
-            entity.Property(e => e.Token)
-                .IsRequired()
-                .HasMaxLength(255);
-
-            entity.HasOne(d => d.user).WithMany(p => p.RefreshTokens)
-                .HasForeignKey(d => d.UserID)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__RefreshTok__FeID__5EBF139D");
+                .HasConstraintName("FK__Subject__ExamID__68487DD7");
         });
 
         modelBuilder.Entity<User>(entity =>
@@ -394,6 +380,7 @@ public partial class ExamProctoringManagementDBContext : DbContext
                 .HasMaxLength(20)
                 .HasColumnName("UserID");
             entity.Property(e => e.Address).HasMaxLength(100);
+            entity.Property(e => e.DoB).HasColumnType("datetime");
             entity.Property(e => e.Email).HasMaxLength(50);
             entity.Property(e => e.FullName).HasMaxLength(50);
             entity.Property(e => e.MainMajor).HasMaxLength(50);
@@ -402,7 +389,8 @@ public partial class ExamProctoringManagementDBContext : DbContext
                 .HasMaxLength(128);
             entity.Property(e => e.PasswordSalt)
                 .IsRequired()
-                .HasMaxLength(128); entity.Property(e => e.PhoneNumber)
+                .HasMaxLength(128);
+            entity.Property(e => e.PhoneNumber)
                 .HasMaxLength(12)
                 .IsUnicode(false);
             entity.Property(e => e.RoleId).HasColumnName("RoleID");

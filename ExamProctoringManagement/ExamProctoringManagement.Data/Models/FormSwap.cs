@@ -21,9 +21,9 @@ public partial class FormSwap
 
     public bool? Status { get; set; }
 
+    public DateTime? CreateDate { get; set; }
+
     public virtual Slot FromSlotNavigation { get; set; }
 
     public virtual Slot ToSlotNavigation { get; set; }
-
-    public virtual User User { get; set; }
 }
