@@ -39,10 +39,6 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[RefreshToken]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[RegistrationForm]",
          "ObjectType": 0
       },

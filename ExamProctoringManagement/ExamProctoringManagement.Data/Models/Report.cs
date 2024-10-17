@@ -22,4 +22,6 @@ public partial class Report
     public decimal? TotalAmount { get; set; }
 
     public bool? IsPaid { get; set; }
+
+    public virtual User User { get; set; }
 }
