@@ -25,6 +25,8 @@ public partial class ExamProctoringManagementDBContext : DbContext
 
     public virtual DbSet<ProctoringSchedule> ProctoringSchedules { get; set; }
 
+    public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+
     public virtual DbSet<RegistrationForm> RegistrationForms { get; set; }
 
     public virtual DbSet<Report> Reports { get; set; }
@@ -185,6 +187,28 @@ public partial class ExamProctoringManagementDBContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.ProctoringSchedules)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK__Proctorin__UserI__6E01572D");
+        });
+
+        modelBuilder.Entity<RefreshToken>(entity =>
+        {
+            entity.HasKey(e => e.RefreshTokenId).HasName("PK__RefreshT__F5845E59EB5325A6");
+
+            entity.ToTable("RefreshToken");
+
+            entity.Property(e => e.RefreshTokenId).HasColumnName("RefreshTokenID");
+            entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
+            entity.Property(e => e.Token)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.UserId)
+                .IsRequired()
+                .HasMaxLength(20)
+                .HasColumnName("UserID");
+
+            entity.HasOne(d => d.User).WithMany(p => p.RefreshTokens)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__RefreshTo__UserI__5FB337D6");
         });
 
         modelBuilder.Entity<RegistrationForm>(entity =>
