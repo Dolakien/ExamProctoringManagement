@@ -19,6 +19,18 @@ builder.Services.AddRepositoryLayer();
 builder.Services.AddServiceLayer(builder.Configuration);
 builder.Services.AddDAOLayer(builder.Configuration);
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = "Google";
+    options.DefaultSignInScheme = "Google";
+    options.DefaultChallengeScheme = "Google";
+})
+.AddGoogle(options =>
+{
+    options.ClientId = "50226468847-bc42c7csek27129vhdi47ub2654li22l.apps.googleusercontent.com";
+    options.ClientSecret = "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";
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
