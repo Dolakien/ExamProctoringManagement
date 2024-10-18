@@ -18,12 +18,6 @@
 
 
 	<ItemGroup>
-	  <Folder Include="DTOs\" />
-	  <Folder Include="Payloads\Request\" />
-	</ItemGroup>
-
-
-	<ItemGroup>
 	  <ProjectReference Include="..\ExamProctoringManagement.Data\ExamProctoringManagement.Data.csproj" />
 	</ItemGroup>
 
