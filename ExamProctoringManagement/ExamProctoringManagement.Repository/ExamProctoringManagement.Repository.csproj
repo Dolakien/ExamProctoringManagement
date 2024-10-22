@@ -15,8 +15,4 @@
     <ProjectReference Include="..\ExamProctoringManagement.DAO\ExamProctoringManagement.DAO.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>

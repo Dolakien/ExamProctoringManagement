@@ -117,6 +117,7 @@ CREATE TABLE [dbo].[FormSwap](
 	[FromSlot] [nvarchar](20) NULL,
 	[ToSlot] [nvarchar](20) NULL,
 	[Status] [bit] NULL,
+	[CreateDate] [datetime2](6) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[FormID] ASC
@@ -178,6 +179,7 @@ CREATE TABLE [dbo].[RegistrationForm](
 	[FormID] [nvarchar](20) NOT NULL,
 	[UserID] [nvarchar](20) NULL,
 	[Status] [bit] NULL,
+	[CreateDate] [datetime2](6) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[FormID] ASC
@@ -324,13 +326,14 @@ GO
 CREATE TABLE [dbo].[User](
 	[UserID] [nvarchar](20) NOT NULL,
 	[UserName] [nvarchar](50) NULL,
-	[Password] [nvarchar](255) NULL,
+    [PasswordSalt] VARBINARY(128)NOT NULL,
+    [PasswordHash] VARBINARY(128) NOT NULL,
 	[FullName] [nvarchar](50) NULL,
 	[Email] [nvarchar](50) NULL,
 	[MainMajor] [nvarchar](50) NULL,
 	[Address] [nvarchar](100) NULL,
 	[Gender] [bit] NULL,
-	[DoB] [date] NULL,
+	[DoB] [DATETIME] NULL,
 	[PhoneNumber] [varchar](12) NULL,
 	[RoleID] [int] NULL,
 	[Status] [bit] NULL,
@@ -340,6 +343,16 @@ CREATE TABLE [dbo].[User](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+
+CREATE TABLE RefreshToken(
+    RefreshTokenID INT IDENTITY(1,1) PRIMARY KEY,
+    UserID NVARCHAR(20) NOT NULL,
+    Token NVARCHAR(255) NOT NULL,
+    ExpiryDate DATETIME NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES [User](UserID)
+);
+GO
+
 INSERT [dbo].[Exam] ([ExamID], [ExamName], [Type], [FromDate], [ToDate], [SemesterID], [Status]) VALUES (N'1', N'Final Exam', N'Block10_FE', CAST(N'2024-11-15T00:00:00.0000000' AS DateTime2), CAST(N'2024-11-22T00:00:00.0000000' AS DateTime2), N'FALL24', 1)
 INSERT [dbo].[Exam] ([ExamID], [ExamName], [Type], [FromDate], [ToDate], [SemesterID], [Status]) VALUES (N'2', N'Retake Exam', N'Block10_RE', CAST(N'2024-11-23T00:00:00.0000000' AS DateTime2), CAST(N'2024-11-30T00:00:00.0000000' AS DateTime2), N'FALL24', 0)
 INSERT [dbo].[Exam] ([ExamID], [ExamName], [Type], [FromDate], [ToDate], [SemesterID], [Status]) VALUES (N'3', N'Final Exam', N'Block3_FE', CAST(N'2024-12-15T00:00:00.0000000' AS DateTime2), CAST(N'2024-12-22T00:00:00.0000000' AS DateTime2), N'FALL24', 0)

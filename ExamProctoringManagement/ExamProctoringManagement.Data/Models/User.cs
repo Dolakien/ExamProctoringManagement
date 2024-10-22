@@ -11,7 +11,9 @@ public partial class User
 
     public string UserName { get; set; }
 
-    public string Password { get; set; }
+    public byte[] PasswordSalt { get; set; }
+
+    public byte[] PasswordHash { get; set; }
 
     public string FullName { get; set; }
 
@@ -34,6 +36,8 @@ public partial class User
     public virtual ICollection<FormSwap> FormSwaps { get; set; } = new List<FormSwap>();
 
     public virtual ICollection<ProctoringSchedule> ProctoringSchedules { get; set; } = new List<ProctoringSchedule>();
+
+    public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 
     public virtual ICollection<RegistrationForm> RegistrationForms { get; set; } = new List<RegistrationForm>();
 

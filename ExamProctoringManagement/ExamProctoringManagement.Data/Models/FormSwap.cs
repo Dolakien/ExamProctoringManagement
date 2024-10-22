@@ -19,6 +19,8 @@ public partial class FormSwap
 
     public string ToSlot { get; set; }
 
+    public DateTime? CreateDate { get; set; }
+
     public bool? Status { get; set; }
 
     public virtual Slot FromSlotNavigation { get; set; }

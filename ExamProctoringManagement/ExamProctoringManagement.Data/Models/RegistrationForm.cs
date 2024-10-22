@@ -11,6 +11,8 @@ public partial class RegistrationForm
 
     public string UserId { get; set; }
 
+    public DateTime? CreateDate { get; set; }
+
     public bool? Status { get; set; }
 
     public virtual ICollection<FormSlot> FormSlots { get; set; } = new List<FormSlot>();
