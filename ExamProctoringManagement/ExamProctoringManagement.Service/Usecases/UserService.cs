@@ -53,7 +53,7 @@ namespace ExamProctoringManagement.Service.Usecases
             {
                 var newRefreshToken = new RefreshToken
                 {
-                    UserID = user.UserId,
+                    UserId = user.UserId,
                     Token = refreshTokenString,
                     ExpiryDate = DateTime.UtcNow.AddHours(12)
                 };
@@ -119,7 +119,7 @@ namespace ExamProctoringManagement.Service.Usecases
             {
                 var newRefreshToken = new RefreshToken
                 {
-                    UserID = user.UserId,
+                    UserId = user.UserId,
                     Token = refreshTokenString,
                     ExpiryDate = DateTime.UtcNow.AddHours(12)
                 };
