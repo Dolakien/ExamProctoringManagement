@@ -12,6 +12,7 @@ namespace ExamProctoringManagement.Service.Usecases
     public class GroupService : IGroupService
     {
         private readonly IGroupRepository _groupRepository;
+        private readonly IGroupRoomRepository _groupRoomRepository;
 
         public GroupService(IGroupRepository groupRepository)
         {
@@ -42,6 +43,21 @@ namespace ExamProctoringManagement.Service.Usecases
         public async Task DeleteGroupAsync(string id)
         {
             await _groupRepository.DeleteAsync(id);
+        }
+
+        public async Task<Group> CreateGroupAndGroupRoomAsync(Group group, string groupRoomId, List<Room> rooms)
+        {
+            await _groupRepository.CreateAsync(group);
+            foreach (Room room in rooms)
+            {
+                GroupRoom g = new GroupRoom();
+                g.GroupRoomId = groupRoomId;
+                g.GroupId = group.GroupId;
+                g.RoomId = room.RoomId;
+                await _groupRoomRepository.CreateAsync(g);
+            }
+
+            return group;
         }
     }
 

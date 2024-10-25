@@ -14,5 +14,6 @@ namespace ExamProctoringManagement.Service.Interfaces
         Task<Group> CreateGroupAsync(Group group);
         Task UpdateGroupAsync(Group group);
         Task DeleteGroupAsync(string id);
+        Task<Group> CreateGroupAndGroupRoomAsync(Group group, string groupRoomId, List<Room> rooms);
     }
 }

@@ -59,5 +59,16 @@ namespace ExamProctoringManagement.API.Controllers
             await _groupService.DeleteGroupAsync(id);
             return NoContent();
         }
+
+        [HttpPost]
+        public async Task<ActionResult<Group>> CreateGroupAndGroupRooms(Group group, string groupRoomId, List<Room> rooms)
+        {
+            if (rooms.Count() > 3 || rooms.Count() == 0)
+            {
+                return BadRequest();
+            }
+            var createdGroup = await _groupService.CreateGroupAndGroupRoomAsync(group, groupRoomId, rooms);
+            return CreatedAtAction(nameof(GetGroup), new { id = createdGroup.GroupId }, createdGroup);
+        }
     }
 }
