@@ -48,7 +48,7 @@ namespace ExamProctoringManagement.Service.Services
             var refreshToken = await _refreshTokenRepository.GetRefreshToken(refreshTokenRequest);
 
             // Gen token & refresh token
-            var jwtToken = _jwtProvider.GenerateToken(refreshToken.user);
+            var jwtToken = _jwtProvider.GenerateToken(refreshToken.User);
             var refreshTokenString = _jwtProvider.GenerateRefreshToken();
 
             // Update token
