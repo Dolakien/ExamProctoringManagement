@@ -26,9 +26,9 @@ namespace ExamProctoringManagement.DAO
         {
             // Lấy refresh token ra
             return await _context.RefreshTokens
-                .Include(rf => rf.user)
+                .Include(rf => rf.User)
                 .ThenInclude(user => user.Role)
-                .FirstOrDefaultAsync(rf => rf.UserID == userId);
+                .FirstOrDefaultAsync(rf => rf.UserId == userId);
         }
         public void Delete(RefreshToken refreshToken)
         {
