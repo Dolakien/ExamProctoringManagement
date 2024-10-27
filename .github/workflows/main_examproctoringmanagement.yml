@@ -1,8 +1,7 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
+# Tên của workflow
 name: Build and deploy ASP.Net Core app to Azure Web App - ExamProctoringManagement
 
+# Kích hoạt workflow khi có thay đổi trên nhánh main
 on:
   push:
     branches:
@@ -16,19 +15,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Bước checkout mã nguồn
       - uses: actions/checkout@v4
 
+      # Thiết lập .NET Core
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
 
+      # Build project với dotnet, chỉ rõ đường dẫn file .sln
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build ExamProctoringManagement/ExamProctoringManagement.sln --configuration Release
 
+      # Publish project với dotnet, chỉ rõ đường dẫn file .sln
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish ExamProctoringManagement/ExamProctoringManagement.sln -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
+      # Upload artifact để deploy
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -43,11 +47,13 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     
     steps:
+      # Download artifact từ job build
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: .net-app
       
+      # Deploy lên Azure Web App
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
