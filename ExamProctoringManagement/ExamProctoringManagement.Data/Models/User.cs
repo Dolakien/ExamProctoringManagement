@@ -25,7 +25,7 @@ public partial class User
 
     public bool? Gender { get; set; }
 
-    public DateOnly? DoB { get; set; }
+    public DateTime? DoB { get; set; }
 
     public string PhoneNumber { get; set; }
 

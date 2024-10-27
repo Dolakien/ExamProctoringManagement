@@ -7,7 +7,7 @@ namespace ExamProctoringManagement.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SlotController : BaseApiController
+    public class SlotController : ControllerBase
     {
         private readonly ISlotService _SlotService;
 
@@ -35,14 +35,14 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Slot>> CreateSlot(Slot Slot)
+        public async Task<ActionResult<Slot>> CreateSlot([FromBody] Slot Slot)
         {
             var createdSlot = await _SlotService.CreateSlotAsync(Slot);
             return CreatedAtAction(nameof(GetSlot), new { id = createdSlot.SlotId }, createdSlot);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSlot(string id, Slot Slot)
+        public async Task<IActionResult> UpdateSlot(string id, [FromBody] Slot Slot)
         {
             if (id != Slot.SlotId)
             {

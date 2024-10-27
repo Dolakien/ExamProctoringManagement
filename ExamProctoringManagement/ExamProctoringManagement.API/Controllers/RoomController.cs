@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExamProctoringManagement.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+
     public class RoomController : BaseApiController
     {
         private readonly IRoomService _RoomService;
@@ -35,14 +34,14 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Room>> CreateRoom(Room Room)
+        public async Task<ActionResult<Room>> CreateRoom([FromBody] Room Room)
         {
             var createdRoom = await _RoomService.CreateRoomAsync(Room);
             return CreatedAtAction(nameof(GetRoom), new { id = createdRoom.RoomId }, createdRoom);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateRoom(string id, Room Room)
+        public async Task<IActionResult> UpdateRoom(string id, [FromBody] Room Room)
         {
             if (id != Room.RoomId)
             {

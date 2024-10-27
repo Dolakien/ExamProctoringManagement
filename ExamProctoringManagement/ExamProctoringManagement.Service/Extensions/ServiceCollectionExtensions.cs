@@ -20,6 +20,20 @@ namespace ExamProctoringManagement.Service.Extensions
             services.AddScoped<IJwtProvider, JwtProvider>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IClaimsPrincipalExtensions, ClaimsPrincipalExtensions>();
+            services.AddScoped<IExamService, ExamService>();
+            services.AddScoped<IFormSlotService, FormSlotService>();
+            services.AddScoped<IFormSwapService, FormSwapService>();
+            services.AddScoped<IGroupRoomService, GroupRoomService>();
+            services.AddScoped<IGroupService, GroupService>();
+            services.AddScoped<IProctoringScheduleService, ProctoringScheduleService>();
+            services.AddScoped<IRegistrationFormService, RegistrationFormService>();
+            services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IRoomService, RoomService>();
+            services.AddScoped<ISemesterService, SemesterService>();
+            services.AddScoped<ISlotRoomSubjectService, SlotRoomSubjectService>();
+            services.AddScoped<ISlotService, SlotService>();
+            services.AddScoped<ISubjectService, SubjectService>();
+
 
 
             return services;

@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExamProctoringManagement.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+
     public class RegistrationFormController : BaseApiController
     {
         private readonly IRegistrationFormService _RegistrationFormService;
@@ -35,14 +34,14 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<RegistrationForm>> CreateRegistrationForm(RegistrationForm RegistrationForm)
+        public async Task<ActionResult<RegistrationForm>> CreateRegistrationForm([FromBody] RegistrationForm RegistrationForm)
         {
             var createdRegistrationForm = await _RegistrationFormService.CreateRegistrationFormAsync(RegistrationForm);
             return CreatedAtAction(nameof(GetRegistrationForm), new { id = createdRegistrationForm.FormId }, createdRegistrationForm);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateRegistrationForm(string id, RegistrationForm RegistrationForm)
+        public async Task<IActionResult> UpdateRegistrationForm(string id, [FromBody] RegistrationForm RegistrationForm)
         {
             if (id != RegistrationForm.FormId)
             {

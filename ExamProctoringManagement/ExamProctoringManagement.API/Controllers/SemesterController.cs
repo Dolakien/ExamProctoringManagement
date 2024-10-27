@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExamProctoringManagement.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
     public class SemesterController : BaseApiController
     {
         private readonly ISemesterService _SemesterService;
@@ -35,14 +33,14 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Semester>> CreateSemester(Semester Semester)
+        public async Task<ActionResult<Semester>> CreateSemester([FromBody] Semester Semester)
         {
             var createdSemester = await _SemesterService.CreateSemesterAsync(Semester);
             return CreatedAtAction(nameof(GetSemester), new { id = createdSemester.SemesterId }, createdSemester);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSemester(string id, Semester Semester)
+        public async Task<IActionResult> UpdateSemester(string id, [FromBody] Semester Semester)
         {
             if (id != Semester.SemesterId)
             {

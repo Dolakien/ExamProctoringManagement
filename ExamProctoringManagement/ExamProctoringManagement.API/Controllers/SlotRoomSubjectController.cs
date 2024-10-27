@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExamProctoringManagement.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+
     public class SlotRoomSubjectController : BaseApiController
     {
         private readonly ISlotRoomSubjectService _SlotRoomSubjectService;
@@ -35,14 +34,14 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<SlotRoomSubject>> CreateSlotRoomSubject(SlotRoomSubject SlotRoomSubject)
+        public async Task<ActionResult<SlotRoomSubject>> CreateSlotRoomSubject([FromBody] SlotRoomSubject SlotRoomSubject)
         {
             var createdSlotRoomSubject = await _SlotRoomSubjectService.CreateSlotRoomSubjectAsync(SlotRoomSubject);
             return CreatedAtAction(nameof(GetSlotRoomSubject), new { id = createdSlotRoomSubject.SlotRoomSubjectId }, createdSlotRoomSubject);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSlotRoomSubject(string id, SlotRoomSubject SlotRoomSubject)
+        public async Task<IActionResult> UpdateSlotRoomSubject(string id, [FromBody]SlotRoomSubject SlotRoomSubject)
         {
             if (id != SlotRoomSubject.SlotRoomSubjectId)
             {
