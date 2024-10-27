@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExamProctoringManagement.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+
     public class ProctoringScheduleController : BaseApiController
     {
         private readonly IProctoringScheduleService _ProctoringScheduleService;
@@ -35,14 +34,14 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProctoringSchedule>> CreateProctoringSchedule(ProctoringSchedule ProctoringSchedule)
+        public async Task<ActionResult<ProctoringSchedule>> CreateProctoringSchedule([FromBody] ProctoringSchedule ProctoringSchedule)
         {
             var createdProctoringSchedule = await _ProctoringScheduleService.CreateProctoringScheduleAsync(ProctoringSchedule);
             return CreatedAtAction(nameof(GetProctoringSchedule), new { id = createdProctoringSchedule.ScheduleId }, createdProctoringSchedule);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProctoringSchedule(string id, ProctoringSchedule ProctoringSchedule)
+        public async Task<IActionResult> UpdateProctoringSchedule(string id, [FromBody] ProctoringSchedule ProctoringSchedule)
         {
             if (id != ProctoringSchedule.ScheduleId)
             {

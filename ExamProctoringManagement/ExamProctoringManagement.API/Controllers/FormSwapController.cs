@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExamProctoringManagement.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
     public class FormSwapController : BaseApiController
     {
         private readonly IFormSwapService _formSwapService;
@@ -35,14 +33,14 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<FormSwap>> CreateFormSwap(FormSwap formSwap)
+        public async Task<ActionResult<FormSwap>> CreateFormSwap([FromBody]FormSwap formSwap)
         {
             var createdFormSwap = await _formSwapService.CreateFormSwapAsync(formSwap);
             return CreatedAtAction(nameof(GetFormSwap), new { id = createdFormSwap.FormId }, createdFormSwap);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateFormSwap(string id, FormSwap formSwap)
+        public async Task<IActionResult> UpdateFormSwap(string id, [FromBody] FormSwap formSwap)
         {
             if (id != formSwap.FormId)
             {

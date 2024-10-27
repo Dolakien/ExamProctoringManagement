@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExamProctoringManagement.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+ 
     public class GroupRoomController : BaseApiController
     {
         private readonly IGroupRoomService _GroupRoomService;
@@ -35,14 +34,14 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<GroupRoom>> CreateGroupRoom(GroupRoom GroupRoom)
+        public async Task<ActionResult<GroupRoom>> CreateGroupRoom([FromBody] GroupRoom GroupRoom)
         {
             var createdGroupRoom = await _GroupRoomService.CreateGroupRoomAsync(GroupRoom);
             return CreatedAtAction(nameof(GetGroupRoom), new { id = createdGroupRoom.GroupRoomId }, createdGroupRoom);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateGroupRoom(string id, GroupRoom GroupRoom)
+        public async Task<IActionResult> UpdateGroupRoom(string id, [FromBody] GroupRoom GroupRoom)
         {
             if (id != GroupRoom.GroupRoomId)
             {

@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExamProctoringManagement.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+
     public class ReportController : BaseApiController
     {
         private readonly IReportService _ReportService;
@@ -35,14 +34,14 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Report>> CreateReport(Report Report)
+        public async Task<ActionResult<Report>> CreateReport([FromBody] Report Report)
         {
             var createdReport = await _ReportService.CreateReportAsync(Report);
             return CreatedAtAction(nameof(GetReport), new { id = createdReport.ReportId }, createdReport);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateReport(string id, Report Report)
+        public async Task<IActionResult> UpdateReport(string id, [FromBody] Report Report)
         {
             if (id != Report.ReportId)
             {

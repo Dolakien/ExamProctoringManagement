@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.Payloads.Request;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
 using ExamProctoringManagement.Service.Interfaces;
 using System;
@@ -45,19 +46,19 @@ namespace ExamProctoringManagement.Service.Usecases
             await _groupRepository.DeleteAsync(id);
         }
 
-        public async Task<Group> CreateGroupAndGroupRoomAsync(Group group, string groupRoomId, List<Room> rooms)
+        public async Task<Group> CreateGroupAndGroupRoomAsync(CreateGroupAndRoomsRequest createGroupAndRoomsRequest)
         {
-            await _groupRepository.CreateAsync(group);
-            foreach (Room room in rooms)
+            await _groupRepository.CreateAsync(createGroupAndRoomsRequest.Group);
+            foreach (Room room in createGroupAndRoomsRequest.Rooms)
             {
                 GroupRoom g = new GroupRoom();
-                g.GroupRoomId = groupRoomId;
-                g.GroupId = group.GroupId;
+                g.GroupRoomId = createGroupAndRoomsRequest.GroupRoomId;
+                g.GroupId = createGroupAndRoomsRequest.Group.GroupId;
                 g.RoomId = room.RoomId;
                 await _groupRoomRepository.CreateAsync(g);
             }
 
-            return group;
+            return createGroupAndRoomsRequest.Group;
         }
     }
 

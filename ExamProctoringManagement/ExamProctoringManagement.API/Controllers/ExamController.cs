@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExamProctoringManagement.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
     public class ExamController : BaseApiController
     {
         private readonly IExamService _examService;
@@ -27,7 +25,7 @@ namespace ExamProctoringManagement.API.Controllers
             return exam;
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<Exam>>> GetAllExams()
         {
             var exams = await _examService.GetAllExamsAsync();
@@ -35,14 +33,14 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Exam>> CreateExam(Exam exam)
+        public async Task<ActionResult<Exam>> CreateExam([FromBody] Exam exam)
         {
             var createdExam = await _examService.CreateExamAsync(exam);
             return CreatedAtAction(nameof(GetExam), new { id = createdExam.ExamId }, createdExam);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateExam(string id, Exam exam)
+        public async Task<IActionResult> UpdateExam(string id, [FromBody] Exam exam)
         {
             if (id != exam.ExamId)
             {

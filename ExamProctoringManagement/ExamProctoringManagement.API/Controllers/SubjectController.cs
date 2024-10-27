@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExamProctoringManagement.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+
     public class SubjectController : BaseApiController
     {
         private readonly ISubjectService _SubjectService;
@@ -35,14 +34,14 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Subject>> CreateSubject(Subject Subject)
+        public async Task<ActionResult<Subject>> CreateSubject([FromBody] Subject Subject)
         {
             var createdSubject = await _SubjectService.CreateSubjectAsync(Subject);
             return CreatedAtAction(nameof(GetSubject), new { id = createdSubject.SubjectId }, createdSubject);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSubject(string id, Subject Subject)
+        public async Task<IActionResult> UpdateSubject(string id, [FromBody] Subject Subject)
         {
             if (id != Subject.SubjectId)
             {

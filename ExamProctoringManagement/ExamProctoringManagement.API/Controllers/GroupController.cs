@@ -1,12 +1,12 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.Payloads.Request;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExamProctoringManagement.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+
     public class GroupController : BaseApiController
     {
         private readonly IGroupService _groupService;
@@ -34,15 +34,15 @@ namespace ExamProctoringManagement.API.Controllers
             return Ok(groups);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Group>> CreateGroup(Group group)
+        [HttpPost("create")]
+        public async Task<ActionResult<Group>> CreateGroup([FromBody] Group group)
         {
             var createdGroup = await _groupService.CreateGroupAsync(group);
             return CreatedAtAction(nameof(GetGroup), new { id = createdGroup.GroupId }, createdGroup);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateGroup(string id, Group group)
+        public async Task<IActionResult> UpdateGroup(string id, [FromBody] Group group)
         {
             if (id != group.GroupId)
             {
@@ -61,13 +61,13 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Group>> CreateGroupAndGroupRooms(Group group, string groupRoomId, List<Room> rooms)
+        public async Task<ActionResult<Group>> CreateGroupAndGroupRooms([FromBody] CreateGroupAndRoomsRequest createGroupAndRoomsRequest)
         {
-            if (rooms.Count() > 3 || rooms.Count() == 0)
+            if (createGroupAndRoomsRequest.Rooms.Count() > 3 || createGroupAndRoomsRequest.Rooms.Count() == 0)
             {
                 return BadRequest();
             }
-            var createdGroup = await _groupService.CreateGroupAndGroupRoomAsync(group, groupRoomId, rooms);
+            var createdGroup = await _groupService.CreateGroupAndGroupRoomAsync(createGroupAndRoomsRequest);
             return CreatedAtAction(nameof(GetGroup), new { id = createdGroup.GroupId }, createdGroup);
         }
     }

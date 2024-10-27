@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExamProctoringManagement.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
     public class FormSlotController : BaseApiController
     {
         private readonly IFormSlotService _formSlotService;
@@ -35,14 +33,14 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<FormSlot>> CreateFormSlot(FormSlot formSlot)
+        public async Task<ActionResult<FormSlot>> CreateFormSlot([FromBody] FormSlot formSlot)
         {
             var createdFormSlot = await _formSlotService.CreateFormSlotAsync(formSlot);
             return CreatedAtAction(nameof(GetFormSlot), new { id = createdFormSlot.FormSlotId}, createdFormSlot);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateFormSlot(string id, FormSlot formSlot)
+        public async Task<IActionResult> UpdateFormSlot(string id, [FromBody] FormSlot formSlot)
         {
             if (id != formSlot.FormSlotId)
             {
