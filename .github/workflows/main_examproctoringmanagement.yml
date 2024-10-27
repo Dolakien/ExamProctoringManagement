@@ -7,6 +7,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'ExamProctoringManagement/**'
   workflow_dispatch:
 
 jobs:
