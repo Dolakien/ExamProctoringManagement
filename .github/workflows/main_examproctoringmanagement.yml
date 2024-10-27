@@ -7,8 +7,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'ExamProctoringManagement/**'
   workflow_dispatch:
 
 jobs:
@@ -55,4 +53,4 @@ jobs:
           app-name: 'ExamProctoringManagement'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6FB3A40610284D86B69E1AC8E9C1911D }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7769A7C9C3094696A5DB2E00A5CEDF98 }}
