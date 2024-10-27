@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ${{ github.workspace }}/publish  # Đường dẫn đến thư mục đã xuất ra
+          path: ${{env.DOTNET_ROOT}}/myapp  # Đường dẫn đến thư mục đã xuất ra
 
   deploy:
     runs-on: ubuntu-latest
