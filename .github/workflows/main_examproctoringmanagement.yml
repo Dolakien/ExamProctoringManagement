@@ -22,16 +22,18 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        working-directory: ./ExamProctoringManagement  # Chuyển vào thư mục chứa file .sln
+        run: dotnet build ExamProctoringManagement.sln --configuration Release
 
-      - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      - name: Publish with dotnet
+        working-directory: ./ExamProctoringManagement  # Chuyển vào thư mục chứa file .sln
+        run: dotnet publish ExamProctoringManagement.sln -c Release -o ${{ github.workspace }}  # Xuất ra thư mục gốc của workspace
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ${{ github.workspace }}  # Đường dẫn đến thư mục đã xuất ra
 
   deploy:
     runs-on: ubuntu-latest
@@ -52,5 +54,5 @@ jobs:
         with:
           app-name: 'ExamProctoringManagement'
           slot-name: 'Production'
-          package: .
+          package: ${{ github.workspace }}  # Đường dẫn đến thư mục đã xuất ra
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D56AC3A64F5C4DBB873D191E64301C34 }}
