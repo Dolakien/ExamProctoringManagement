@@ -1,8 +1,11 @@
-﻿using ExamProctoringManagement.Contract.Payloads.Request;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Contract.Payloads.Request;
 using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ExamProctoringManagement.API.Controllers
 {
@@ -69,6 +72,17 @@ namespace ExamProctoringManagement.API.Controllers
             }
             var createdGroup = await _groupService.CreateGroupAndGroupRoomAsync(createGroupAndRoomsRequest);
             return CreatedAtAction(nameof(GetGroup), new { id = createdGroup.GroupId }, createdGroup);
+        }
+
+        [HttpGet("rooms/{id}")]
+        public async Task<ActionResult<GroupWithListRoomsDto>> GetGroupWithListRooms(string id)
+        {
+            var group = await _groupService.GetGroupWithListRoomsAsync(id);
+            if (group == null)
+            {
+                return NotFound();
+            }
+            return group;
         }
     }
 }

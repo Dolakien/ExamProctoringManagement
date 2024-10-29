@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Contract.Payloads.Request;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Contract.Payloads.Request;
 using ExamProctoringManagement.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,6 @@ namespace ExamProctoringManagement.Service.Interfaces
         Task UpdateGroupAsync(Group group);
         Task DeleteGroupAsync(string id);
         Task<Group> CreateGroupAndGroupRoomAsync(CreateGroupAndRoomsRequest createGroupAndRoomsRequest);
+        Task<GroupWithListRoomsDto> GetGroupWithListRoomsAsync(string id);
     }
 }

@@ -1,7 +1,10 @@
-﻿using ExamProctoringManagement.Contract.Payloads.Request;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Contract.Payloads.Request;
 using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
+using ExamProctoringManagement.Repository.Repositories;
 using ExamProctoringManagement.Service.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +17,13 @@ namespace ExamProctoringManagement.Service.Usecases
     {
         private readonly IGroupRepository _groupRepository;
         private readonly IGroupRoomRepository _groupRoomRepository;
+        private readonly IRoomRepository _roomRepository;
 
-        public GroupService(IGroupRepository groupRepository)
+        public GroupService(IGroupRepository groupRepository, IGroupRoomRepository groupRoomRepository, IRoomRepository roomRepository)
         {
             _groupRepository = groupRepository;
+            _groupRoomRepository = groupRoomRepository;
+            _roomRepository = roomRepository;
         }
 
         public async Task<Group> GetGroupByIdAsync(string id)
@@ -60,6 +66,25 @@ namespace ExamProctoringManagement.Service.Usecases
 
             return createGroupAndRoomsRequest.Group;
         }
-    }
 
+        public async Task<GroupWithListRoomsDto> GetGroupWithListRoomsAsync(string id)
+        {
+            var group = await _groupRepository.GetByIdAsync(id);
+            var list = await _groupRoomRepository.GetGroupRoomsByGroupAsync(group);
+            if (list.IsNullOrEmpty())
+            {
+                return null;
+            }
+            List<Room> rooms = new List<Room>();
+            foreach (var groupRoom in list)
+            {
+                Room room = await _roomRepository.GetByIdAsync(groupRoom.RoomId);
+                rooms.Add(room);
+            }
+            var dto = new GroupWithListRoomsDto();
+            dto.rooms = rooms;
+            dto.groupId = id;
+            return dto;
+        }
+    }
 }

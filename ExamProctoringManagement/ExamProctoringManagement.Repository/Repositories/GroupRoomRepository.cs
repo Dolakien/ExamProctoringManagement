@@ -42,5 +42,24 @@ namespace ExamProctoringManagement.Repository.Repositories
         {
             await _grouproomDAO.DeleteAsync(id);
         }
+
+        public async Task<IEnumerable<GroupRoom>> GetGroupRoomsByGroupAsync(Group group)
+        {
+            if (group == null)
+            {
+                return Enumerable.Empty<GroupRoom>();
+            }
+            var groupRooms = _grouproomDAO.GetAllAsync();
+            var list = new List<GroupRoom>();
+            if (groupRooms != null)
+            {
+                foreach (var room in await groupRooms)
+                {
+                    if (room.GroupId == group.GroupId)
+                        list.Add(room);
+                }
+            }
+            return list;
+        }
     }
 }

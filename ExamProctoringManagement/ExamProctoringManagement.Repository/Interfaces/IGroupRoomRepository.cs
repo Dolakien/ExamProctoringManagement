@@ -14,5 +14,6 @@ namespace ExamProctoringManagement.Repository.Interfaces
         Task CreateAsync(GroupRoom groupRoom);
         Task UpdateAsync(GroupRoom groupRoom);
         Task DeleteAsync(string id);
+        Task<IEnumerable<GroupRoom>> GetGroupRoomsByGroupAsync(Group group);
     }
 }

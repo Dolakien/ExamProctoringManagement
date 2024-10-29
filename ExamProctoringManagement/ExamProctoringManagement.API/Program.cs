@@ -57,7 +57,6 @@ builder.Services.AddHttpsRedirection(options =>
     options.HttpsPort = 443; // Hoặc cổng bạn đã cấu hình cho HTTPS
 });
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

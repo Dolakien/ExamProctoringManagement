@@ -4,8 +4,9 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <BaseOutputPath>C:\Users\PC\Desktop\EPM\ExamProctoringManagement\ExamProctoringManagement.API\bin\Debug\net8.0</BaseOutputPath>
+    <BaseOutputPath>\bin</BaseOutputPath>
     <OutputType>WinExe</OutputType>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
