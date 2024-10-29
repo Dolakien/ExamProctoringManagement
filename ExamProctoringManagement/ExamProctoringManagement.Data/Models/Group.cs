@@ -2,14 +2,15 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ExamProctoringManagement.Data.Models;
 
 public partial class Group
 {
     public string GroupId { get; set; }
-
+    [JsonIgnore]
     public virtual ICollection<GroupRoom> GroupRooms { get; set; } = new List<GroupRoom>();
-
+    [JsonIgnore]
     public virtual ICollection<SlotReference> SlotReferences { get; set; } = new List<SlotReference>();
 }

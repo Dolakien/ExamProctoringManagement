@@ -54,16 +54,21 @@ namespace ExamProctoringManagement.Service.Usecases
 
         public async Task<Group> CreateGroupAndGroupRoomAsync(CreateGroupAndRoomsRequest createGroupAndRoomsRequest)
         {
-            await _groupRepository.CreateAsync(createGroupAndRoomsRequest.Group);
-            foreach (Room room in createGroupAndRoomsRequest.Rooms)
+            if (createGroupAndRoomsRequest.Group == null)
             {
-                GroupRoom g = new GroupRoom();
-                g.GroupRoomId = createGroupAndRoomsRequest.GroupRoomId;
-                g.GroupId = createGroupAndRoomsRequest.Group.GroupId;
-                g.RoomId = room.RoomId;
-                await _groupRoomRepository.CreateAsync(g);
+                return null;
             }
-
+            await _groupRepository.CreateAsync(createGroupAndRoomsRequest.Group);
+            for (int i = 0; i < createGroupAndRoomsRequest.GroupRoomIds.Count; i++)
+            {
+                GroupRoom groupRoom = new GroupRoom
+                {
+                    GroupRoomId = createGroupAndRoomsRequest.GroupRoomIds[i],
+                    GroupId = createGroupAndRoomsRequest.Group.GroupId,
+                    RoomId = createGroupAndRoomsRequest.RoomIds[i]
+                };
+                await _groupRoomRepository.CreateAsync(groupRoom);
+            }
             return createGroupAndRoomsRequest.Group;
         }
 
