@@ -17,6 +17,8 @@ using ExamProctoringManagement.DAO;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using System.Text.Json.Serialization;
+using ExamProctoringManagement.Data.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
