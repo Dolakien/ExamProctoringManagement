@@ -34,39 +34,6 @@ builder.Services.AddDAOLayer(builder.Configuration);
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultAuthenticateScheme = "Google";
-//    options.DefaultSignInScheme = "Google";
-//    options.DefaultChallengeScheme = "Google";
-//})
-//.AddGoogle(options =>
-//{
-//    options.ClientId = "50226468847-bc42c7csek27129vhdi47ub2654li22l.apps.googleusercontent.com";
-//    options.ClientSecret = "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";
-//});
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//})
-//.AddJwtBearer(options =>
-//{
-//    var jwtOptions = builder.Configuration.GetSection("Jwt").Get<JwtOptions>();
-
-//    options.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidateIssuer = true,
-//        ValidateAudience = true,
-//        ValidateLifetime = true,
-//        ValidateIssuerSigningKey = true,
-//        ValidIssuer = jwtOptions.Issuer,
-//        ValidAudience = jwtOptions.Audience,
-//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey))
-//    };
-//});
-
-
 
 builder.Services.AddScoped<ExamDAO>();
 builder.Services.AddScoped<FormSlotDAO>();
@@ -84,12 +51,6 @@ builder.Services.AddScoped<SlotReferenceDAO>();
 builder.Services.AddScoped<SlotRoomSubjectDAO>();
 builder.Services.AddScoped<SubjectDAO>();
 
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddScoped<ExecuteValidation>();
-//builder.Services.AddSwaggerGen(options =>
-//{
-//    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Exam Proctoring Management API", Version = "v1" });
-//});
 
 builder.Services.AddHttpsRedirection(options =>
 {
@@ -112,8 +73,10 @@ else
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "KooHee API V1");
+        c.DisplayRequestDuration();
         c.RoutePrefix = string.Empty;
     });
+    app.UseHttpsRedirection();
 }
 
 app.UseMiddleware<ExceptionMiddleware>();
@@ -122,7 +85,7 @@ app.UseCors(builder => builder
     .AllowAnyHeader()
     .AllowAnyMethod()
     .AllowCredentials() // to support a SignalR
-    .WithOrigins("http://localhost:8080"));
+    .WithOrigins("https://localhost:5179"));
 
 app.UseHttpsRedirection();
 
