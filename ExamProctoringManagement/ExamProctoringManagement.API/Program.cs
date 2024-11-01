@@ -88,7 +88,7 @@ app.UseCors(builder => builder
     .AllowAnyHeader()
     .AllowAnyMethod()
     .AllowCredentials() // to support a SignalR
-    .WithOrigins("http://localhost:5179")); // Change to HTTP
+    .WithOrigins("*")); // Change to HTTP
 
 app.UseAuthentication();
 app.UseAuthorization();
