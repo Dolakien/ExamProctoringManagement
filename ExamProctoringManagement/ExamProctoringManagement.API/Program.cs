@@ -35,7 +35,16 @@ builder.Services.AddServiceLayer(builder.Configuration);
 builder.Services.AddDAOLayer(builder.Configuration);
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+    builder =>
+    {
+        builder.WithOrigins("*")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddScoped<ExamDAO>();
 builder.Services.AddScoped<FormSlotDAO>();
@@ -82,13 +91,7 @@ else
 // Remove or comment out the following line
 // app.UseHttpsRedirection();
 
-app.UseMiddleware<ExceptionMiddleware>();
-
-app.UseCors(builder => builder
-    .AllowAnyHeader()
-    .AllowAnyMethod()
-    .AllowCredentials() // to support a SignalR
-    .WithOrigins("*")); // Change to HTTP
+app.UseCors("AllowAllOrigins");
 
 app.UseAuthentication();
 app.UseAuthorization();
