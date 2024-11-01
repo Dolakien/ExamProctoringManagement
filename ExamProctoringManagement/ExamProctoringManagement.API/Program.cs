@@ -77,8 +77,10 @@ else
         c.DisplayRequestDuration();
         c.RoutePrefix = string.Empty;
     });
-    app.UseHttpsRedirection();
 }
+
+// Remove or comment out the following line
+// app.UseHttpsRedirection();
 
 app.UseMiddleware<ExceptionMiddleware>();
 
@@ -86,12 +88,9 @@ app.UseCors(builder => builder
     .AllowAnyHeader()
     .AllowAnyMethod()
     .AllowCredentials() // to support a SignalR
-    .WithOrigins("https://localhost:5179"));
-
-app.UseHttpsRedirection();
+    .WithOrigins("http://localhost:5179")); // Change to HTTP
 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllers();
