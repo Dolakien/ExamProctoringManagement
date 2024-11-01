@@ -30,7 +30,7 @@ namespace ExamProctoringManagement.Repository.Extensions
             services.AddScoped<ISlotRoomSubjectRepository, SlotRoomSubjectRepository>();
             services.AddScoped<ISubjectRepository, SubjectRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-
+            services.AddScoped<ISlotReferenceRepository, SlotReferenceRepository>();
 
             // Add UnitOfWork
             services.AddScoped<IUnitOfWork, UnitOfWork>();

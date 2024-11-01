@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,21 +35,38 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Report>> CreateReport([FromBody] Report Report)
+        public async Task<ActionResult<Report>> CreateReport([FromBody] ReportCreateDto Report)
         {
-            var createdReport = await _ReportService.CreateReportAsync(Report);
+            Report report = new Report();
+            report.ReportId = Report.ReportId;
+            report.UserId = Report.UserId;
+            report.FromDate = Report.FromDate;
+            report.ToDate = Report.ToDate;
+            report.UnitPerHour = Report.UnitPerHour;
+            var createdReport = await _ReportService.CreateReportAsync(report);
             return CreatedAtAction(nameof(GetReport), new { id = createdReport.ReportId }, createdReport);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateReport(string id, [FromBody] Report Report)
+        public async Task<IActionResult> UpdateReport(string id, [FromBody] ReportUpdateDto Report)
         {
-            if (id != Report.ReportId)
+            var report = await _ReportService.GetReportByIdAsync(id);
+            if (id != report.ReportId)
             {
                 return BadRequest();
             }
 
-            await _ReportService.UpdateReportAsync(Report);
+            if (report.IsPaid == true)
+            {
+                return BadRequest();
+            }
+
+            report.FromDate = Report.FromDate;
+            report.ToDate = Report.ToDate;
+            report.UnitPerHour = Report.UnitPerHour;
+            report.IsPaid = Report.IsPaid;
+
+            await _ReportService.UpdateReportAsync(report);
             return NoContent();
         }
 

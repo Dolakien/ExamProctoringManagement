@@ -14,5 +14,6 @@ namespace ExamProctoringManagement.Repository.Interfaces
         Task CreateAsync(ProctoringSchedule proctoringSchedule);
         Task UpdateAsync(ProctoringSchedule proctoringSchedule);
         Task DeleteAsync(string id);
+        Task<IEnumerable<ProctoringSchedule>> GetByUserIdAsync(string userId);
     }
 }
