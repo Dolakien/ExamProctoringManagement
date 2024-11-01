@@ -85,7 +85,7 @@ namespace ExamProctoringManagement.Service.Usecases
                 {
                     if (slot.Start.HasValue && slot.End.HasValue)
                     {
-                        totalHours += (float)(slot.End.Value - slot.Start.Value).T;
+                        totalHours += (float)(slot.End.Value - slot.Start.Value).TotalHours;
                     }
                 }
             }
