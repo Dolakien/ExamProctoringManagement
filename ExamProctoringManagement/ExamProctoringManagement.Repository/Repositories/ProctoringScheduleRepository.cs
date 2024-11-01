@@ -37,5 +37,11 @@ namespace ExamProctoringManagement.Repository.Repositories
         {
             await _ProctoringScheduleDAO.DeleteAsync(id);
         }
+
+        public async Task<IEnumerable<ProctoringSchedule>> GetByUserIdAsync(string userId)
+        {
+            var schedules = await _ProctoringScheduleDAO.GetAllAsync();
+            return schedules.Where(s => s.UserId == userId);
+        }
     }
 }

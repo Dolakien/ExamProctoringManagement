@@ -33,7 +33,7 @@ namespace ExamProctoringManagement.Service.Extensions
             services.AddScoped<ISlotRoomSubjectService, SlotRoomSubjectService>();
             services.AddScoped<ISlotService, SlotService>();
             services.AddScoped<ISubjectService, SubjectService>();
-
+            services.AddScoped<ISlotReferenceService, SlotReferenceService>();
 
 
             return services;

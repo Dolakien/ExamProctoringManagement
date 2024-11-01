@@ -12,10 +12,17 @@ namespace ExamProctoringManagement.Service.Usecases
     public class ReportService : IReportService
     {
         private readonly IReportRepository _ReportRepository;
+        private readonly IProctoringScheduleRepository _ProctoringScheduleRepository;
+        private readonly ISlotReferenceRepository _SlotReferenceRepository;
+        private readonly ISlotRepository _SlotRepository;
 
-        public ReportService(IReportRepository ReportRepository)
+        public ReportService(IReportRepository ReportRepository, IProctoringScheduleRepository ProctoringScheduleRepository,
+            ISlotReferenceRepository SlotReferenceRepository, ISlotRepository SlotRepository)
         {
             _ReportRepository = ReportRepository;
+            _ProctoringScheduleRepository = ProctoringScheduleRepository;
+            _SlotReferenceRepository = SlotReferenceRepository;
+            _SlotRepository = SlotRepository;
         }
 
         public async Task<Report> GetReportByIdAsync(string id)
@@ -28,21 +35,62 @@ namespace ExamProctoringManagement.Service.Usecases
             return await _ReportRepository.GetAllAsync();
         }
 
-        public async Task<Report> CreateReportAsync(Report Report)
+        public async Task<Report> CreateReportAsync(Report report)
         {
-            await _ReportRepository.CreateAsync(Report);
-            return Report;
+            report.TotalHours = await CalculateTotalHours(report.UserId, report.FromDate, report.ToDate);
+            report.TotalAmount = (decimal?)(report.TotalHours * (float?)report.UnitPerHour);
+            report.IsPaid = false;
+
+            await _ReportRepository.CreateAsync(report);
+            return report;
         }
 
-        public async Task UpdateReportAsync(Report Report)
+        public async Task UpdateReportAsync(Report report)
         {
-            await _ReportRepository.UpdateAsync(Report);
+            report.TotalHours = await CalculateTotalHours(report.UserId, report.FromDate, report.ToDate);
+            report.TotalAmount = (decimal?)(report.TotalHours * (float?)report.UnitPerHour);
+
+            await _ReportRepository.UpdateAsync(report);
         }
 
         public async Task DeleteReportAsync(string id)
         {
             await _ReportRepository.DeleteAsync(id);
         }
-    }
 
+        private async Task<float?> CalculateTotalHours(string userId, DateTime? fromDate, DateTime? toDate)
+        {
+            var schedules = await _ProctoringScheduleRepository.GetByUserIdAsync(userId);
+
+            var slotReferenceIds = schedules.Select(s => s.SlotReferenceId).ToList();
+            var slotReferences = new List<SlotReference>();
+            foreach (var slotReferenceId in slotReferenceIds)
+            {
+                var slotReference = await _SlotReferenceRepository.GetByIdAsync(slotReferenceId);
+                slotReferences.Add(slotReference);
+            }
+
+            var slotIds = slotReferences.Select(sr => sr.SlotId).ToList();
+            var slots = new List<Slot>();
+            foreach (var slotId in slotIds)
+            {
+                var slot = await _SlotRepository.GetByIdAsync(slotId);
+                slots.Add(slot);
+            }
+
+            float? totalHours = 0;
+            foreach (var slot in slots)
+            {
+                if (slot.Date >= fromDate && slot.Date <= toDate)
+                {
+                    if (slot.Start.HasValue && slot.End.HasValue)
+                    {
+                        totalHours += (float)(slot.End.Value - slot.Start.Value).T;
+                    }
+                }
+            }
+
+            return totalHours;
+        }
+    }
 }
