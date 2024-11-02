@@ -76,5 +76,26 @@ namespace ExamProctoringManagement.API.Controllers
             await _ReportService.DeleteReportAsync(id);
             return NoContent();
         }
+
+        [HttpGet("userId")]
+        public async Task<ActionResult<IEnumerable<Report>>> GetReportsByUserId(string userId)
+        {
+            var Reports = await _ReportService.GetReportsByUserIdAsync(userId);
+            return Ok(Reports);
+        }
+
+        [HttpGet("paid")]
+        public async Task<ActionResult<IEnumerable<Report>>> GetReportsByIsPaid(bool p)
+        {
+            var Reports = await _ReportService.GetReportsByIsPaidAsync(p);
+            return Ok(Reports);
+        }
+
+        [HttpGet("month")]
+        public async Task<ActionResult<IEnumerable<Report>>> GetReportsByMonth(int month, int year)
+        {
+            var Reports = await _ReportService.GetReportsByMonthAsync(month, year);
+            return Ok(Reports);
+        }
     }
 }

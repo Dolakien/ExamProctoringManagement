@@ -43,5 +43,11 @@ namespace ExamProctoringManagement.Repository.Repositories
             var schedules = await _ProctoringScheduleDAO.GetAllAsync();
             return schedules.Where(s => s.UserId == userId);
         }
+
+        public async Task<IEnumerable<ProctoringSchedule>> GetByUserIdAndIsFinishedAsync(string userId, bool f)
+        {
+            var schedules = await _ProctoringScheduleDAO.GetAllAsync();
+            return schedules.Where(s => s.UserId == userId && s.IsFinished == f);
+        }
     }
 }

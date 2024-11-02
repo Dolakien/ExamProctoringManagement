@@ -57,5 +57,12 @@ namespace ExamProctoringManagement.API.Controllers
             await _examService.DeleteExamAsync(id);
             return NoContent();
         }
+
+        [HttpGet("semester")]
+        public async Task<ActionResult<IEnumerable<Exam>>> GetExamsBySemesterId(string semesterId)
+        {
+            var exams = await _examService.GetExamsBySemesterIdAsync(semesterId);
+            return Ok(exams);
+        }
     }
 }

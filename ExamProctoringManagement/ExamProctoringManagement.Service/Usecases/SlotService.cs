@@ -1,5 +1,6 @@
 ﻿using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
+using ExamProctoringManagement.Repository.Repositories;
 using ExamProctoringManagement.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,19 @@ namespace ExamProctoringManagement.Service.Usecases
         {
             await _SlotRepository.DeleteAsync(id);
         }
-    }
 
+        public async Task<IEnumerable<Slot>> GetSlotsByExamIdAsync(string examId)
+        {
+            var slots = await _SlotRepository.GetAllAsync();
+            var list = new List<Slot>();
+            foreach (var slot in slots)
+            {
+                if (slot.ExamId == examId)
+                {
+                    list.Add(slot);
+                }
+            }
+            return list;
+        }
+    }
 }

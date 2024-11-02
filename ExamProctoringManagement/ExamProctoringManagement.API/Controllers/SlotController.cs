@@ -59,5 +59,12 @@ namespace ExamProctoringManagement.API.Controllers
             await _SlotService.DeleteSlotAsync(id);
             return NoContent();
         }
+
+        [HttpGet("exam")]
+        public async Task<ActionResult<IEnumerable<Slot>>> GetSlotsByExamId(string examId)
+        {
+            var Slots = await _SlotService.GetSlotsByExamIdAsync(examId);
+            return Ok(Slots);
+        }
     }
 }

@@ -60,7 +60,7 @@ namespace ExamProctoringManagement.Service.Usecases
 
         private async Task<float?> CalculateTotalHours(string userId, DateTime? fromDate, DateTime? toDate)
         {
-            var schedules = await _ProctoringScheduleRepository.GetByUserIdAsync(userId);
+            var schedules = await _ProctoringScheduleRepository.GetByUserIdAndIsFinishedAsync(userId, true);
 
             var slotReferenceIds = schedules.Select(s => s.SlotReferenceId).ToList();
             var slotReferences = new List<SlotReference>();
@@ -91,6 +91,48 @@ namespace ExamProctoringManagement.Service.Usecases
             }
 
             return totalHours;
+        }
+
+        public async Task<IEnumerable<Report>> GetReportsByUserIdAsync(string userId)
+        {
+            var reports = await _ReportRepository.GetAllAsync();
+            var list = new List<Report>();
+            foreach (var report in reports)
+            {
+                if(report.UserId == userId)
+                {
+                    list.Add(report);
+                }
+            }
+            return list;
+        }
+
+        public async Task<IEnumerable<Report>> GetReportsByIsPaidAsync(bool p)
+        {
+            var reports = await _ReportRepository.GetAllAsync();
+            var list = new List<Report>();
+            foreach (var report in reports)
+            {
+                if (report.IsPaid == p)
+                {
+                    list.Add(report);
+                }
+            }
+            return list;
+        }
+
+        public async Task<IEnumerable<Report>> GetReportsByMonthAsync(int month, int year)
+        {
+            var reports = await _ReportRepository.GetAllAsync();
+            var list = new List<Report>();
+            foreach (var report in reports)
+            {
+                if (report.FromDate.Value.Month == month && report.FromDate.Value.Year == year)
+                {
+                    list.Add(report);
+                }
+            }
+            return list;
         }
     }
 }

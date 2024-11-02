@@ -58,5 +58,19 @@ namespace ExamProctoringManagement.API.Controllers
             await _ProctoringScheduleService.DeleteProctoringScheduleAsync(id);
             return NoContent();
         }
+
+        [HttpGet("userId")]
+        public async Task<ActionResult<IEnumerable<ProctoringSchedule>>> GetProctoringSchedulesByUserId(string userId)
+        {
+            var ProctoringSchedules = await _ProctoringScheduleService.GetProctoringSchedulesByUserIdAsync(userId);
+            return Ok(ProctoringSchedules);
+        }
+
+        [HttpGet("userId/{finish}")]
+        public async Task<ActionResult<IEnumerable<ProctoringSchedule>>> GetProctoringSchedulesByUserIdAndIsFinished(string userId, bool finish)
+        {
+            var ProctoringSchedules = await _ProctoringScheduleService.GetProctoringSchedulesByUserIdAndIsFinishedAsync(userId, finish);
+            return Ok(ProctoringSchedules);
+        }
     }
 }
