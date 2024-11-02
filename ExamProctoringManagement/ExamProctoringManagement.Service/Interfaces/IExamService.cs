@@ -14,5 +14,6 @@ namespace ExamProctoringManagement.Service.Interfaces
         Task<Exam> CreateExamAsync(Exam exam);
         Task UpdateExamAsync(Exam exam);
         Task DeleteExamAsync(string id);
+        Task<IEnumerable<Exam>> GetExamsBySemesterIdAsync(string semesterId);
     }
 }

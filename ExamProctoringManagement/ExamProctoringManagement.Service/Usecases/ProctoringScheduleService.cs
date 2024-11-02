@@ -1,5 +1,6 @@
 ﻿using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
+using ExamProctoringManagement.Repository.Repositories;
 using ExamProctoringManagement.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,15 @@ namespace ExamProctoringManagement.Service.Usecases
         {
             await _ProctoringScheduleRepository.DeleteAsync(id);
         }
-    }
 
+        public async Task<IEnumerable<ProctoringSchedule>> GetProctoringSchedulesByUserIdAsync(string userId)
+        {
+            return await _ProctoringScheduleRepository.GetByUserIdAsync(userId);
+        }
+
+        public async Task<IEnumerable<ProctoringSchedule>> GetProctoringSchedulesByUserIdAndIsFinishedAsync(string userId, bool f)
+        {
+            return await _ProctoringScheduleRepository.GetByUserIdAndIsFinishedAsync(userId, f);
+        }
+    }
 }

@@ -14,5 +14,8 @@ namespace ExamProctoringManagement.Service.Interfaces
         Task<Report> CreateReportAsync(Report Report);
         Task UpdateReportAsync(Report Report);
         Task DeleteReportAsync(string id);
+        Task<IEnumerable<Report>> GetReportsByUserIdAsync(string userId);
+        Task<IEnumerable<Report>> GetReportsByIsPaidAsync(bool p);
+        Task<IEnumerable<Report>> GetReportsByMonthAsync(int month, int year);
     }
 }

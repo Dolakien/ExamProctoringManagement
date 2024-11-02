@@ -1,5 +1,6 @@
 ﻿using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
+using ExamProctoringManagement.Repository.Repositories;
 using ExamProctoringManagement.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,20 @@ namespace ExamProctoringManagement.Service.Usecases
         public async Task DeleteExamAsync(string id)
         {
             await _examRepository.DeleteAsync(id);
+        }
+
+        public async Task<IEnumerable<Exam>> GetExamsBySemesterIdAsync(string semesterId)
+        {
+            var exams = await _examRepository.GetAllAsync();
+            var list = new List<Exam>();
+            foreach (var exam in exams)
+            {
+                if (exam.SemesterId == semesterId)
+                {
+                    list.Add(exam);
+                }
+            }
+            return list;
         }
     }
 }
