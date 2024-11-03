@@ -1,6 +1,7 @@
 ﻿using ExamProctoringManagement.DAO;
 using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExamProctoringManagement.Repository.Repositories
 {
@@ -48,6 +49,16 @@ namespace ExamProctoringManagement.Repository.Repositories
         {
             var schedules = await _ProctoringScheduleDAO.GetAllAsync();
             return schedules.Where(s => s.UserId == userId && s.IsFinished == f);
+        }
+
+        public async Task<bool> HasProctoringScheduleAsync(string slotReferenceId)
+        {
+            var schedules = await _ProctoringScheduleDAO.GetAllAsync();
+            foreach (var schedule in schedules)
+            {
+                if(schedule.SlotReferenceId == slotReferenceId) return true;
+            }
+            return false;
         }
     }
 }

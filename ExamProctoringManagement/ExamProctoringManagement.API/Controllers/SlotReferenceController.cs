@@ -37,6 +37,15 @@ namespace ExamProctoringManagement.API.Controllers
         [HttpPost]
         public async Task<ActionResult<SlotReference>> CreateSlotReference([FromBody] SlotReference SlotReference)
         {
+            if (SlotReference.SlotId == null)
+            {
+                return BadRequest("SlotId null.");
+            }
+            if ((SlotReference.RoomId == null && SlotReference.GroupId == null) ||
+                (SlotReference.RoomId != null && SlotReference.GroupId != null)) 
+            {
+                return BadRequest("Only RoomId or GroupId exists.");
+            }
             var createdSlotReference = await _SlotReferenceService.CreateSlotReferenceAsync(SlotReference);
             return CreatedAtAction(nameof(GetSlotReference), new { id = createdSlotReference.SlotReferenceId }, createdSlotReference);
         }
@@ -65,6 +74,13 @@ namespace ExamProctoringManagement.API.Controllers
         {
             var dto = await _SlotReferenceService.GetSlotReferencesWithRoomAsync();
             return Ok(dto);
+        }
+
+        [HttpGet("slot")]
+        public async Task<ActionResult<IEnumerable<SlotReferenceWithRoomDto>>> GetSlotReferencesBySlotId(string slotId)
+        {
+            var slotReferences = await _SlotReferenceService.GetSlotReferencesBySlotIdAsync(slotId);
+            return Ok(slotReferences);
         }
     }
 }

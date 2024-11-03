@@ -1,5 +1,6 @@
 ﻿using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
+using ExamProctoringManagement.Service.Usecases;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -57,6 +58,13 @@ namespace ExamProctoringManagement.API.Controllers
         {
             await _SlotRoomSubjectService.DeleteSlotRoomSubjectAsync(id);
             return NoContent();
+        }
+
+        [HttpGet("slotReference")]
+        public async Task<ActionResult<IEnumerable<SlotRoomSubject>>> GetSlotRoomSubjectsBySlotReferenceId(string slotReferenceId)
+        {
+            var slotRoomSubject = await _SlotRoomSubjectService.GetSlotRoomSubjectsBySlotReferenceIdAsync(slotReferenceId);
+            return Ok(slotRoomSubject);
         }
     }
 }

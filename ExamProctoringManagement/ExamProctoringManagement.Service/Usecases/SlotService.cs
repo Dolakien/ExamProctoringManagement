@@ -13,10 +13,18 @@ namespace ExamProctoringManagement.Service.Usecases
     public class SlotService : ISlotService
     {
         private readonly ISlotRepository _SlotRepository;
+        private readonly IExamRepository _ExamRepository;
+        private readonly ISlotReferenceRepository _SlotReferenceRepository;
+        private readonly IProctoringScheduleRepository _ProctoringScheduleRepository;
 
-        public SlotService(ISlotRepository SlotRepository)
+        public SlotService(ISlotRepository SlotRepository, IExamRepository examRepository, 
+            ISlotReferenceRepository slotReferenceRepository, 
+            IProctoringScheduleRepository proctoringScheduleRepository)
         {
             _SlotRepository = SlotRepository;
+            _ExamRepository = examRepository;
+            _SlotReferenceRepository = slotReferenceRepository;
+            _ProctoringScheduleRepository = proctoringScheduleRepository;
         }
 
         public async Task<Slot> GetSlotByIdAsync(string id)
@@ -47,16 +55,28 @@ namespace ExamProctoringManagement.Service.Usecases
 
         public async Task<IEnumerable<Slot>> GetSlotsByExamIdAsync(string examId)
         {
-            var slots = await _SlotRepository.GetAllAsync();
-            var list = new List<Slot>();
+            return await _SlotRepository.GetSlotsByExamAsync(await _ExamRepository.GetByIdAsync(examId));
+        }
+
+        public async Task<IEnumerable<Slot>> GetAvailableSlotsByExamId(string examId)
+        {
+            var slots = await _SlotRepository.GetSlotsByExamAsync(await _ExamRepository.GetByIdAsync(examId));
+            var availableSlots = new List<Slot>();
+
             foreach (var slot in slots)
             {
-                if (slot.ExamId == examId)
+                var slotReferences = await _SlotReferenceRepository.GetSlotReferencesBySlotAsync(slot);
+
+                var hasUnscheduledSlotReference = slotReferences.Any(slotRef =>
+                    !_ProctoringScheduleRepository.HasProctoringScheduleAsync(slotRef.SlotReferenceId).Result);
+
+                if (hasUnscheduledSlotReference)
                 {
-                    list.Add(slot);
+                    availableSlots.Add(slot);
                 }
             }
-            return list;
+
+            return availableSlots;
         }
     }
 }

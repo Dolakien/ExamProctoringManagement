@@ -14,5 +14,6 @@ namespace ExamProctoringManagement.Service.Interfaces
         Task<SlotRoomSubject> CreateSlotRoomSubjectAsync(SlotRoomSubject SlotRoomSubject);
         Task UpdateSlotRoomSubjectAsync(SlotRoomSubject SlotRoomSubject);
         Task DeleteSlotRoomSubjectAsync(string id);
+        Task<IEnumerable<SlotRoomSubject>> GetSlotRoomSubjectsBySlotReferenceIdAsync(string slotReferenceId);
     }
 }

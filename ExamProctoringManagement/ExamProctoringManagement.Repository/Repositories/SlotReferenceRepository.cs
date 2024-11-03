@@ -42,5 +42,24 @@ namespace ExamProctoringManagement.Repository.Repositories
         {
             await _slotReferenceDAO.DeleteAsync(id);
         }
+
+        public async Task<IEnumerable<SlotReference>> GetSlotReferencesBySlotAsync(Slot slot)
+        {
+            if (slot == null)
+            {
+                return Enumerable.Empty<SlotReference>();
+            }
+            var slotReferences = _slotReferenceDAO.GetAllAsync();
+            var list = new List<SlotReference>();
+            if (slotReferences != null)
+            {
+                foreach (var slotReference in await slotReferences)
+                {
+                    if (slotReference.SlotId == slot.SlotId)
+                        list.Add(slotReference);
+                }
+            }
+            return list;
+        }
     }
 }
