@@ -14,11 +14,13 @@ namespace ExamProctoringManagement.Service.Usecases
     {
         private readonly ISlotReferenceRepository _slotReferenceRepository;
         private readonly IRoomRepository _roomRepository;
+        private readonly ISlotRepository _slotRepository;
 
-        public SlotReferenceService(ISlotReferenceRepository slotReferenceRepository, IRoomRepository roomRepository)
+        public SlotReferenceService(ISlotReferenceRepository slotReferenceRepository, IRoomRepository roomRepository, ISlotRepository slotRepository)
         {
             _slotReferenceRepository = slotReferenceRepository;
             _roomRepository = roomRepository;
+            _slotRepository = slotRepository;
         }
 
         public async Task<SlotReference> GetSlotReferenceByIdAsync(string id)
@@ -66,6 +68,12 @@ namespace ExamProctoringManagement.Service.Usecases
             }
 
             return dtos;
+        }
+
+        public async Task<IEnumerable<SlotReference>> GetSlotReferencesBySlotIdAsync(string slotId)
+        {
+            return await _slotReferenceRepository.
+                GetSlotReferencesBySlotAsync(await _slotRepository.GetByIdAsync(slotId));
         }
     }
 }

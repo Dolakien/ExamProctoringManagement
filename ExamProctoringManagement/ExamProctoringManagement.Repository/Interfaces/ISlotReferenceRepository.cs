@@ -14,5 +14,6 @@ namespace ExamProctoringManagement.Repository.Interfaces
         Task CreateAsync(SlotReference slotReference);
         Task UpdateAsync(SlotReference slotReference);
         Task DeleteAsync(string id);
+        Task<IEnumerable<SlotReference>> GetSlotReferencesBySlotAsync(Slot slot);
     }
 }

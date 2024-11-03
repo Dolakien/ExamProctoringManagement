@@ -1,5 +1,6 @@
 ﻿using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
+using ExamProctoringManagement.Service.Usecases;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -57,6 +58,13 @@ namespace ExamProctoringManagement.API.Controllers
         {
             await _SubjectService.DeleteSubjectAsync(id);
             return NoContent();
+        }
+
+        [HttpGet("exam")]
+        public async Task<ActionResult<IEnumerable<Subject>>> GetSubjectsByExamId(string examId)
+        {
+            var Subjects = await _SubjectService.GetSubjectsByExamIdAsync(examId);
+            return Ok(Subjects);
         }
     }
 }

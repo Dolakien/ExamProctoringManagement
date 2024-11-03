@@ -2,6 +2,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ExamProctoringManagement.Data.Models;
 
@@ -18,14 +19,14 @@ public partial class Slot
     public bool? Status { get; set; }
 
     public string ExamId { get; set; }
-
+    [JsonIgnore]
     public virtual Exam Exam { get; set; }
-
+    [JsonIgnore]
     public virtual ICollection<FormSlot> FormSlots { get; set; } = new List<FormSlot>();
-
+    [JsonIgnore]
     public virtual ICollection<FormSwap> FormSwapFromSlotNavigations { get; set; } = new List<FormSwap>();
-
+    [JsonIgnore]
     public virtual ICollection<FormSwap> FormSwapToSlotNavigations { get; set; } = new List<FormSwap>();
-
+    [JsonIgnore]
     public virtual ICollection<SlotReference> SlotReferences { get; set; } = new List<SlotReference>();
 }

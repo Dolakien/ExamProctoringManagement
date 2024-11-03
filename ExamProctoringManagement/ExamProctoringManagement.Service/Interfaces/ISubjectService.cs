@@ -14,5 +14,6 @@ namespace ExamProctoringManagement.Service.Interfaces
         Task<Subject> CreateSubjectAsync(Subject Subject);
         Task UpdateSubjectAsync(Subject Subject);
         Task DeleteSubjectAsync(string id);
+        Task<IEnumerable<Subject>> GetSubjectsByExamIdAsync(string examId);
     }
 }

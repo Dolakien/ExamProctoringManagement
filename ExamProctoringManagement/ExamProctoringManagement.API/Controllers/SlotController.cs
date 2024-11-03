@@ -66,5 +66,12 @@ namespace ExamProctoringManagement.API.Controllers
             var Slots = await _SlotService.GetSlotsByExamIdAsync(examId);
             return Ok(Slots);
         }
+
+        [HttpGet("available")]
+        public async Task<ActionResult<IEnumerable<Slot>>> GetAvailableSlotsByExamId(string examId)
+        {
+            var Slots = await _SlotService.GetAvailableSlotsByExamId(examId);
+            return Ok(Slots);
+        }
     }
 }
