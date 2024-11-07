@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
 using ExamProctoringManagement.Repository.Repositories;
 using ExamProctoringManagement.Service.Interfaces;
@@ -17,8 +18,8 @@ namespace ExamProctoringManagement.Service.Usecases
         private readonly ISlotReferenceRepository _SlotReferenceRepository;
         private readonly IProctoringScheduleRepository _ProctoringScheduleRepository;
 
-        public SlotService(ISlotRepository SlotRepository, IExamRepository examRepository, 
-            ISlotReferenceRepository slotReferenceRepository, 
+        public SlotService(ISlotRepository SlotRepository, IExamRepository examRepository,
+            ISlotReferenceRepository slotReferenceRepository,
             IProctoringScheduleRepository proctoringScheduleRepository)
         {
             _SlotRepository = SlotRepository;
@@ -77,6 +78,45 @@ namespace ExamProctoringManagement.Service.Usecases
             }
 
             return availableSlots;
+        }
+
+        public async Task<SlotCountDto> GetSlotCountAndTotalTime(string userId, string semesterId)
+        {
+            var schedules = await _ProctoringScheduleRepository.GetByUserIdAndIsFinishedAsync(userId, true);
+
+            var slotReferenceIds = schedules.Select(s => s.SlotReferenceId).ToList();
+            var slotReferences = new List<SlotReference>();
+            foreach (var slotReferenceId in slotReferenceIds)
+            {
+                var slotReference = await _SlotReferenceRepository.GetByIdAsync(slotReferenceId);
+                slotReferences.Add(slotReference);
+            }
+
+            var slotIds = slotReferences.Select(sr => sr.SlotId).ToList();
+            var slots = new List<Slot>();
+            foreach (var slotId in slotIds)
+            {
+                var slot = await _SlotRepository.GetByIdAsync(slotId);
+                var exam = await _ExamRepository.GetByIdAsync(slot.ExamId);
+                if (exam != null && exam.SemesterId == semesterId)
+                {
+                    slots.Add(slot);
+                }
+            }
+
+            float totalTime = 0;
+            foreach (var slot in slots)
+            {
+                if (slot.Start.HasValue && slot.End.HasValue)
+                {
+                    totalTime += (float)(slot.End.Value - slot.Start.Value).TotalHours;
+                }
+            }
+
+            SlotCountDto slotCountDto = new SlotCountDto();
+            slotCountDto.SlotCount = slots.Count();
+            slotCountDto.TotalTime = totalTime;
+            return slotCountDto;
         }
     }
 }
