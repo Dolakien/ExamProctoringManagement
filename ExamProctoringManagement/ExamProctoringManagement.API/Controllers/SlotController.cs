@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -72,6 +73,13 @@ namespace ExamProctoringManagement.API.Controllers
         {
             var Slots = await _SlotService.GetAvailableSlotsByExamId(examId);
             return Ok(Slots);
+        }
+
+        [HttpGet("slotCount")]
+        public async Task<ActionResult<SlotCountDto>> GetCurrentSlotCountAndTotalTime(string userId, string semesterId)
+        {
+            var slotCount = await _SlotService.GetSlotCountAndTotalTime(userId, semesterId);
+            return Ok(slotCount);
         }
     }
 }
