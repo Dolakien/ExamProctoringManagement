@@ -4,7 +4,7 @@ GO
 CREATE DATABASE [ExamProctoringManagementDB]
 
 
-GO
+/***GO
 ALTER DATABASE [ExamProctoringManagementDB] SET ANSI_NULL_DEFAULT OFF 
 GO
 ALTER DATABASE [ExamProctoringManagementDB] SET ANSI_NULLS OFF 
@@ -66,7 +66,7 @@ GO
 ALTER DATABASE [ExamProctoringManagementDB] SET ACCELERATED_DATABASE_RECOVERY = OFF  
 GO
 ALTER DATABASE [ExamProctoringManagementDB] SET QUERY_STORE = OFF
-GO
+GO***/
 USE [ExamProctoringManagementDB]
 GO
 /****** Object:  Table [dbo].[Exam]    Script Date: 04/10/2024 11:12:24 CH ******/
@@ -423,10 +423,38 @@ INSERT [dbo].[Subject] ([SubjectID], [SubjectName], [ExamID]) VALUES (N'FALL24_P
 INSERT [dbo].[Subject] ([SubjectID], [SubjectName], [ExamID]) VALUES (N'FALL24_PRN231_FE_1', N'PRN231', N'1')
 INSERT [dbo].[Subject] ([SubjectID], [SubjectName], [ExamID]) VALUES (N'FALL24_PRN231_PE_1', N'PRN231', N'1')
 GO
-INSERT [dbo].[User] ([UserID], [UserName], [Password], [FullName], [Email], [MainMajor], [Address], [Gender], [DoB], [PhoneNumber], [RoleID], [Status]) VALUES (N'1', N'ThanhNQ', N'5', N'Nguyễn Quang Thanh', N'thanh@fpt.vn', NULL, N'123/1A', 0, CAST(N'2024-10-04' AS Date), N'0909123123', 1, 1)
-INSERT [dbo].[User] ([UserID], [UserName], [Password], [FullName], [Email], [MainMajor], [Address], [Gender], [DoB], [PhoneNumber], [RoleID], [Status]) VALUES (N'2', N'TienNHT', N'5', N'Nguyễn Hồ Tân Tiến', N'tien@fpt.vn', NULL, N'123/1A', 0, CAST(N'2024-10-04' AS Date), N'0909123124', 2, 1)
-INSERT [dbo].[User] ([UserID], [UserName], [Password], [FullName], [Email], [MainMajor], [Address], [Gender], [DoB], [PhoneNumber], [RoleID], [Status]) VALUES (N'3', N'DungNG', N'5', N'Ngô Quang Dũng', N'dung@fpt.vn', N'Kĩ Thuật Phần Mềm', N'123/1A', 0, CAST(N'2024-10-04' AS Date), N'0909123125', 3, 1)
-INSERT [dbo].[User] ([UserID], [UserName], [Password], [FullName], [Email], [MainMajor], [Address], [Gender], [DoB], [PhoneNumber], [RoleID], [Status]) VALUES (N'4', N'NamPNH', N'5', N'Phan Nguyễn Hoài Nam', N'nam@fpt.vn', N'Ngôn Ngữ Anh', N'123/1A', 1, CAST(N'2024-10-04' AS Date), N'0909123126', 3, 1)
+INSERT [dbo].[User] 
+([UserID], [UserName], [PasswordSalt], [PasswordHash], [FullName], [Email], [MainMajor], [Address], [Gender], [DoB], [PhoneNumber], [RoleID], [Status]) 
+VALUES 
+(N'1', N'ThanhNQ', 
+CONVERT(varbinary(128), 'fxKo5tlLr28qWMsIG1DUUHFc1CpvaBfLXFAJghBrIlBAedjRsl3CKgPNLCirJt339lF7caHL4D2SjqMa04RktQ=='), 
+CONVERT(varbinary(128), 'SqvjxO+7fgtEOG5PtnXWOLAlrI1Y47CQHDORoos6gscpI0yx7iISk5h4L6zQ94dvU/AjmsJNPpq4CdUOO64ejpiRjaCgJMHrkojiDkQOx12lsfX7GfcyxhXqgb0FbG4FX4GAvFms554/2GJH0zI3EsEW3Ki3nUZV2DC6oFt8vEU='), 
+N'Nguyễn Quang Thanh', N'thanh@fpt.vn', NULL, N'123/1A', 0, CAST(N'2024-10-04' AS Date), N'0909123123', 1, 1);
+
+INSERT [dbo].[User] 
+([UserID], [UserName], [PasswordSalt], [PasswordHash], [FullName], [Email], [MainMajor], [Address], [Gender], [DoB], [PhoneNumber], [RoleID], [Status]) 
+VALUES 
+(N'2', N'TienNHT', 
+CONVERT(varbinary(128), 'fxKo5tlLr28qWMsIG1DUUHFc1CpvaBfLXFAJghBrIlBAedjRsl3CKgPNLCirJt339lF7caHL4D2SjqMa04RktQ=='), 
+CONVERT(varbinary(128), 'SqvjxO+7fgtEOG5PtnXWOLAlrI1Y47CQHDORoos6gscpI0yx7iISk5h4L6zQ94dvU/AjmsJNPpq4CdUOO64ejpiRjaCgJMHrkojiDkQOx12lsfX7GfcyxhXqgb0FbG4FX4GAvFms554/2GJH0zI3EsEW3Ki3nUZV2DC6oFt8vEU='), 
+N'Nguyễn Hồ Tân Tiến', N'tien@fpt.vn', NULL, N'123/1A', 0, CAST(N'2024-10-04' AS Date), N'0909123124', 2, 1);
+
+INSERT [dbo].[User] 
+([UserID], [UserName], [PasswordSalt], [PasswordHash], [FullName], [Email], [MainMajor], [Address], [Gender], [DoB], [PhoneNumber], [RoleID], [Status]) 
+VALUES 
+(N'3', N'DungNG', 
+CONVERT(varbinary(128), 'fxKo5tlLr28qWMsIG1DUUHFc1CpvaBfLXFAJghBrIlBAedjRsl3CKgPNLCirJt339lF7caHL4D2SjqMa04RktQ=='), 
+CONVERT(varbinary(128), 'SqvjxO+7fgtEOG5PtnXWOLAlrI1Y47CQHDORoos6gscpI0yx7iISk5h4L6zQ94dvU/AjmsJNPpq4CdUOO64ejpiRjaCgJMHrkojiDkQOx12lsfX7GfcyxhXqgb0FbG4FX4GAvFms554/2GJH0zI3EsEW3Ki3nUZV2DC6oFt8vEU='), 
+N'Ngô Quang Dũng', N'dung@fpt.vn', N'Kĩ Thuật Phần Mềm', N'123/1A', 0, CAST(N'2024-10-04' AS Date), N'0909123125', 3, 1);
+
+INSERT [dbo].[User] 
+([UserID], [UserName], [PasswordSalt], [PasswordHash], [FullName], [Email], [MainMajor], [Address], [Gender], [DoB], [PhoneNumber], [RoleID], [Status]) 
+VALUES 
+(N'4', N'NamPNH', 
+CONVERT(varbinary(128), 'fxKo5tlLr28qWMsIG1DUUHFc1CpvaBfLXFAJghBrIlBAedjRsl3CKgPNLCirJt339lF7caHL4D2SjqMa04RktQ=='), 
+CONVERT(varbinary(128), 'SqvjxO+7fgtEOG5PtnXWOLAlrI1Y47CQHDORoos6gscpI0yx7iISk5h4L6zQ94dvU/AjmsJNPpq4CdUOO64ejpiRjaCgJMHrkojiDkQOx12lsfX7GfcyxhXqgb0FbG4FX4GAvFms554/2GJH0zI3EsEW3Ki3nUZV2DC6oFt8vEU='), 
+N'Phan Nguyễn Hoài Nam', N'nam@fpt.vn', N'Ngôn Ngữ Anh', N'123/1A', 1, CAST(N'2024-10-04' AS Date), N'0909123126', 3, 1);
+
 GO
 ALTER TABLE [dbo].[Exam]  WITH CHECK ADD FOREIGN KEY([SemesterID])
 REFERENCES [dbo].[Semester] ([SemesterID])
