@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,9 @@ namespace ExamProctoringManagement.Service.Interfaces
     {
         Task<RegistrationForm> GetRegistrationFormByIdAsync(string id);
         Task<IEnumerable<RegistrationForm>> GetAllRegistrationFormsAsync();
-        Task<RegistrationForm> CreateRegistrationFormAsync(RegistrationForm RegistrationForm);
+        Task<GetRegisFormWithSlotsDto> CreateRegistrationFormAsync(CreateRegistrationFormDto createRegistrationFormDto);
         Task UpdateRegistrationFormAsync(RegistrationForm RegistrationForm);
         Task DeleteRegistrationFormAsync(string id);
+        Task<GetRegisFormWithSlotsDto> GetRegisFormWithSlotsAsync(string formId);
     }
 }

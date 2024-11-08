@@ -14,5 +14,6 @@ namespace ExamProctoringManagement.Repository.Interfaces
         Task CreateAsync(FormSlot formSlot);
         Task UpdateAsync(FormSlot formSlot);
         Task DeleteAsync(string id);
+        Task<IEnumerable<FormSlot>> GetFormSlotsByRegisFormAsync(RegistrationForm registrationForm);
     }
 }
