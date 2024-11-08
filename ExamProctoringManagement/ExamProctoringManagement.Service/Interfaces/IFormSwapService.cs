@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace ExamProctoringManagement.Service.Interfaces
     {
         Task<FormSwap> GetFormSwapByIdAsync(string id);
         Task<IEnumerable<FormSwap>> GetAllFormSwapsAsync();
-        Task<FormSwap> CreateFormSwapAsync(FormSwap formSwap);
-        Task UpdateFormSwapAsync(FormSwap formSwap);
+        Task<FormSwap> CreateFormSwapAsync(CreateFormSwapDto createFormSwapDto);
+        Task UpdateFormSwapAsync(UpdateFormSwapDto updateFormSwapDto);
         Task DeleteFormSwapAsync(string id);
     }
 }

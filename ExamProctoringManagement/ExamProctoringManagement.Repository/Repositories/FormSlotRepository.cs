@@ -42,5 +42,24 @@ namespace ExamProctoringManagement.Repository.Repositories
         {
             await _formSlotDAO.DeleteAsync(id);
         }
+
+        public async Task<IEnumerable<FormSlot>> GetFormSlotsByRegisFormAsync(RegistrationForm registrationForm)
+        {
+            if (registrationForm == null)
+            {
+                return Enumerable.Empty<FormSlot>();
+            }
+            var formSlots = _formSlotDAO.GetAllAsync();
+            var list = new List<FormSlot>();
+            if (formSlots != null)
+            {
+                foreach (var formSlot in await formSlots)
+                {
+                    if (formSlot.FormId == registrationForm.FormId)
+                        list.Add(formSlot);
+                }
+            }
+            return list;
+        }
     }
 }

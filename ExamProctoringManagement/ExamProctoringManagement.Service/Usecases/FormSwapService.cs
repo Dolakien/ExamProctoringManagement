@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
 using ExamProctoringManagement.Service.Interfaces;
 using System;
@@ -28,14 +29,26 @@ namespace ExamProctoringManagement.Service.Usecases
             return await _formSwapRepository.GetAllAsync();
         }
 
-        public async Task<FormSwap> CreateFormSwapAsync(FormSwap formSwap)
+        public async Task<FormSwap> CreateFormSwapAsync(CreateFormSwapDto createFormSwapDto)
         {
+            var formSwap = new FormSwap();
+            formSwap.FormId = createFormSwapDto.FormId;
+            formSwap.UserId = createFormSwapDto.UserId;
+            formSwap.FromSlot = createFormSwapDto.FromSlot;
+            formSwap.ToSlot = createFormSwapDto.ToSlot;
+            formSwap.CreateDate = DateTime.Now;
+            formSwap.Status = true;
+
             await _formSwapRepository.CreateAsync(formSwap);
             return formSwap;
         }
 
-        public async Task UpdateFormSwapAsync(FormSwap formSwap)
+        public async Task UpdateFormSwapAsync(UpdateFormSwapDto updateFormSwapDto)
         {
+            var formSwap = await _formSwapRepository.GetByIdAsync(updateFormSwapDto.FormId);
+            formSwap.Type = updateFormSwapDto.Type;
+            formSwap.IsAllowed = updateFormSwapDto.IsAllowed;
+            formSwap.Status = updateFormSwapDto.Status;
             await _formSwapRepository.UpdateAsync(formSwap);
         }
 

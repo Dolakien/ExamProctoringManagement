@@ -77,7 +77,7 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpGet("slot")]
-        public async Task<ActionResult<IEnumerable<SlotReferenceWithRoomDto>>> GetSlotReferencesBySlotId(string slotId)
+        public async Task<ActionResult<IEnumerable<SlotReference>>> GetSlotReferencesBySlotId(string slotId)
         {
             var slotReferences = await _SlotReferenceService.GetSlotReferencesBySlotIdAsync(slotId);
             return Ok(slotReferences);
