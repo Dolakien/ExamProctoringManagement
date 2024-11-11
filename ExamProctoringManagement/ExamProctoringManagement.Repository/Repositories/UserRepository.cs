@@ -129,5 +129,23 @@ namespace ExamProctoringManagement.Repository.Repositories
             return await _uow.SaveChangesAsync();
         }
 
+        public async Task DeleteAsync(string id)
+        {
+            await _uow.UserDAO.DeleteAsync(id);
+        }
+
+        public async Task<User> UpdateAsync(UpdateUser user)
+        {
+            User existedUser = await _uow.UserDAO.GetUserByUserId(user.UserId);
+            if (existedUser == null)
+            {
+                throw new UserNotFoundException(user.UserId);
+            }
+            _mapper.Map(user, existedUser);
+            _uow.UserDAO.UpdateAsync(existedUser);
+
+           return existedUser;
+        }
+
     }
 }

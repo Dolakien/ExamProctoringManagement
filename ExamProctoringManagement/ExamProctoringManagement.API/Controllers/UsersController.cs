@@ -122,5 +122,42 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
 
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUser user)
+        {
+            var response = await _userService.UpdateUserAsync(user);
+            if (response != null)
+                return Ok(BaseResponse.Success(
+                     Const.SUCCESS_UPDATE_CODE,
+                     Const.SUCCESS_UPDATE_MSG,
+                     "User is Updated successfully"
+                 ));
+            return BadRequest(BaseResponse.Failure(Const.FAIL_CODE, Const.FAIL_UPDATE_MSG));
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            try
+            {
+                await _userService.DeleteUserAsync(id);
+
+                return Ok(BaseResponse.Success(
+                    Const.SUCCESS_UPDATE_CODE,
+                    Const.SUCCESS_UPDATE_MSG,
+                    "User is deleted successfully"
+                ));
+            }
+            catch (Exception ex)
+            { 
+                return BadRequest(BaseResponse.Failure(
+                    Const.FAIL_CODE,
+                    Const.FAIL_UPDATE_MSG
+                ));
+            }
+        }
+
+
+
     }
 }

@@ -27,6 +27,7 @@ namespace ExamProctoringManagement.Service.Interfaces
         Task<bool> SendResetPasswordEmail(string email, string resetLink);
         Task<IEnumerable<User>> GetAllUsersAsync();
 
-
+        Task<User> UpdateUserAsync(UpdateUser user);
+        Task DeleteUserAsync(string id);
     }
 }

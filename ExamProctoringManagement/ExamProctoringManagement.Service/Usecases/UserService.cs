@@ -85,7 +85,7 @@ namespace ExamProctoringManagement.Service.Usecases
                 RefreshToken = refreshTokenString
             };
 
-            await SendWelcomeEmail(user.UserName, user.Email);
+            await SendWelcomeEmail(user.UserName, user.Email, createUserRequest.Password);
 
             return loginResponse;
         }
@@ -265,7 +265,7 @@ namespace ExamProctoringManagement.Service.Usecases
             }
         }
 
-        private async Task SendWelcomeEmail(string name, string email)
+        private async Task SendWelcomeEmail(string name, string email, string password)
         {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("Exam Proctoring Management System", _smtpSetting.Username));
@@ -277,6 +277,7 @@ namespace ExamProctoringManagement.Service.Usecases
                 <p>Dear {name},</p>
                 <p>Welcome to Exam Proctoring Management System! We are thrilled to have you on board.</p>
                 <p>Enjoy exploring our platform and discovering great opportunities!</p>
+                <p>Your Password: {password}</p>
                 <p>Best regards,</p>
                 <p>Exam Proctoring Management System</p>
             ";
@@ -345,6 +346,16 @@ namespace ExamProctoringManagement.Service.Usecases
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
             return await _userRepository.GetAllAsync();
+        }
+
+        public async Task<User> UpdateUserAsync(UpdateUser user)
+        {
+            return await _userRepository.UpdateAsync(user);
+        }
+
+        public async Task DeleteUserAsync(string id)
+        {
+            await _userRepository.DeleteAsync(id);
         }
     }
 }
