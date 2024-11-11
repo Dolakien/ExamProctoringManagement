@@ -30,7 +30,7 @@ namespace ExamProctoringManagement.Service.Authentication
             {
             new(ClaimTypes.NameIdentifier, user.UserId),
             new(ClaimTypes.Email, user.Email),
-            new(ClaimTypes.Role, user.Role.RoleName) // Chuyển đổi RoleId sang string
+            new Claim(ClaimTypes.Role, user.Role.RoleId.ToString())
             };
             // create sign credentials
             var signingCredentials = new SigningCredentials(
