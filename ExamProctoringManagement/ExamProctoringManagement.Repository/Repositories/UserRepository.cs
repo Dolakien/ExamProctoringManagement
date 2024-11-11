@@ -72,6 +72,7 @@ namespace ExamProctoringManagement.Repository.Repositories
                 .MainMajor(createUserRequest.MainMajor)
                 .Gender(createUserRequest.Gender)
                 .Dob(createUserRequest.Dob)
+                .RoleId(createUserRequest.RoleId)
                 .Create();
             _uow.UserDAO.Add(user);
             await _uow.SaveChangesAsync();
