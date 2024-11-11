@@ -72,11 +72,17 @@ namespace ExamProctoringManagement.Repository.Repositories
                 .MainMajor(createUserRequest.MainMajor)
                 .Gender(createUserRequest.Gender)
                 .Dob(createUserRequest.Dob)
+                .RoleId(createUserRequest.RoleId)
                 .Create();
             _uow.UserDAO.Add(user);
             await _uow.SaveChangesAsync();
             var returnUser = await _uow.UserDAO.GetUserByIDCreate(createUserRequest.UserId, m=>m.Role);
             return returnUser;
+        }
+
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+            return await _uow.UserDAO.GetAllAsync();
         }
 
         public async Task<User> GetUserByEmail(string email)
@@ -122,6 +128,24 @@ namespace ExamProctoringManagement.Repository.Repositories
             }
             _uow.UserDAO.Update(user);
             return await _uow.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(string id)
+        {
+            await _uow.UserDAO.DeleteAsync(id);
+        }
+
+        public async Task<User> UpdateAsync(UpdateUser user)
+        {
+            User existedUser = await _uow.UserDAO.GetUserByUserId(user.UserId);
+            if (existedUser == null)
+            {
+                throw new UserNotFoundException(user.UserId);
+            }
+            _mapper.Map(user, existedUser);
+            _uow.UserDAO.UpdateAsync(existedUser);
+
+           return existedUser;
         }
 
     }
