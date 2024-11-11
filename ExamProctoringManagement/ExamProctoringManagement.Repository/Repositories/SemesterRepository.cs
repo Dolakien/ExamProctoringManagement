@@ -1,5 +1,8 @@
-﻿using ExamProctoringManagement.DAO;
+﻿using AutoMapper;
+using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.DAO;
 using ExamProctoringManagement.Data.Models;
+using ExamProctoringManagement.Repository.Exceptions;
 using ExamProctoringManagement.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,10 +15,14 @@ namespace ExamProctoringManagement.Repository.Repositories
     public class SemesterRepository : ISemesterRepository
     {
         private readonly SemesterDAO _SemesterDAO;
+        private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public SemesterRepository(SemesterDAO SemesterDAO)
+        public SemesterRepository(SemesterDAO SemesterDAO, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _SemesterDAO = SemesterDAO;
+            _uow = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<Semester> GetByIdAsync(string id)
@@ -28,9 +35,23 @@ namespace ExamProctoringManagement.Repository.Repositories
             return await _SemesterDAO.GetAllAsync();
         }
 
-        public async Task CreateAsync(Semester Semester)
+        public async Task<Semester> CreateAsync(SemesterCreateDto semesterCreateDto)
         {
-            await _SemesterDAO.CreateAsync(Semester);
+            var existSemester = await _uow.SemesterDAO.GetByIdAsync(semesterCreateDto.SemesterId);
+            if (existSemester != null)
+            {
+                throw new BadRequestException("Semester existed");
+            }
+
+            Semester semester = new Semester();
+            semester.SemesterId = semesterCreateDto.SemesterId;
+            semester.SemesterName = semesterCreateDto.SemesterName;
+            semester.FromDate = semesterCreateDto.FromDate;
+            semester.ToDate = semesterCreateDto.ToDate;
+            semester.Status = semesterCreateDto.Status;
+            await _uow.SemesterDAO.CreateAsync(semester);
+            await _uow.SaveChangesAsync();
+            return semester;
         }
 
         public async Task UpdateAsync(Semester Semester)

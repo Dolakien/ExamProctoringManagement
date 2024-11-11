@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,21 +34,27 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Semester>> CreateSemester([FromBody] Semester Semester)
+        public async Task<ActionResult<Semester>> CreateSemester([FromBody] SemesterCreateDto Semester)
         {
             var createdSemester = await _SemesterService.CreateSemesterAsync(Semester);
             return CreatedAtAction(nameof(GetSemester), new { id = createdSemester.SemesterId }, createdSemester);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSemester(string id, [FromBody] Semester Semester)
+        public async Task<IActionResult> UpdateSemester(string id, [FromBody] SemesterUpdateDto Semester)
         {
-            if (id != Semester.SemesterId)
+            var semester = await _SemesterService.GetSemesterByIdAsync(id);
+            if (id != semester.SemesterId)
             {
                 return BadRequest();
             }
 
-            await _SemesterService.UpdateSemesterAsync(Semester);
+            semester.SemesterName = Semester.SemesterName;
+            semester.FromDate = Semester.FromDate;
+            semester.ToDate = Semester.ToDate;
+            semester.Status = Semester.Status;
+
+            await _SemesterService.UpdateSemesterAsync(semester);
             return NoContent();
         }
 

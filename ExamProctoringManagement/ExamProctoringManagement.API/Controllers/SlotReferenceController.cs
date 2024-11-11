@@ -82,5 +82,19 @@ namespace ExamProctoringManagement.API.Controllers
             var slotReferences = await _SlotReferenceService.GetSlotReferencesBySlotIdAsync(slotId);
             return Ok(slotReferences);
         }
+
+        [HttpGet("room/{examId}")]
+        public async Task<ActionResult<IEnumerable<SlotReferenceWithRoomDto>>> GetSlotReferencesWithRoom(string examId)
+        {
+            var dto = await _SlotReferenceService.GetSlotReferencesWithRoomAsync(examId);
+            return Ok(dto);
+        }
+
+        [HttpGet("group/{examId}")]
+        public async Task<ActionResult<IEnumerable<SlotReferenceWithGroupDto>>> GetSlotReferencesWithGroup(string examId)
+        {
+            var dto = await _SlotReferenceService.GetSlotReferencesWithGroupAsync(examId);
+            return Ok(dto);
+        }
     }
 }
