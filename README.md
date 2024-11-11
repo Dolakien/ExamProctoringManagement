@@ -1,1 +1,1 @@
-https://examprotoringmanagement.azurewebsites.net/index.html
+https://examproctoringmanagement.azurewebsites.net/index.html
