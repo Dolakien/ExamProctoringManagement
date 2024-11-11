@@ -22,6 +22,7 @@ namespace ExamProctoringManagement.Repository.Interfaces
         Task<User> CreateUser(CreateUserRequest createUserRequest);
         Task<User> GetUserByEmail(string email);
         Task<IEnumerable<User>> GetAllAsync();
-
+        Task<User> UpdateAsync(UpdateUser user);
+        Task DeleteAsync(string id);
     }
 }

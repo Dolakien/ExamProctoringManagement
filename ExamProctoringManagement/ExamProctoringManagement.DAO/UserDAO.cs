@@ -113,6 +113,20 @@ namespace ExamProctoringManagement.DAO
             return await _context.Users.FirstOrDefaultAsync(m => m.UserId == id);
         }
 
+        public void UpdateAsync(User user)
+        {
+            _context.Users.Update(user);
+        }
+
+        public async Task DeleteAsync(string id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user != null)
+            {
+                user.Status = false;
+                await _context.SaveChangesAsync();
+            }
+        }
 
     }
 }
