@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace ExamProctoringManagement.Service.Interfaces
     {
         Task<Semester> GetSemesterByIdAsync(string id);
         Task<IEnumerable<Semester>> GetAllSemestersAsync();
-        Task<Semester> CreateSemesterAsync(Semester Semester);
+        Task<SemesterCreateDto> CreateSemesterAsync(SemesterCreateDto Semester);
         Task UpdateSemesterAsync(Semester Semester);
         Task DeleteSemesterAsync(string id);
     }

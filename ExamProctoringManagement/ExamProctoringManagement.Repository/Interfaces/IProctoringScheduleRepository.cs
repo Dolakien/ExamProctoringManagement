@@ -17,5 +17,6 @@ namespace ExamProctoringManagement.Repository.Interfaces
         Task<IEnumerable<ProctoringSchedule>> GetByUserIdAsync(string userId);
         Task<IEnumerable<ProctoringSchedule>> GetByUserIdAndIsFinishedAsync(string userId, bool f);
         Task<bool> HasProctoringScheduleAsync(string slotReferenceId);
+        Task<bool> HasProctoringScheduleWithStatusAsync(string slotReferenceId, bool status);
     }
 }

@@ -60,5 +60,16 @@ namespace ExamProctoringManagement.Repository.Repositories
             }
             return false;
         }
+
+        public async Task<bool> HasProctoringScheduleWithStatusAsync(string slotReferenceId, bool status)
+        {
+            var schedules = await _ProctoringScheduleDAO.GetAllAsync();
+            foreach (var schedule in schedules)
+            {
+                if (schedule.SlotReferenceId == slotReferenceId && schedule.Status == status) 
+                    return true;
+            }
+            return false;
+        }
     }
 }

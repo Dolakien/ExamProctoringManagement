@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
 using ExamProctoringManagement.Service.Interfaces;
 using System;
@@ -28,7 +29,7 @@ namespace ExamProctoringManagement.Service.Usecases
             return await _SemesterRepository.GetAllAsync();
         }
 
-        public async Task<Semester> CreateSemesterAsync(Semester Semester)
+        public async Task<SemesterCreateDto> CreateSemesterAsync(SemesterCreateDto Semester)
         {
             await _SemesterRepository.CreateAsync(Semester);
             return Semester;

@@ -2,6 +2,7 @@
 using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
 using ExamProctoringManagement.Service.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,22 @@ namespace ExamProctoringManagement.Service.Usecases
         private readonly ISlotReferenceRepository _slotReferenceRepository;
         private readonly IRoomRepository _roomRepository;
         private readonly ISlotRepository _slotRepository;
+        private readonly IProctoringScheduleRepository _proctoringScheduleRepository;
+        private readonly IExamRepository _examRepository;
+        private readonly IGroupRepository _groupRepository;
+        private readonly IGroupRoomRepository _groupRoomRepository;
 
-        public SlotReferenceService(ISlotReferenceRepository slotReferenceRepository, IRoomRepository roomRepository, ISlotRepository slotRepository)
+        public SlotReferenceService(ISlotReferenceRepository slotReferenceRepository, IRoomRepository roomRepository, 
+            ISlotRepository slotRepository, IProctoringScheduleRepository proctoringScheduleRepository, IExamRepository examRepository,
+            IGroupRepository groupRepository, IGroupRoomRepository groupRoomRepository)
         {
             _slotReferenceRepository = slotReferenceRepository;
             _roomRepository = roomRepository;
             _slotRepository = slotRepository;
+            _proctoringScheduleRepository = proctoringScheduleRepository;
+            _examRepository = examRepository;
+            _groupRepository = groupRepository;
+            _groupRoomRepository = groupRoomRepository;
         }
 
         public async Task<SlotReference> GetSlotReferenceByIdAsync(string id)
@@ -74,6 +85,68 @@ namespace ExamProctoringManagement.Service.Usecases
         {
             return await _slotReferenceRepository.
                 GetSlotReferencesBySlotAsync(await _slotRepository.GetByIdAsync(slotId));
+        }
+
+        public async Task<IEnumerable<SlotReferenceWithRoomDto>> GetSlotReferencesWithRoomAsync(string examId)
+        {
+            var slots = await _slotRepository.GetSlotsByExamAsync(await _examRepository.GetByIdAsync(examId));
+
+            var slotReferences = await _slotReferenceRepository.GetAllAsync();
+            List<SlotReferenceWithRoomDto> dtos = new List<SlotReferenceWithRoomDto>();
+            foreach (var s in slots)
+            {
+                foreach (var slotReference in slotReferences)
+                {
+                    if (slotReference.RoomId != null && slotReference.SlotId == s.SlotId
+                        && !await _proctoringScheduleRepository.HasProctoringScheduleWithStatusAsync(slotReference.SlotReferenceId, true))
+                    {
+                        var room = await _roomRepository.GetByIdAsync(slotReference.RoomId);
+                        SlotReferenceWithRoomDto dto = new SlotReferenceWithRoomDto();
+                        dto.SlotReferenceId = slotReference.SlotReferenceId;
+                        dto.SlotId = slotReference.SlotId;
+                        dto.RoomId = slotReference.RoomId;
+                        dto.RoomName = room.RoomName;
+                        dtos.Add(dto);
+                    }
+                }
+            }
+
+            return dtos;
+        }
+
+        public async Task<IEnumerable<SlotReferenceWithGroupDto>> GetSlotReferencesWithGroupAsync(string examId)
+        {
+            var slots = await _slotRepository.GetSlotsByExamAsync(await _examRepository.GetByIdAsync(examId));
+
+            var slotReferences = await _slotReferenceRepository.GetAllAsync();
+            List<SlotReferenceWithGroupDto> dtos = new List<SlotReferenceWithGroupDto>();
+            foreach (var s in slots)
+            {
+                foreach (var slotReference in slotReferences)
+                {
+                    if (slotReference.GroupId != null && slotReference.SlotId == s.SlotId
+                        && !await _proctoringScheduleRepository.HasProctoringScheduleWithStatusAsync(slotReference.SlotReferenceId, true))
+                    { 
+                        var group = await _groupRepository.GetByIdAsync(slotReference.GroupId);
+                        var list = await _groupRoomRepository.GetGroupRoomsByGroupAsync(group);
+                        List<Room> rooms = new List<Room>();
+                        foreach (var groupRoom in list)
+                        {
+                            Room room = await _roomRepository.GetByIdAsync(groupRoom.RoomId);
+                            rooms.Add(room);
+                        }
+
+                        SlotReferenceWithGroupDto dto = new SlotReferenceWithGroupDto();
+                        dto.SlotReferenceId = slotReference.SlotReferenceId;
+                        dto.SlotId = slotReference.SlotId;
+                        dto.GroupId = slotReference.GroupId;
+                        dto.Rooms = rooms;
+                        dtos.Add(dto);
+                    }
+                }
+            }
+
+            return dtos;
         }
     }
 }
