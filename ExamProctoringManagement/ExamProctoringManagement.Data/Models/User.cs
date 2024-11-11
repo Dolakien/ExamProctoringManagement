@@ -2,6 +2,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ExamProctoringManagement.Data.Models;
 
@@ -32,16 +33,21 @@ public partial class User
     public int? RoleId { get; set; }
 
     public bool? Status { get; set; }
-
+    [JsonIgnore]
     public virtual ICollection<FormSwap> FormSwaps { get; set; } = new List<FormSwap>();
+    [JsonIgnore]
 
     public virtual ICollection<ProctoringSchedule> ProctoringSchedules { get; set; } = new List<ProctoringSchedule>();
+    [JsonIgnore]
 
     public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+    [JsonIgnore]
 
     public virtual ICollection<RegistrationForm> RegistrationForms { get; set; } = new List<RegistrationForm>();
+    [JsonIgnore]
 
     public virtual ICollection<Report> Reports { get; set; } = new List<Report>();
+    [JsonIgnore]
 
     public virtual Role Role { get; set; }
 }
