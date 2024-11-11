@@ -6,7 +6,9 @@ using ExamProctoringManagement.Contract.Payloads.Request;
 using ExamProctoringManagement.Contract.Payloads.Request.RefreshTokenRequest;
 using ExamProctoringManagement.Contract.Payloads.Request.UsersRequest;
 using ExamProctoringManagement.Contract.Payloads.Response;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
+using ExamProctoringManagement.Service.Usecases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +38,13 @@ namespace ExamProctoringManagement.API.Controllers
                 : BadRequest(BaseResponse.Failure(Const.FAIL_CODE, Const.FAIL_READ_MSG));
         }
 
+
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+        {
+            var users = await _userService.GetAllUsersAsync();
+            return Ok(users);
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetUsers([FromQuery] GetUsersQuery getUsersQuery)
