@@ -79,6 +79,11 @@ namespace ExamProctoringManagement.Repository.Repositories
             return returnUser;
         }
 
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+            return await _uow.UserDAO.GetAllAsync();
+        }
+
         public async Task<User> GetUserByEmail(string email)
         {
             return await _uow.UserDAO.GetUserByEmail(email);

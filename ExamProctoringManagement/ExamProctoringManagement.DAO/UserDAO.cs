@@ -54,7 +54,10 @@ namespace ExamProctoringManagement.DAO
             return await query.FirstOrDefaultAsync();
         }
 
-
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+            return await _context.Users.ToListAsync();
+        }
 
         public IQueryable<User> GetAllUser(string searchTerm, string sortColumn, string sortOrder)
         {

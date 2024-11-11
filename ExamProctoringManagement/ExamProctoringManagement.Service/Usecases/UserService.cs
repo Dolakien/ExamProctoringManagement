@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ExamProctoringManagement.Repository.Repositories;
 
 namespace ExamProctoringManagement.Service.Usecases
 {
@@ -339,6 +340,11 @@ namespace ExamProctoringManagement.Service.Usecases
                     await client.DisconnectAsync(true);
                 }
             }
+        }
+
+        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        {
+            return await _userRepository.GetAllAsync();
         }
     }
 }

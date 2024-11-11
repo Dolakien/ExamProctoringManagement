@@ -25,6 +25,7 @@ namespace ExamProctoringManagement.Service.Interfaces
         Task<User> GetUserByEmail(string email);
         Task<bool> ResetPassword(ResetPasswordRequest resetPasswordRequest);
         Task<bool> SendResetPasswordEmail(string email, string resetLink);
+        Task<IEnumerable<User>> GetAllUsersAsync();
 
 
     }

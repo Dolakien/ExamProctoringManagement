@@ -21,5 +21,7 @@ namespace ExamProctoringManagement.Repository.Interfaces
         public Task<bool> UpdatePassword(PasswordRequest passwordRequest);
         Task<User> CreateUser(CreateUserRequest createUserRequest);
         Task<User> GetUserByEmail(string email);
+        Task<IEnumerable<User>> GetAllAsync();
+
     }
 }
