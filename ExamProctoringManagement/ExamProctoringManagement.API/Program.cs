@@ -45,30 +45,7 @@ builder.Services.AddCors(options =>
                .AllowAnyMethod();
     });
 });
-builder.Services.AddSwaggerGen(options =>
-{
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-    {
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer",
-    });
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<String>()
-                    }
-                });
-});
+
 builder.Services.AddScoped<ExamDAO>();
 builder.Services.AddScoped<FormSlotDAO>();
 builder.Services.AddScoped<FormSwapDAO>();
