@@ -38,16 +38,13 @@ namespace ExamProctoringManagement.Service.Usecases
             return await _SlotRepository.GetAllAsync();
         }
 
-        public async Task<Slot> CreateSlotAsync(Slot Slot)
-        {
-            await _SlotRepository.CreateAsync(Slot);
-            return Slot;
-        }
+        public async Task<string> CreateSlotAsync(SlotDTO Slot)
+            => await this._SlotRepository.CreateAsync(Slot);
+       
 
-        public async Task UpdateSlotAsync(Slot Slot)
-        {
-            await _SlotRepository.UpdateAsync(Slot);
-        }
+        public async Task<string> UpdateSlotAsync(SlotDTO Slot)
+            => await this._SlotRepository.UpdateAsync(Slot);
+        
 
         public async Task DeleteSlotAsync(string id)
         {

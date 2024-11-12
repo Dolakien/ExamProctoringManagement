@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ExamProctoringManagement.Contract.DTOs;
 using ExamProctoringManagement.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ExamProctoringManagement.DAO
 {
@@ -26,16 +29,38 @@ namespace ExamProctoringManagement.DAO
             return await _context.Slots.ToListAsync();
         }
 
-        public async Task CreateAsync(Slot slot)
+        public async Task<string> CreateAsync(SlotDTO slot)
         {
-            await _context.Slots.AddAsync(slot);
+            var checker = await this._context.Slots.FirstOrDefaultAsync(x => x.SlotId.Equals(slot.SlotId));
+            if (checker != null)
+                return "failed";
+            var temp = new Slot() 
+            {
+                SlotId = "Slot" + Guid.NewGuid().ToString().Substring(0,5),
+                Date = slot.Date,
+                Start = slot.Start,
+                End = slot.End,
+                ExamId = slot.ExamId,
+                Status = slot.Status,
+            };
+            await _context.Slots.AddAsync(temp);
             await _context.SaveChangesAsync();
+            return "true";
         }
 
-        public async Task UpdateAsync(Slot slot)
+        public async Task<string> UpdateAsync(SlotDTO slot)
         {
-            _context.Slots.Update(slot);
+            var checker = await this._context.Slots.FirstOrDefaultAsync(x => x.SlotId.Equals(slot.SlotId));
+            if (checker == null)
+                return "failed";
+            checker.Date = slot.Date;
+            checker.Start = slot.Start;
+            checker.End = slot.End;
+            checker.ExamId = slot.ExamId;
+            checker.Status = slot.Status;
+            _context.Slots.Update(checker);
             await _context.SaveChangesAsync();
+            return "Success";
         }
 
         public async Task DeleteAsync(string id)

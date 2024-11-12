@@ -13,6 +13,6 @@ namespace ExamProctoringManagement.Contract.DTOs
         public string UserId { get; set; }
         public DateTime CreateDate { get; set; }
         public bool Status { get; set; }
-        public List<Slot> Slots { get; set; }
+        public List<SlotDTO> Slots { get; set; }
     }
 }
