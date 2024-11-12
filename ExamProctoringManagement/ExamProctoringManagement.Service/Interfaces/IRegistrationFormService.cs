@@ -13,7 +13,7 @@ namespace ExamProctoringManagement.Service.Interfaces
         Task<RegistrationForm> GetRegistrationFormByIdAsync(string id);
         Task<IEnumerable<RegistrationForm>> GetAllRegistrationFormsAsync();
         Task<GetRegisFormWithSlotsDto> CreateRegistrationFormAsync(CreateRegistrationFormDto createRegistrationFormDto);
-        Task UpdateRegistrationFormAsync(RegistrationForm RegistrationForm);
+        Task<RegistrationForm> UpdateRegistrationFormAsync(RegisFormUpdateDto RegistrationForm);
         Task DeleteRegistrationFormAsync(string id);
         Task<GetRegisFormWithSlotsDto> GetRegisFormWithSlotsAsync(string formId);
     }

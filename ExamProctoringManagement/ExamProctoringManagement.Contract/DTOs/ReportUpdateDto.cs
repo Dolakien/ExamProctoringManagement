@@ -8,6 +8,8 @@ namespace ExamProctoringManagement.Contract.DTOs
 {
     public class ReportUpdateDto
     {
+        public string ReportId { get; set; }
+
         public DateTime? FromDate { get; set; }
 
         public DateTime? ToDate { get; set; }

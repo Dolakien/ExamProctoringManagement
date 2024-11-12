@@ -43,13 +43,14 @@ namespace ExamProctoringManagement.Service.Usecases
             return formSwap;
         }
 
-        public async Task UpdateFormSwapAsync(UpdateFormSwapDto updateFormSwapDto)
+        public async Task<FormSwap> UpdateFormSwapAsync(UpdateFormSwapDto updateFormSwapDto)
         {
             var formSwap = await _formSwapRepository.GetByIdAsync(updateFormSwapDto.FormId);
             formSwap.Type = updateFormSwapDto.Type;
             formSwap.IsAllowed = updateFormSwapDto.IsAllowed;
             formSwap.Status = updateFormSwapDto.Status;
             await _formSwapRepository.UpdateAsync(formSwap);
+            return formSwap;
         }
 
         public async Task DeleteFormSwapAsync(string id)

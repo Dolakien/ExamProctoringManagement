@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
 using ExamProctoringManagement.Service.Interfaces;
 using System;
@@ -34,9 +35,9 @@ namespace ExamProctoringManagement.Service.Usecases
             return formSlot;
         }
 
-        public async Task UpdateFormSlotAsync(FormSlot formSlot)
+        public async Task<FormSlot> UpdateFormSlotAsync(FormSlotUpdateDto formSlot)
         {
-            await _formSlotRepository.UpdateAsync(formSlot);
+            return await _formSlotRepository.UpdateAsync(formSlot);
         }
 
         public async Task DeleteFormSlotAsync(string id)

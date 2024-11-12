@@ -54,9 +54,17 @@ namespace ExamProctoringManagement.Repository.Repositories
             return semester;
         }
 
-        public async Task UpdateAsync(Semester Semester)
+        public async Task<Semester> UpdateAsync(SemesterUpdateDto semesterUpdateDto)
         {
-            await _SemesterDAO.UpdateAsync(Semester);
+            var existedSemester = await _uow.SemesterDAO.GetByIdAsync(semesterUpdateDto.SemesterId);
+            if (existedSemester == null)
+            {
+                throw new SemesterNotFoundException(semesterUpdateDto.SemesterId);
+            }
+            _mapper.Map(semesterUpdateDto, existedSemester);
+            await _uow.SemesterDAO.UpdateAsync(existedSemester);
+
+            return existedSemester;
         }
 
         public async Task DeleteAsync(string id)

@@ -1,4 +1,6 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using AutoMapper;
+using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
 using ExamProctoringManagement.Service.Interfaces;
 using System;
@@ -15,14 +17,16 @@ namespace ExamProctoringManagement.Service.Usecases
         private readonly IProctoringScheduleRepository _ProctoringScheduleRepository;
         private readonly ISlotReferenceRepository _SlotReferenceRepository;
         private readonly ISlotRepository _SlotRepository;
+        private readonly IMapper _mapper;
 
         public ReportService(IReportRepository ReportRepository, IProctoringScheduleRepository ProctoringScheduleRepository,
-            ISlotReferenceRepository SlotReferenceRepository, ISlotRepository SlotRepository)
+            ISlotReferenceRepository SlotReferenceRepository, ISlotRepository SlotRepository, IMapper mapper)
         {
             _ReportRepository = ReportRepository;
             _ProctoringScheduleRepository = ProctoringScheduleRepository;
             _SlotReferenceRepository = SlotReferenceRepository;
             _SlotRepository = SlotRepository;
+            _mapper = mapper;
         }
 
         public async Task<Report> GetReportByIdAsync(string id)
@@ -35,8 +39,15 @@ namespace ExamProctoringManagement.Service.Usecases
             return await _ReportRepository.GetAllAsync();
         }
 
-        public async Task<Report> CreateReportAsync(Report report)
+        public async Task<Report> CreateReportAsync(ReportCreateDto reportCreateDto)
         {
+            Report report = new Report();
+            report.ReportId = reportCreateDto.ReportId;
+            report.UserId = reportCreateDto.UserId;
+            report.FromDate = reportCreateDto.FromDate;
+            report.ToDate = reportCreateDto.ToDate;
+            report.UnitPerHour = reportCreateDto.UnitPerHour;
+
             report.TotalHours = await CalculateTotalHours(report.UserId, report.FromDate, report.ToDate);
             report.TotalAmount = (decimal?)(report.TotalHours * (float?)report.UnitPerHour);
             report.IsPaid = false;
@@ -45,12 +56,15 @@ namespace ExamProctoringManagement.Service.Usecases
             return report;
         }
 
-        public async Task UpdateReportAsync(Report report)
+        public async Task<Report> UpdateReportAsync(ReportUpdateDto reportUpdateDto)
         {
+            var report = await _ReportRepository.GetByIdAsync(reportUpdateDto.ReportId);
+            _mapper.Map(reportUpdateDto, report);
+
             report.TotalHours = await CalculateTotalHours(report.UserId, report.FromDate, report.ToDate);
             report.TotalAmount = (decimal?)(report.TotalHours * (float?)report.UnitPerHour);
 
-            await _ReportRepository.UpdateAsync(report);
+            return await _ReportRepository.UpdateAsync(report);
         }
 
         public async Task DeleteReportAsync(string id)

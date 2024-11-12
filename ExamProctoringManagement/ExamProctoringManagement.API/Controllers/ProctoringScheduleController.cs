@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -71,6 +72,17 @@ namespace ExamProctoringManagement.API.Controllers
         {
             var ProctoringSchedules = await _ProctoringScheduleService.GetProctoringSchedulesByUserIdAndIsFinishedAsync(userId, finish);
             return Ok(ProctoringSchedules);
+        }
+
+        [HttpGet("full/{id}")]
+        public async Task<ActionResult<FullProctoringScheduleDto>> GetFullProctoringSchedule(string id)
+        {
+            var ProctoringSchedule = await _ProctoringScheduleService.GetFullProctoringScheduleByIdAsync(id);
+            if (ProctoringSchedule == null)
+            {
+                return NotFound();
+            }
+            return ProctoringSchedule;
         }
     }
 }

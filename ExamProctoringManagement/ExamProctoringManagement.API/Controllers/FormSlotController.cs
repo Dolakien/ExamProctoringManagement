@@ -1,5 +1,9 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.Common;
+using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Contract.Payloads.Response;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
+using ExamProctoringManagement.Service.Usecases;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,26 +36,27 @@ namespace ExamProctoringManagement.API.Controllers
             return Ok(formSlots);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<FormSlot>> CreateFormSlot([FromBody] FormSlot formSlot)
+        //[HttpPost("create")]
+        //public async Task<ActionResult<FormSlot>> CreateFormSlot([FromBody] FormSlot formSlot)
+        //{
+        //    var createdFormSlot = await _formSlotService.CreateFormSlotAsync(formSlot);
+        //    return CreatedAtAction(nameof(GetFormSlot), new { id = createdFormSlot.FormSlotId}, createdFormSlot);
+        //}
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateFormSlot([FromBody] FormSlotUpdateDto formSlot)
         {
-            var createdFormSlot = await _formSlotService.CreateFormSlotAsync(formSlot);
-            return CreatedAtAction(nameof(GetFormSlot), new { id = createdFormSlot.FormSlotId}, createdFormSlot);
+            var response = await _formSlotService.UpdateFormSlotAsync(formSlot);
+            if (response != null)
+                return Ok(BaseResponse.Success(
+                     Const.SUCCESS_UPDATE_CODE,
+                     Const.SUCCESS_UPDATE_MSG,
+                     "FormSlot is Updated successfully"
+                 ));
+            return BadRequest(BaseResponse.Failure(Const.FAIL_CODE, Const.FAIL_UPDATE_MSG));
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateFormSlot(string id, [FromBody] FormSlot formSlot)
-        {
-            if (id != formSlot.FormSlotId)
-            {
-                return BadRequest();
-            }
-
-            await _formSlotService.UpdateFormSlotAsync(formSlot);
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteFormSlot(string id)
         {
             await _formSlotService.DeleteFormSlotAsync(id);

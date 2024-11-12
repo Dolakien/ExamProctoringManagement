@@ -1,4 +1,6 @@
-﻿using ExamProctoringManagement.Contract.DTOs;
+﻿using ExamProctoringManagement.Contract.Common;
+using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Contract.Payloads.Response;
 using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
 using ExamProctoringManagement.Service.Usecases;
@@ -60,15 +62,16 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateFormSwap(string id, [FromBody] UpdateFormSwapDto updateFormSwapDto)
+        public async Task<IActionResult> UpdateFormSwap([FromBody] UpdateFormSwapDto updateFormSwapDto)
         {
-            if (id != updateFormSwapDto.FormId)
-            {
-                return BadRequest();
-            }
-
-            await _formSwapService.UpdateFormSwapAsync(updateFormSwapDto);
-            return NoContent();
+            var response = await _formSwapService.UpdateFormSwapAsync(updateFormSwapDto);
+            if (response != null)
+                return Ok(BaseResponse.Success(
+                     Const.SUCCESS_UPDATE_CODE,
+                     Const.SUCCESS_UPDATE_MSG,
+                     "FormSwap is Updated successfully"
+                 ));
+            return BadRequest(BaseResponse.Failure(Const.FAIL_CODE, Const.FAIL_UPDATE_MSG));
         }
 
         [HttpDelete("{id}")]

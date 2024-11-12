@@ -13,7 +13,7 @@ namespace ExamProctoringManagement.Service.Interfaces
         Task<FormSwap> GetFormSwapByIdAsync(string id);
         Task<IEnumerable<FormSwap>> GetAllFormSwapsAsync();
         Task<FormSwap> CreateFormSwapAsync(CreateFormSwapDto createFormSwapDto);
-        Task UpdateFormSwapAsync(UpdateFormSwapDto updateFormSwapDto);
+        Task<FormSwap> UpdateFormSwapAsync(UpdateFormSwapDto updateFormSwapDto);
         Task DeleteFormSwapAsync(string id);
     }
 }
