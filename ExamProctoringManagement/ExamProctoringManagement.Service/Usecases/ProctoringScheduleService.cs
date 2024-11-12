@@ -48,16 +48,13 @@ namespace ExamProctoringManagement.Service.Usecases
             return await _ProctoringScheduleRepository.GetAllAsync();
         }
 
-        public async Task<ProctoringSchedule> CreateProctoringScheduleAsync(ProctoringSchedule ProctoringSchedule)
-        {
-            await _ProctoringScheduleRepository.CreateAsync(ProctoringSchedule);
-            return ProctoringSchedule;
-        }
+        public async Task<string> CreateProctoringScheduleAsync(ProctoringScheduleDTO ProctoringSchedule)
+            => await _ProctoringScheduleRepository.CreateAsync(ProctoringSchedule);
+        
 
-        public async Task UpdateProctoringScheduleAsync(ProctoringSchedule ProctoringSchedule)
-        {
-            await _ProctoringScheduleRepository.UpdateAsync(ProctoringSchedule);
-        }
+        public async Task<string> UpdateProctoringScheduleAsync(ProctoringScheduleDTO ProctoringSchedule)
+            => await _ProctoringScheduleRepository.UpdateAsync(ProctoringSchedule);
+        
 
         public async Task DeleteProctoringScheduleAsync(string id)
         {

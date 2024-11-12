@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,14 +35,14 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Room>> CreateRoom([FromBody] Room Room)
+        public async Task<ActionResult<Room>> CreateRoom([FromBody] RoomDTO Room)
         {
             var createdRoom = await _RoomService.CreateRoomAsync(Room);
-            return CreatedAtAction(nameof(GetRoom), new { id = createdRoom.RoomId }, createdRoom);
+            return Ok(createdRoom);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateRoom(string id, [FromBody] Room Room)
+        public async Task<IActionResult> UpdateRoom(string id, [FromBody] RoomDTO Room)
         {
             if (id != Room.RoomId)
             {

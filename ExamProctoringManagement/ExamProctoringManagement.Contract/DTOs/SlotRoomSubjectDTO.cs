@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace ExamProctoringManagement.Contract.DTOs
 {
-    public class SubjectDto
+    public class SlotRoomSubjectDTO
     {
+        public string SlotRoomSubjectId { get; set; }
+
+        public string SlotReferenceId { get; set; }
+
         public string SubjectId { get; set; }
 
-        public string SubjectName { get; set; }
+        public bool? Status { get; set; }
 
-        public string ExamId { get; set; }
     }
 }

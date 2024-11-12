@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace ExamProctoringManagement.Repository.Interfaces
     {
         Task<Room> GetByIdAsync(string id);
         Task<IEnumerable<Room>> GetAllAsync();
-        Task CreateAsync(Room room);
-        Task UpdateAsync(Room room);
+        Task<string> CreateAsync(RoomDTO room);
+        Task<string> UpdateAsync(RoomDTO room);
         Task DeleteAsync(string id);
     }
 }

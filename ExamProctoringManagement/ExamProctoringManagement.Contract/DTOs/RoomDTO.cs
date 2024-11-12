@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace ExamProctoringManagement.Contract.DTOs
 {
-    public class SubjectDto
+    public class RoomDTO
     {
-        public string SubjectId { get; set; }
+        public string RoomId { get; set; }
 
-        public string SubjectName { get; set; }
-
-        public string ExamId { get; set; }
+        public string RoomName { get; set; }
     }
 }

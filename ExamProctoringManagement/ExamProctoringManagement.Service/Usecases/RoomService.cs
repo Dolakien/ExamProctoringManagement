@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
 using ExamProctoringManagement.Service.Interfaces;
 using System;
@@ -28,16 +29,13 @@ namespace ExamProctoringManagement.Service.Usecases
             return await _RoomRepository.GetAllAsync();
         }
 
-        public async Task<Room> CreateRoomAsync(Room Room)
-        {
-            await _RoomRepository.CreateAsync(Room);
-            return Room;
-        }
+        public async Task<string> CreateRoomAsync(RoomDTO Room)
+            => await this._RoomRepository.CreateAsync(Room);
+        
 
-        public async Task UpdateRoomAsync(Room Room)
-        {
-            await _RoomRepository.UpdateAsync(Room);
-        }
+        public async Task<string> UpdateRoomAsync(RoomDTO Room)
+            => await this._RoomRepository.UpdateAsync(Room);
+        
 
         public async Task DeleteRoomAsync(string id)
         {
