@@ -80,14 +80,12 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
 
-        [HttpGet("information")]
-        [Authorize]
-        public async Task<IActionResult> GetMemberById()
+        [HttpGet("information/{id}")]
+        public async Task<IActionResult> GetMemberById(string id)
         {
-            var Id = User.GetID();
-            var user = await _userService.GetUserById(Id);
+            var user = await _userService.GetUserById(id);
             return user != null
-                ? Ok(_mapper.Map<UserDto>(user))
+                ? Ok(user)
                 : NotFound();
         }
 
