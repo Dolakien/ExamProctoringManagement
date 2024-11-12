@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.DAO;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.DAO;
 using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -24,15 +25,13 @@ namespace ExamProctoringManagement.Repository.Repositories
             return await _ProctoringScheduleDAO.GetAllAsync();
         }
 
-        public async Task CreateAsync(ProctoringSchedule ProctoringSchedule)
-        {
-            await _ProctoringScheduleDAO.CreateAsync(ProctoringSchedule);
-        }
+        public async Task<string> CreateAsync(ProctoringScheduleDTO ProctoringSchedule)
+            => await this._ProctoringScheduleDAO.CreateAsync(ProctoringSchedule);
+        
 
-        public async Task UpdateAsync(ProctoringSchedule ProctoringSchedule)
-        {
-            await _ProctoringScheduleDAO.UpdateAsync(ProctoringSchedule);
-        }
+        public async Task<string> UpdateAsync(ProctoringScheduleDTO ProctoringSchedule)
+            => await this._ProctoringScheduleDAO.UpdateAsync(ProctoringSchedule);
+        
 
         public async Task DeleteAsync(string id)
         {

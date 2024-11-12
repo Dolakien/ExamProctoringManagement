@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
 using ExamProctoringManagement.Service.Usecases;
 using Microsoft.AspNetCore.Http;
@@ -35,14 +36,14 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Subject>> CreateSubject([FromBody] Subject Subject)
+        public async Task<ActionResult<Subject>> CreateSubject([FromBody] SubjectDto Subject)
         {
             var createdSubject = await _SubjectService.CreateSubjectAsync(Subject);
-            return CreatedAtAction(nameof(GetSubject), new { id = createdSubject.SubjectId }, createdSubject);
+            return Ok(createdSubject);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSubject(string id, [FromBody] Subject Subject)
+        public async Task<IActionResult> UpdateSubject(string id, [FromBody] SubjectDto Subject)
         {
             if (id != Subject.SubjectId)
             {

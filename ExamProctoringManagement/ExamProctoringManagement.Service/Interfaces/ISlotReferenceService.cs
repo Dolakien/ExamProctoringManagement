@@ -12,8 +12,8 @@ namespace ExamProctoringManagement.Service.Interfaces
     {
         Task<SlotReference> GetSlotReferenceByIdAsync(string id);
         Task<IEnumerable<SlotReference>> GetAllSlotReferencesAsync();
-        Task<SlotReference> CreateSlotReferenceAsync(SlotReference slotReference);
-        Task UpdateSlotReferenceAsync(SlotReference slotReference);
+        Task<string> CreateSlotReferenceAsync(SlotReferenceDTO slotReference);
+        Task<string> UpdateSlotReferenceAsync(SlotReferenceDTO slotReference);
         Task DeleteSlotReferenceAsync(string id);
         Task<IEnumerable<SlotReferenceWithRoomDto>> GetSlotReferencesWithRoomAsync();
         Task<IEnumerable<SlotReference>> GetSlotReferencesBySlotIdAsync(string slotId);

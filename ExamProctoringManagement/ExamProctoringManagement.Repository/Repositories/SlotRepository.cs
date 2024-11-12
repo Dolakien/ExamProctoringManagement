@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.DAO;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.DAO;
 using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
 using System;
@@ -28,15 +29,13 @@ namespace ExamProctoringManagement.Repository.Repositories
             return await _SlotDAO.GetAllAsync();
         }
 
-        public async Task CreateAsync(Slot Slot)
-        {
-            await _SlotDAO.CreateAsync(Slot);
-        }
+        public async Task<string> CreateAsync(SlotDTO Slot)
+            => await this._SlotDAO.CreateAsync(Slot);
+        
 
-        public async Task UpdateAsync(Slot Slot)
-        {
-            await _SlotDAO.UpdateAsync(Slot);
-        }
+        public async Task<string> UpdateAsync(SlotDTO Slot)
+            => await this._SlotDAO.UpdateAsync(Slot);
+        
 
         public async Task DeleteAsync(string id)
         {

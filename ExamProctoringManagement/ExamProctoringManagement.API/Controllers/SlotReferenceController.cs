@@ -35,7 +35,7 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<SlotReference>> CreateSlotReference([FromBody] SlotReference SlotReference)
+        public async Task<ActionResult<SlotReference>> CreateSlotReference([FromBody] SlotReferenceDTO SlotReference)
         {
             if (SlotReference.SlotId == null)
             {
@@ -47,11 +47,11 @@ namespace ExamProctoringManagement.API.Controllers
                 return BadRequest("Only RoomId or GroupId exists.");
             }
             var createdSlotReference = await _SlotReferenceService.CreateSlotReferenceAsync(SlotReference);
-            return CreatedAtAction(nameof(GetSlotReference), new { id = createdSlotReference.SlotReferenceId }, createdSlotReference);
+            return Ok(createdSlotReference);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSlotReference(string id, [FromBody] SlotReference SlotReference)
+        public async Task<IActionResult> UpdateSlotReference(string id, [FromBody] SlotReferenceDTO SlotReference)
         {
             if (id != SlotReference.SlotReferenceId)
             {
