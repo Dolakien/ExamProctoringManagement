@@ -13,7 +13,7 @@ namespace ExamProctoringManagement.Repository.Interfaces
         Task<Semester> GetByIdAsync(string id);
         Task<IEnumerable<Semester>> GetAllAsync();
         Task<Semester> CreateAsync(SemesterCreateDto semesterCreateDto);
-        Task UpdateAsync(Semester semester);
+        Task<Semester> UpdateAsync(SemesterUpdateDto semesterUpdateDto);
         Task DeleteAsync(string id);
     }
 }

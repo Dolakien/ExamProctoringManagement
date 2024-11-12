@@ -37,26 +37,26 @@ namespace ExamProctoringManagement.API.Controllers
             return Ok(groups);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Group>> CreateGroup([FromBody] Group group)
-        {
-            var createdGroup = await _groupService.CreateGroupAsync(group);
-            return CreatedAtAction(nameof(GetGroup), new { id = createdGroup.GroupId }, createdGroup);
-        }
+        //[HttpPost]
+        //public async Task<ActionResult<Group>> CreateGroup([FromBody] Group group)
+        //{
+        //    var createdGroup = await _groupService.CreateGroupAsync(group);
+        //    return CreatedAtAction(nameof(GetGroup), new { id = createdGroup.GroupId }, createdGroup);
+        //}
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateGroup(string id, [FromBody] Group group)
-        {
-            if (id != group.GroupId)
-            {
-                return BadRequest();
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateGroup(string id, [FromBody] Group group)
+        //{
+        //    if (id != group.GroupId)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            await _groupService.UpdateGroupAsync(group);
-            return NoContent();
-        }
+        //    await _groupService.UpdateGroupAsync(group);
+        //    return NoContent();
+        //}
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteGroup(string id)
         {
             await _groupService.DeleteGroupAsync(id);

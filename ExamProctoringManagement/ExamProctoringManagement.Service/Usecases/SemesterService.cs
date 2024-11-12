@@ -35,9 +35,9 @@ namespace ExamProctoringManagement.Service.Usecases
             return Semester;
         }
 
-        public async Task UpdateSemesterAsync(Semester Semester)
+        public async Task<Semester> UpdateSemesterAsync(SemesterUpdateDto Semester)
         {
-            await _SemesterRepository.UpdateAsync(Semester);
+            return await _SemesterRepository.UpdateAsync(Semester);
         }
 
         public async Task DeleteSemesterAsync(string id)

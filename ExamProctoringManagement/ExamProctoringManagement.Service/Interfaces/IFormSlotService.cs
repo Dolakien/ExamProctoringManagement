@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace ExamProctoringManagement.Service.Interfaces
         Task<FormSlot> GetFormSlotByIdAsync(string id);
         Task<IEnumerable<FormSlot>> GetAllFormSlotsAsync();
         Task<FormSlot> CreateFormSlotAsync(FormSlot formSlot);
-        Task UpdateFormSlotAsync(FormSlot formSlot);
+        Task<FormSlot> UpdateFormSlotAsync(FormSlotUpdateDto formSlot);
         Task DeleteFormSlotAsync(string id);
     }
 }

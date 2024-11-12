@@ -1,5 +1,8 @@
-﻿using ExamProctoringManagement.DAO;
+﻿using AutoMapper;
+using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.DAO;
 using ExamProctoringManagement.Data.Models;
+using ExamProctoringManagement.Repository.Exceptions;
 using ExamProctoringManagement.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,10 +15,14 @@ namespace ExamProctoringManagement.Repository.Repositories
     public class ReportRepository : IReportRepository
     {
         private readonly ReportDAO _ReportDAO;
+        private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public ReportRepository(ReportDAO ReportDAO)
+        public ReportRepository(ReportDAO ReportDAO, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _ReportDAO = ReportDAO;
+            _uow = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<Report> GetByIdAsync(string id)
@@ -33,9 +40,10 @@ namespace ExamProctoringManagement.Repository.Repositories
             await _ReportDAO.CreateAsync(Report);
         }
 
-        public async Task UpdateAsync(Report Report)
+        public async Task<Report> UpdateAsync(Report Report)
         {
-            await _ReportDAO.UpdateAsync(Report);
+            await _uow.ReportDAO.UpdateAsync(Report);
+            return Report;
         }
 
         public async Task DeleteAsync(string id)

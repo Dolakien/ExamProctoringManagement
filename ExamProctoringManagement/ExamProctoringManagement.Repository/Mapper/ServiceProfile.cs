@@ -19,8 +19,10 @@ namespace ExamProctoringManagement.Repository.Mapper
         {
             CreateMap<User, UserDto>();
             CreateMap<UpdateUser, User>().ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName));
-
-
+            CreateMap<SemesterUpdateDto, Semester>().ForMember(dest => dest.SemesterName, opt => opt.MapFrom(src => src.SemesterName));
+            CreateMap<ReportUpdateDto, Report>().ForMember(dest => dest.ReportId, opt => opt.MapFrom(src => src.ReportId));
+            CreateMap<FormSlotUpdateDto, FormSlot>().ForMember(dest => dest.FormSlotId, opt => opt.MapFrom(src => src.FormSlotId));
+            CreateMap<RegisFormUpdateDto, RegistrationForm>().ForMember(dest => dest.FormId, opt => opt.MapFrom(src => src.FormId));
 
 
 

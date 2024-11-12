@@ -1,6 +1,9 @@
-﻿using ExamProctoringManagement.Contract.DTOs;
+﻿using ExamProctoringManagement.Contract.Common;
+using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Contract.Payloads.Response;
 using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
+using ExamProctoringManagement.Service.Usecases;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,32 +36,27 @@ namespace ExamProctoringManagement.API.Controllers
             return Ok(Semesters);
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<ActionResult<Semester>> CreateSemester([FromBody] SemesterCreateDto Semester)
         {
             var createdSemester = await _SemesterService.CreateSemesterAsync(Semester);
             return CreatedAtAction(nameof(GetSemester), new { id = createdSemester.SemesterId }, createdSemester);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSemester(string id, [FromBody] SemesterUpdateDto Semester)
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateSemester([FromBody] SemesterUpdateDto Semester)
         {
-            var semester = await _SemesterService.GetSemesterByIdAsync(id);
-            if (id != semester.SemesterId)
-            {
-                return BadRequest();
-            }
-
-            semester.SemesterName = Semester.SemesterName;
-            semester.FromDate = Semester.FromDate;
-            semester.ToDate = Semester.ToDate;
-            semester.Status = Semester.Status;
-
-            await _SemesterService.UpdateSemesterAsync(semester);
-            return NoContent();
+            var response = await _SemesterService.UpdateSemesterAsync(Semester);
+            if (response != null)
+                return Ok(BaseResponse.Success(
+                     Const.SUCCESS_UPDATE_CODE,
+                     Const.SUCCESS_UPDATE_MSG,
+                     "Semester is Updated successfully"
+                 ));
+            return BadRequest(BaseResponse.Failure(Const.FAIL_CODE, Const.FAIL_UPDATE_MSG));
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteSemester(string id)
         {
             await _SemesterService.DeleteSemesterAsync(id);

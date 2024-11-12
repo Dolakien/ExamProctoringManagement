@@ -13,7 +13,7 @@ namespace ExamProctoringManagement.Service.Interfaces
         Task<Semester> GetSemesterByIdAsync(string id);
         Task<IEnumerable<Semester>> GetAllSemestersAsync();
         Task<SemesterCreateDto> CreateSemesterAsync(SemesterCreateDto Semester);
-        Task UpdateSemesterAsync(Semester Semester);
+        Task<Semester> UpdateSemesterAsync(SemesterUpdateDto Semester);
         Task DeleteSemesterAsync(string id);
     }
 }

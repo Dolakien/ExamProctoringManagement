@@ -33,26 +33,26 @@ namespace ExamProctoringManagement.API.Controllers
             return Ok(GroupRooms);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<GroupRoom>> CreateGroupRoom([FromBody] GroupRoom GroupRoom)
-        {
-            var createdGroupRoom = await _GroupRoomService.CreateGroupRoomAsync(GroupRoom);
-            return CreatedAtAction(nameof(GetGroupRoom), new { id = createdGroupRoom.GroupRoomId }, createdGroupRoom);
-        }
+        //[HttpPost]
+        //public async Task<ActionResult<GroupRoom>> CreateGroupRoom([FromBody] GroupRoom GroupRoom)
+        //{
+        //    var createdGroupRoom = await _GroupRoomService.CreateGroupRoomAsync(GroupRoom);
+        //    return CreatedAtAction(nameof(GetGroupRoom), new { id = createdGroupRoom.GroupRoomId }, createdGroupRoom);
+        //}
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateGroupRoom(string id, [FromBody] GroupRoom GroupRoom)
-        {
-            if (id != GroupRoom.GroupRoomId)
-            {
-                return BadRequest();
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateGroupRoom(string id, [FromBody] GroupRoom GroupRoom)
+        //{
+        //    if (id != GroupRoom.GroupRoomId)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            await _GroupRoomService.UpdateGroupRoomAsync(GroupRoom);
-            return NoContent();
-        }
+        //    await _GroupRoomService.UpdateGroupRoomAsync(GroupRoom);
+        //    return NoContent();
+        //}
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteGroupRoom(string id)
         {
             await _GroupRoomService.DeleteGroupRoomAsync(id);

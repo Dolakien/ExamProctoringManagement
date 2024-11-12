@@ -73,9 +73,9 @@ namespace ExamProctoringManagement.Service.Usecases
             return dto;
         }
 
-        public async Task UpdateRegistrationFormAsync(RegistrationForm RegistrationForm)
+        public async Task<RegistrationForm> UpdateRegistrationFormAsync(RegisFormUpdateDto RegistrationForm)
         {
-            await _RegistrationFormRepository.UpdateAsync(RegistrationForm);
+            return await _RegistrationFormRepository.UpdateAsync(RegistrationForm);
         }
 
         public async Task DeleteRegistrationFormAsync(string id)

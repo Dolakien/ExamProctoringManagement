@@ -6,15 +6,9 @@ using System.Threading.Tasks;
 
 namespace ExamProctoringManagement.Contract.DTOs
 {
-    public class SemesterUpdateDto
+    public class FormSlotUpdateDto
     {
-        public string SemesterId { get; set; }
-
-        public string SemesterName { get; set; }
-
-        public DateTime? FromDate { get; set; }
-
-        public DateTime? ToDate { get; set; }
+        public string FormSlotId { get; set; }
 
         public bool? Status { get; set; }
     }
