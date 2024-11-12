@@ -13,6 +13,8 @@ namespace ExamProctoringManagement.Contract.Payloads.Request.UsersRequest
         public string Address { get; set; }
         public bool Gender { get; set; }
         public string Phone { get; set; }
+        public int roleID {  get; set; }
+        public bool status {  get; set; }
         public DateTime? Dob { get; set; }
     }
 }
