@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
 using ExamProctoringManagement.Repository.Repositories;
 using ExamProctoringManagement.Service.Interfaces;
@@ -29,16 +30,12 @@ namespace ExamProctoringManagement.Service.Usecases
             return await _examRepository.GetAllAsync();
         }
 
-        public async Task<Exam> CreateExamAsync(Exam exam)
-        {
-            await _examRepository.CreateAsync(exam);
-            return exam;
-        }
+        public async Task<string> CreateExamAsync(ExamDTO exam)
+            => await this._examRepository.CreateAsync(exam);
 
-        public async Task UpdateExamAsync(Exam exam)
-        {
-            await _examRepository.UpdateAsync(exam);
-        }
+
+        public async Task<string> UpdateExamAsync(ExamDTO exam)
+            => await this._examRepository.UpdateAsync(exam);
 
         public async Task DeleteExamAsync(string id)
         {

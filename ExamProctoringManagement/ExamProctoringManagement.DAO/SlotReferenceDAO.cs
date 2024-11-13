@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ExamProctoringManagement.Contract.DTOs;
 using ExamProctoringManagement.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,16 +27,34 @@ namespace ExamProctoringManagement.DAO
             return await _context.SlotReferences.ToListAsync();
         }
 
-        public async Task CreateAsync(SlotReference slotReference)
+        public async Task<string> CreateAsync(SlotReferenceDTO slotReference)
         {
-            await _context.SlotReferences.AddAsync(slotReference);
-            await _context.SaveChangesAsync();
+            var checker = await this._context.SlotReferences.FirstOrDefaultAsync(x => x.SlotReferenceId == slotReference.SlotReferenceId);
+            if (checker != null)
+                return "failed";
+            var temp = new SlotReference()
+            {
+                SlotReferenceId = "SlotReference" + Guid.NewGuid().ToString().Substring(0, 5),
+                SlotId = slotReference.SlotId,
+                RoomId = slotReference.RoomId,
+                GroupId = slotReference.GroupId,
+            };
+            await this._context.SlotReferences.AddAsync(temp);
+            await this._context.SaveChangesAsync();
+            return "Success";
         }
 
-        public async Task UpdateAsync(SlotReference slotReference)
+        public async Task<string> UpdateAsync(SlotReferenceDTO slotReference)
         {
-            _context.SlotReferences.Update(slotReference);
+            var checker = await this._context.SlotReferences.FirstOrDefaultAsync(x => x.SlotReferenceId == slotReference.SlotReferenceId);
+            if (checker == null)
+                return "failed";
+            checker.SlotId = slotReference.SlotId ?? checker.SlotId;
+            checker.RoomId = slotReference.RoomId ?? checker.RoomId;
+            checker.GroupId = slotReference.GroupId ?? checker.GroupId;
+            this._context.SlotReferences.Update(checker);
             await _context.SaveChangesAsync();
+            return "Success";
         }
 
         public async Task DeleteAsync(string id)

@@ -35,21 +35,21 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProctoringSchedule>> CreateProctoringSchedule([FromBody] ProctoringSchedule ProctoringSchedule)
+        public async Task<ActionResult<ProctoringSchedule>> CreateProctoringSchedule([FromBody] ProctoringScheduleDTO ProctoringSchedule)
         {
-            var createdProctoringSchedule = await _ProctoringScheduleService.CreateProctoringScheduleAsync(ProctoringSchedule);
-            return CreatedAtAction(nameof(GetProctoringSchedule), new { id = createdProctoringSchedule.ScheduleId }, createdProctoringSchedule);
+            var createdProctoringSchedule = await this._ProctoringScheduleService.CreateProctoringScheduleAsync(ProctoringSchedule);
+            return Ok(createdProctoringSchedule);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProctoringSchedule(string id, [FromBody] ProctoringSchedule ProctoringSchedule)
+        public async Task<IActionResult> UpdateProctoringSchedule(string id, [FromBody] ProctoringScheduleDTO ProctoringSchedule)
         {
             if (id != ProctoringSchedule.ScheduleId)
             {
                 return BadRequest();
             }
 
-            await _ProctoringScheduleService.UpdateProctoringScheduleAsync(ProctoringSchedule);
+            await this._ProctoringScheduleService.UpdateProctoringScheduleAsync(ProctoringSchedule);
             return NoContent();
         }
 

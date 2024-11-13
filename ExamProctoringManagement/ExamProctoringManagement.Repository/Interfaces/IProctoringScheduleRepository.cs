@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace ExamProctoringManagement.Repository.Interfaces
     {
         Task<ProctoringSchedule> GetByIdAsync(string id);
         Task<IEnumerable<ProctoringSchedule>> GetAllAsync();
-        Task CreateAsync(ProctoringSchedule proctoringSchedule);
-        Task UpdateAsync(ProctoringSchedule proctoringSchedule);
+        Task<string> CreateAsync(ProctoringScheduleDTO proctoringSchedule);
+        Task<string> UpdateAsync(ProctoringScheduleDTO proctoringSchedule);
         Task DeleteAsync(string id);
         Task<IEnumerable<ProctoringSchedule>> GetByUserIdAsync(string userId);
         Task<IEnumerable<ProctoringSchedule>> GetByUserIdAndIsFinishedAsync(string userId, bool f);

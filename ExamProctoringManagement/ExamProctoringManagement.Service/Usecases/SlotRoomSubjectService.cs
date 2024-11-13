@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
 using ExamProctoringManagement.Repository.Repositories;
 using ExamProctoringManagement.Service.Interfaces;
@@ -29,16 +30,12 @@ namespace ExamProctoringManagement.Service.Usecases
             return await _SlotRoomSubjectRepository.GetAllAsync();
         }
 
-        public async Task<SlotRoomSubject> CreateSlotRoomSubjectAsync(SlotRoomSubject SlotRoomSubject)
-        {
-            await _SlotRoomSubjectRepository.CreateAsync(SlotRoomSubject);
-            return SlotRoomSubject;
-        }
+        public async Task<string> CreateSlotRoomSubjectAsync(SlotRoomSubjectDTO SlotRoomSubject)
+            => await this._SlotRoomSubjectRepository.CreateAsync(SlotRoomSubject);
 
-        public async Task UpdateSlotRoomSubjectAsync(SlotRoomSubject SlotRoomSubject)
-        {
-            await _SlotRoomSubjectRepository.UpdateAsync(SlotRoomSubject);
-        }
+
+        public async Task<string> UpdateSlotRoomSubjectAsync(SlotRoomSubjectDTO SlotRoomSubject)
+            => await this._SlotRoomSubjectRepository.UpdateAsync(SlotRoomSubject);
 
         public async Task DeleteSlotRoomSubjectAsync(string id)
         {
