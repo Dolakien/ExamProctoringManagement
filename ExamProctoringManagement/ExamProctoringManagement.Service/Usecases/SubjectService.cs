@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
 using ExamProctoringManagement.Repository.Repositories;
 using ExamProctoringManagement.Service.Interfaces;
@@ -29,16 +30,12 @@ namespace ExamProctoringManagement.Service.Usecases
             return await _SubjectRepository.GetAllAsync();
         }
 
-        public async Task<Subject> CreateSubjectAsync(Subject Subject)
-        {
-            await _SubjectRepository.CreateAsync(Subject);
-            return Subject;
-        }
+        public async Task<string> CreateSubjectAsync(SubjectDto Subject)
+            => await this._SubjectRepository.CreateAsync(Subject);
 
-        public async Task UpdateSubjectAsync(Subject Subject)
-        {
-            await _SubjectRepository.UpdateAsync(Subject);
-        }
+
+        public async Task<string> UpdateSubjectAsync(SubjectDto Subject)
+            => await this._SubjectRepository.UpdateAsync(Subject);
 
         public async Task DeleteSubjectAsync(string id)
         {

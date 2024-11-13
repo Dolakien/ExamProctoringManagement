@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
 using ExamProctoringManagement.Service.Usecases;
 using Microsoft.AspNetCore.Http;
@@ -35,14 +36,14 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<SlotRoomSubject>> CreateSlotRoomSubject([FromBody] SlotRoomSubject SlotRoomSubject)
+        public async Task<ActionResult<SlotRoomSubject>> CreateSlotRoomSubject([FromBody] SlotRoomSubjectDTO SlotRoomSubject)
         {
             var createdSlotRoomSubject = await _SlotRoomSubjectService.CreateSlotRoomSubjectAsync(SlotRoomSubject);
-            return CreatedAtAction(nameof(GetSlotRoomSubject), new { id = createdSlotRoomSubject.SlotRoomSubjectId }, createdSlotRoomSubject);
+            return Ok(createdSlotRoomSubject);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSlotRoomSubject(string id, [FromBody]SlotRoomSubject SlotRoomSubject)
+        public async Task<IActionResult> UpdateSlotRoomSubject(string id, [FromBody] SlotRoomSubjectDTO SlotRoomSubject)
         {
             if (id != SlotRoomSubject.SlotRoomSubjectId)
             {

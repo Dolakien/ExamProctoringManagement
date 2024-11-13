@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ExamProctoringManagement.Contract.DTOs;
 using ExamProctoringManagement.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,16 +27,34 @@ namespace ExamProctoringManagement.DAO
             return await _context.SlotRoomSubjects.ToListAsync();
         }
 
-        public async Task CreateAsync(SlotRoomSubject slotRoomSubject)
+        public async Task<string> CreateAsync(SlotRoomSubjectDTO slotRoomSubject)
         {
-            await _context.SlotRoomSubjects.AddAsync(slotRoomSubject);
-            await _context.SaveChangesAsync();
+            var checker = await this._context.SlotRoomSubjects.FirstOrDefaultAsync(x => x.SlotReferenceId == slotRoomSubject.SlotReferenceId);
+            if (checker != null)
+                return "failed";
+            var temp = new SlotRoomSubject()
+            {
+                SlotRoomSubjectId = "SlotRoomSubject" + Guid.NewGuid().ToString().Substring(0, 5),
+                SlotReferenceId = slotRoomSubject.SlotReferenceId,
+                SubjectId = slotRoomSubject.SubjectId,
+                Status = true,
+            };
+            await this._context.SlotRoomSubjects.AddAsync(checker);
+            await this._context.SaveChangesAsync();
+            return "Success";
         }
 
-        public async Task UpdateAsync(SlotRoomSubject slotRoomSubject)
+        public async Task<string> UpdateAsync(SlotRoomSubjectDTO slotRoomSubject)
         {
-            _context.SlotRoomSubjects.Update(slotRoomSubject);
-            await _context.SaveChangesAsync();
+            var checker = await this._context.SlotRoomSubjects.FirstOrDefaultAsync(x => x.SlotReferenceId == slotRoomSubject.SlotReferenceId);
+            if (checker == null)
+                return "failed";
+            checker.SlotReferenceId = slotRoomSubject.SlotReferenceId ?? checker.SlotReferenceId;
+            checker.SubjectId = slotRoomSubject.SubjectId ?? checker.SubjectId;
+            checker.Status = slotRoomSubject.Status ?? checker.Status;
+            this._context.SlotRoomSubjects.Update(checker);
+            await this._context.SaveChangesAsync();
+            return "Success";
         }
 
         public async Task DeleteAsync(string id)

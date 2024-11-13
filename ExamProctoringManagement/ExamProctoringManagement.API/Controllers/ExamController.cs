@@ -1,4 +1,6 @@
-﻿using ExamProctoringManagement.Data.Models;
+﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.DAO;
+using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,14 +35,14 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Exam>> CreateExam([FromBody] Exam exam)
+        public async Task<ActionResult<Exam>> CreateExam([FromBody] ExamDTO exam)
         {
             var createdExam = await _examService.CreateExamAsync(exam);
-            return CreatedAtAction(nameof(GetExam), new { id = createdExam.ExamId }, createdExam);
+            return Ok(createdExam);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateExam(string id, [FromBody] Exam exam)
+        public async Task<IActionResult> UpdateExam(string id, [FromBody] ExamDTO exam)
         {
             if (id != exam.ExamId)
             {
