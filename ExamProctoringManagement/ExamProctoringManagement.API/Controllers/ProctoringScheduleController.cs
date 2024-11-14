@@ -42,7 +42,7 @@ namespace ExamProctoringManagement.API.Controllers
             return Ok(createdProctoringSchedule);
         }
 
-        [HttpPut]
+        [HttpPut("update")]
         public async Task<IActionResult> UpdateProctoringSchedule([FromBody] ProctoringScheduleDTO ProctoringSchedule)
         {
            var response = await this._ProctoringScheduleService.UpdateProctoringScheduleAsync(ProctoringSchedule);

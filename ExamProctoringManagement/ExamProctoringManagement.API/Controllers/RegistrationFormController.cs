@@ -14,11 +14,15 @@ namespace ExamProctoringManagement.API.Controllers
     {
         private readonly IRegistrationFormService _RegistrationFormService;
         private readonly ISlotService _SlotService;
+        private readonly IProctoringScheduleService _ProctoringScheduleService;
+        private readonly ISlotReferenceService _SlotReferenceService;
 
-        public RegistrationFormController(IRegistrationFormService RegistrationFormService, ISlotService SlotService)
+        public RegistrationFormController(IRegistrationFormService RegistrationFormService, ISlotService SlotService, IProctoringScheduleService proctoringScheduleService, ISlotReferenceService slotReferenceService)
         {
             _RegistrationFormService = RegistrationFormService;
             _SlotService = SlotService;
+            _ProctoringScheduleService = proctoringScheduleService;
+            _SlotReferenceService = slotReferenceService;
         }
 
         [HttpGet("{id}")]
@@ -42,22 +46,14 @@ namespace ExamProctoringManagement.API.Controllers
         [HttpPost("create")]
         public async Task<ActionResult<GetRegisFormWithSlotsDto>> CreateRegistrationForm([FromBody] CreateRegistrationFormDto createRegistrationFormDto)
         {
-            if (createRegistrationFormDto.FormSlotIds.Count() != createRegistrationFormDto.SlotIds.Count()) 
-            { 
-                return BadRequest();
-            }
-
-            var slots = await _SlotService.GetAvailableSlotsByExamId(createRegistrationFormDto.ExamId);
-            foreach (string slotId in createRegistrationFormDto.SlotIds)
-            {
-                if (!slots.Any(s => s.SlotId == slotId))
-                {
-                    return BadRequest("Slot đã chọn không có sẵn");
-                }
-            }
-
             var createdRegistrationForm = await _RegistrationFormService.CreateRegistrationFormAsync(createRegistrationFormDto);
-            return CreatedAtAction(nameof(GetRegistrationForm), new { id = createdRegistrationForm.FormId }, createdRegistrationForm);
+            if (createdRegistrationForm != null)
+                return Ok(BaseResponse.Success(
+                     Const.SUCCESS_CREATE_CODE,
+                     Const.SUCCESS_CREATE_MSG,
+                     createdRegistrationForm
+                 ));
+            return BadRequest(BaseResponse.Failure(Const.FAIL_CODE, Const.FAIL_CREATE_MSG));
         }
 
         [HttpPut("update")]
@@ -77,7 +73,7 @@ namespace ExamProctoringManagement.API.Controllers
         public async Task<IActionResult> DeleteRegistrationForm(string id)
         {
             await _RegistrationFormService.DeleteRegistrationFormAsync(id);
-            return NoContent();
+            return Ok();
         }
 
         [HttpGet("slots")]

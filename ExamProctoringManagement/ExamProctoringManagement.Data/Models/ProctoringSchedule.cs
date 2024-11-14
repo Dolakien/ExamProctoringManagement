@@ -18,6 +18,7 @@ public partial class ProctoringSchedule
     public bool? Status { get; set; }
 
     public bool? IsFinished { get; set; }
+    public int? Count { get; set; }
 
     public virtual SlotReference SlotReference { get; set; }
 

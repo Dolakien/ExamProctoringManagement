@@ -69,5 +69,8 @@ namespace ExamProctoringManagement.Repository.Repositories
             }
             return false;
         }
+
+        public async Task CountProctoringAsync(string id)
+            => await _ProctoringScheduleDAO.CountProctoringAsync(id);
     }
 }

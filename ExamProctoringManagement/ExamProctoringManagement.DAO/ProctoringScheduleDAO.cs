@@ -19,8 +19,9 @@ namespace ExamProctoringManagement.DAO
 
         public async Task<ProctoringSchedule> GetByIdAsync(string id)
         {
-            return await _context.ProctoringSchedules.FindAsync(id);
+            return await _context.ProctoringSchedules.FirstOrDefaultAsync(p => p.ScheduleId == id);
         }
+
 
         public async Task<IEnumerable<ProctoringSchedule>> GetAllAsync()
         {
@@ -39,6 +40,7 @@ namespace ExamProctoringManagement.DAO
                 UserId = proctoringSchedule.UserId,
                 ProctorType = proctoringSchedule.ProctorType,
                 SlotReferenceId = proctoringSchedule.SlotReferenceId,
+                Count = proctoringSchedule.Count,
                 Status = true,
             };
             await this._context.ProctoringSchedules.AddAsync(temp);
@@ -70,5 +72,16 @@ namespace ExamProctoringManagement.DAO
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task CountProctoringAsync(string id)
+        {
+            var proctoring = await _context.ProctoringSchedules.FindAsync(id);
+
+            if (proctoring != null && proctoring.Count > 0)
+            {
+                proctoring.Count--; // Giảm Count đi 1
+                await _context.SaveChangesAsync(); // Lưu thay đổi vào database
+            }
+        }
+
     }
 }
