@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ExamProctoringManagement.Contract.DTOs;
 using ExamProctoringManagement.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,14 @@ namespace ExamProctoringManagement.DAO
         {
             return await _context.RegistrationForms.FindAsync(id);
         }
+
+        public async Task<List<RegistrationForm>> GetByUserIdAsync(string userId)
+        {
+            return await _context.RegistrationForms
+                                 .Where(r => r.UserId == userId)
+                                 .ToListAsync();
+        }
+
 
         public async Task<IEnumerable<RegistrationForm>> GetAllAsync()
         {
@@ -45,6 +54,17 @@ namespace ExamProctoringManagement.DAO
             {
                 _context.RegistrationForms.Remove(registrationForm);
                 await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task SwapProctoringAsync(SwapProctoring swapProctoring)
+        {
+            var formRegis = await _context.RegistrationForms.FindAsync(swapProctoring.formId);
+
+            if (formRegis != null)
+            {
+                formRegis.ScheduleID = swapProctoring.proctoringId;
+                await _context.SaveChangesAsync(); // Lưu thay đổi vào database
             }
         }
     }

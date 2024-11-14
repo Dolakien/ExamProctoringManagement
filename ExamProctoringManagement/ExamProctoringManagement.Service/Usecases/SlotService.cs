@@ -1,4 +1,5 @@
 ﻿using ExamProctoringManagement.Contract.DTOs;
+using ExamProctoringManagement.DAO;
 using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
 using ExamProctoringManagement.Repository.Repositories;
@@ -38,15 +39,67 @@ namespace ExamProctoringManagement.Service.Usecases
             return await _SlotRepository.GetAllAsync();
         }
 
-        public async Task<Slot> CreateSlotAsync(Slot Slot)
+        public async Task<Slot> CreateSlotAsync(SlotDTO slotDTO)
         {
-            await _SlotRepository.CreateAsync(Slot);
-            return Slot;
+            // Chuyển đổi chuỗi `Start` và `End` thành `TimeOnly`
+            if (!TimeOnly.TryParse(slotDTO.Start, out TimeOnly startTime))
+            {
+                throw new ArgumentException("Thời gian bắt đầu không hợp lệ", nameof(slotDTO.Start));
+            }
+
+            if (!TimeOnly.TryParse(slotDTO.End, out TimeOnly endTime))
+            {
+                throw new ArgumentException("Thời gian kết thúc không hợp lệ", nameof(slotDTO.End));
+            }
+
+            // Tạo đối tượng Slot mới
+            Slot slot = new Slot
+            {
+                SlotId = "Slot" + Guid.NewGuid().ToString().Substring(0, 5),
+                Date = slotDTO.Date,
+                Start = startTime,
+                End = endTime,
+                Status = true,
+                ExamId = slotDTO.ExamId
+            };
+
+            // Lưu vào kho dữ liệu
+            await _SlotRepository.CreateAsync(slot);
+            return slot;
         }
 
-        public async Task UpdateSlotAsync(Slot Slot)
+
+        public async Task<string> UpdateSlotAsync(UpdateSlotRequest updateSlot)
         {
-            await _SlotRepository.UpdateAsync(Slot);
+            // Chuyển đổi chuỗi `Start` và `End` thành `TimeOnly`
+            if (!TimeOnly.TryParse(updateSlot.Start, out TimeOnly startTime))
+            {
+                throw new ArgumentException("Thời gian bắt đầu không hợp lệ", nameof(updateSlot.Start));
+            }
+
+            if (!TimeOnly.TryParse(updateSlot.End, out TimeOnly endTime))
+            {
+                throw new ArgumentException("Thời gian kết thúc không hợp lệ", nameof(updateSlot.End));
+            }
+
+            var slotResponse = await _SlotRepository.GetByIdAsync(updateSlot.SlotId);
+            if (slotResponse == null)
+            {
+                throw new Exception("Not found this Slot!");
+            }
+            // Tạo đối tượng Slot mới
+
+            slotResponse.SlotId = slotResponse.SlotId;
+            slotResponse.Date = updateSlot.Date;
+            slotResponse.Start = startTime;
+            slotResponse.End = endTime;
+            slotResponse.Status = true;
+            slotResponse.ExamId = updateSlot.ExamId;
+        
+
+            // Lưu vào kho dữ liệu
+            await _SlotRepository.UpdateAsync(slotResponse);
+            return "Update Successfully!";
         }
 
         public async Task DeleteSlotAsync(string id)

@@ -37,17 +37,17 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Slot>> CreateSlot([FromBody] Slot Slot)
+        public async Task<ActionResult<Slot>> CreateSlot([FromBody] SlotDTO slotDTO)
         {
-            var createdSlot = await _SlotService.CreateSlotAsync(Slot);
+            var createdSlot = await _SlotService.CreateSlotAsync(slotDTO);
             return CreatedAtAction(nameof(GetSlot), new { id = createdSlot.SlotId }, createdSlot);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateSlot([FromBody] Slot Slot)
+        public async Task<IActionResult> UpdateSlot([FromBody] UpdateSlotRequest slotDTO)
         {
-            await _SlotService.UpdateSlotAsync(Slot);
-            return Ok();
+            var response = await _SlotService.UpdateSlotAsync(slotDTO);
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]

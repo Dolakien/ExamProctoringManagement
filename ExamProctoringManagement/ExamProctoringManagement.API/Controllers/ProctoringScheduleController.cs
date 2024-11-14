@@ -1,4 +1,5 @@
 ﻿using Azure;
+using ExamProctoringManagement.API.Extensions;
 using ExamProctoringManagement.Contract.DTOs;
 using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
@@ -36,9 +37,10 @@ namespace ExamProctoringManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProctoringSchedule>> CreateProctoringSchedule([FromBody] ProctoringScheduleDTO ProctoringSchedule)
+        public async Task<ActionResult<ProctoringSchedule>> CreateProctoringSchedule([FromBody] CreateProctoringRequest proctoringRequest)
         {
-            var createdProctoringSchedule = await this._ProctoringScheduleService.CreateProctoringScheduleAsync(ProctoringSchedule);
+            var Id = User.GetID();
+            var createdProctoringSchedule = await this._ProctoringScheduleService.CreateProctoringScheduleAsync(proctoringRequest, Id);
             return Ok(createdProctoringSchedule);
         }
 
@@ -79,6 +81,13 @@ namespace ExamProctoringManagement.API.Controllers
                 return NotFound();
             }
             return ProctoringSchedule;
+        }
+
+        [HttpGet("proctoringSlot")]
+        public async Task<ActionResult<List<ProctoringSlotDTO>>> GetProctoringAndSlot()
+        {
+            var ProctoringSlot = await _ProctoringScheduleService.GetProctoringSlot();
+            return Ok(ProctoringSlot);
         }
     }
 }

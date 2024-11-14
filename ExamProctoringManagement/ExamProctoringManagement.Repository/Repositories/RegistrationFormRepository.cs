@@ -57,5 +57,13 @@ namespace ExamProctoringManagement.Repository.Repositories
         {
             await _RegistrationFormDAO.DeleteAsync(id);
         }
+
+        public async Task<List<RegistrationForm>> GetByUserIdAsync(string userId)
+            => await _RegistrationFormDAO.GetByUserIdAsync(userId);
+
+        public async Task SwapProctoringAsync(SwapProctoring swapProctoring)
+            => await _RegistrationFormDAO.SwapProctoringAsync(swapProctoring);
+        
+        
     }
 }

@@ -77,32 +77,6 @@ namespace ExamProctoringManagement.API.Controllers
                 }
             }
 
-            if (createGroupAndRoomsRequest.GroupRoomIds.Count() != createGroupAndRoomsRequest.RoomIds.Count())
-            {
-                return BadRequest("Số lượng GroupRoomIds và RoomIds không khớp.");
-            }
-
-            if (createGroupAndRoomsRequest.RoomIds.Count() > 3 || createGroupAndRoomsRequest.RoomIds.Count() == 0)
-            {
-                return BadRequest("Số lượng Room từ 1 đến 3.");
-            }
-
-            foreach (var existingGroup in groups)
-            {
-                var existingDto = await _groupService.GetGroupWithListRoomsAsync(existingGroup.GroupId);
-                dtos.Add(existingDto);
-            }
-
-            foreach (var oldDto in dtos)
-            {
-                var existingRoomIds = oldDto.rooms.Select(r => r.RoomId).ToList();
-                if (existingRoomIds.Count == createGroupAndRoomsRequest.RoomIds.Count &&
-                    !existingRoomIds.Except(createGroupAndRoomsRequest.RoomIds).Any())
-                {
-                    return BadRequest("Một Group với cùng danh sách Rooms đã tồn tại.");
-                }
-            }
-
             var createdGroup = await _groupService.CreateGroupAndGroupRoomAsync(createGroupAndRoomsRequest);
             var dto = await _groupService.GetGroupWithListRoomsAsync(createdGroup.GroupId);
             return CreatedAtAction(nameof(GetGroup), new { id = dto.groupId }, dto);

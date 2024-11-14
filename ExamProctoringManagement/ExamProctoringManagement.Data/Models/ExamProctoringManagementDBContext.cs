@@ -227,6 +227,9 @@ public partial class ExamProctoringManagementDBContext : DbContext
             entity.Property(e => e.UserId)
                 .HasMaxLength(20)
                 .HasColumnName("UserID");
+            entity.Property(e => e.ScheduleID)
+                 .HasMaxLength(36)
+                 .HasColumnName("ScheduleID");
 
             entity.HasOne(d => d.User).WithMany(p => p.RegistrationForms)
                 .HasForeignKey(d => d.UserId)

@@ -62,6 +62,9 @@ builder.Services.AddScoped<SlotReferenceDAO>();
 builder.Services.AddScoped<SlotRoomSubjectDAO>();
 builder.Services.AddScoped<SubjectDAO>();
 
+builder.Services.AddScoped<IProctoringScheduleService, ProctoringScheduleService>();
+builder.Services.AddHostedService<AutomaticService>();
+
 builder.Services.AddHttpsRedirection(options =>
 {
     options.HttpsPort = 443; // Hoặc cổng bạn đã cấu hình cho HTTPS

@@ -3,6 +3,7 @@ using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Repository.Interfaces;
 using ExamProctoringManagement.Repository.Repositories;
 using ExamProctoringManagement.Service.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +24,10 @@ namespace ExamProctoringManagement.Service.Usecases
         private readonly IGroupRepository _GroupRepository;
         private readonly IGroupRoomRepository _groupRoomRepository;
         private readonly IRoomRepository _RoomRepository;
+        private readonly IServiceProvider _serviceProvider;
 
-        public ProctoringScheduleService(IProctoringScheduleRepository ProctoringScheduleRepository, ISlotReferenceRepository slotReferenceRepository, ISlotRepository slotRepository, IExamRepository examRepository, ISemesterRepository semesterRepository, ISlotRoomSubjectRepository slotRoomSubjectRepository, ISubjectRepository subjectRepository, IGroupRepository groupRepository, IGroupRoomRepository groupRoomRepository, IRoomRepository roomRepository)
+
+        public ProctoringScheduleService(IProctoringScheduleRepository ProctoringScheduleRepository, ISlotReferenceRepository slotReferenceRepository, ISlotRepository slotRepository, IExamRepository examRepository, ISemesterRepository semesterRepository, ISlotRoomSubjectRepository slotRoomSubjectRepository, ISubjectRepository subjectRepository, IGroupRepository groupRepository, IGroupRoomRepository groupRoomRepository, IRoomRepository roomRepository, IServiceProvider serviceProvider)
         {
             _ProctoringScheduleRepository = ProctoringScheduleRepository;
             _SlotReferenceRepository = slotReferenceRepository;
@@ -36,6 +39,7 @@ namespace ExamProctoringManagement.Service.Usecases
             _GroupRepository = groupRepository;
             _groupRoomRepository = groupRoomRepository;
             _RoomRepository = roomRepository;
+            _serviceProvider = serviceProvider;
         }
 
         public async Task<ProctoringSchedule> GetProctoringScheduleByIdAsync(string id)
@@ -48,8 +52,8 @@ namespace ExamProctoringManagement.Service.Usecases
             return await _ProctoringScheduleRepository.GetAllAsync();
         }
 
-        public async Task<string> CreateProctoringScheduleAsync(ProctoringScheduleDTO ProctoringSchedule)
-            => await _ProctoringScheduleRepository.CreateAsync(ProctoringSchedule);
+        public async Task<string> CreateProctoringScheduleAsync(CreateProctoringRequest proctoringSchedule, string userId)
+            => await _ProctoringScheduleRepository.CreateAsync(proctoringSchedule, userId);
 
 
         public async Task<string> UpdateProctoringScheduleAsync(ProctoringScheduleDTO ProctoringSchedule)
@@ -143,5 +147,100 @@ namespace ExamProctoringManagement.Service.Usecases
 
         public async Task CountProctoringAsync(string id)
             => await _ProctoringScheduleRepository.CountProctoringAsync(id);
+
+        public async Task<List<ProctoringSlotDTO>> GetProctoringSlot()
+        {
+            // Lấy tất cả ProctoringSchedules có Status == true
+            var proctorings = await _ProctoringScheduleRepository.GetAllTrueStatus();
+
+            // Danh sách để lưu các đối tượng ProctoringSlotDTO
+            List<ProctoringSlotDTO> proctoringSlotDTOs = new List<ProctoringSlotDTO>();
+
+            // Lặp qua từng ProctoringSchedule
+            foreach (var proctoring in proctorings)
+            {
+                // Lấy thông tin ProctoringSchedule theo proctoringId
+                var proctoringDetail = await _ProctoringScheduleRepository.GetByIdAsync(proctoring.ScheduleId);
+
+                // Lấy thông tin SlotReference từ SlotReferenceRepository
+                var slotRefer = await _SlotReferenceRepository.GetByIdAsync(proctoringDetail.SlotReferenceId);
+
+                // Lấy thông tin Slot từ SlotRepository
+                var slot = await _SlotRepository.GetByIdAsync(slotRefer.SlotId);
+
+                // Tạo đối tượng ProctoringSlotDTO và thêm vào danh sách
+                ProctoringSlotDTO dto = new ProctoringSlotDTO()
+                {
+                    ProctoringId = proctoringDetail.ScheduleId,
+                    UserID = proctoringDetail.UserId,
+                    ProctorType = proctoringDetail.ProctorType,
+                    Date = slot.Date,
+                    StartDate = slot.Start,
+                    EndDate = slot.End,
+                    count = proctoringDetail.Count,
+                };
+
+                proctoringSlotDTOs.Add(dto);
+            }
+
+            // Trả về danh sách ProctoringSlotDTOs
+            return proctoringSlotDTOs;
+        }
+
+
+        public async Task ChangeAutomaticIsFinished()
+        {
+            var proctorings = await _ProctoringScheduleRepository.GetAllTrueStatus();
+            List<ProctoringSlotDTO> proctoringSlotDTOs = new List<ProctoringSlotDTO>();
+
+            foreach (var proctoring in proctorings)
+            {
+                // Lấy thông tin ProctoringSchedule theo proctoringId
+                var proctoringDetail = await _ProctoringScheduleRepository.GetByIdAsync(proctoring.ScheduleId);
+
+                // Lấy thông tin SlotReference từ SlotReferenceRepository
+                var slotRefer = await _SlotReferenceRepository.GetByIdAsync(proctoringDetail.SlotReferenceId);
+
+                // Lấy thông tin Slot từ SlotRepository
+                var slot = await _SlotRepository.GetByIdAsync(slotRefer.SlotId);
+
+                if(slot.Date > DateTime.MinValue)
+                {
+                    if (slot.Date < DateTime.UtcNow) {
+                        proctoringDetail.IsFinished = true;
+                        await _ProctoringScheduleRepository.UpdateProctoring(proctoringDetail); 
+                    }
+
+                }
+            }
+        }
+
+        public async Task ChangeAutomaticSlotStatus()
+        {
+            var slots = await _SlotRepository.GetAllAsync();
+            List<Slot> slots1 = new List<Slot>();
+
+            foreach (var slot in slots)
+            {
+                // Lấy thông tin Slot từ SlotRepository
+                var existedSlot = await _SlotRepository.GetByIdAsync(slot.SlotId);
+
+                if (existedSlot.Date > DateTime.MinValue && existedSlot.End.HasValue)
+                {
+                    // Lấy thời gian kết thúc của slot
+                    TimeOnly endTime = existedSlot.End.Value;
+                    DateTime endDateTime = existedSlot.Date.Value.Add(endTime.ToTimeSpan()); // Chuyển TimeOnly thành DateTime
+
+                    DateTime currentDateTime = DateTime.UtcNow; // Thời gian hiện tại (UTC)
+
+                    // So sánh thời gian kết thúc đã trôi qua 1 giây hay chưa
+                    if (currentDateTime > endDateTime)
+                    {
+                        existedSlot.Status = false; // Cập nhật trạng thái
+                        await _SlotRepository.UpdateAsync(existedSlot); // Lưu lại thay đổi
+                    }
+                }
+            }
+        }
     }
 }

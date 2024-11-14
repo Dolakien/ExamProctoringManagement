@@ -12,8 +12,8 @@ namespace ExamProctoringManagement.Service.Interfaces
     {
         Task<Slot> GetSlotByIdAsync(string id);
         Task<IEnumerable<Slot>> GetAllSlotsAsync();
-        Task<Slot> CreateSlotAsync(Slot Slot);
-        Task UpdateSlotAsync(Slot Slot);
+        Task<Slot> CreateSlotAsync(SlotDTO slotDTO);
+        Task<string> UpdateSlotAsync(UpdateSlotRequest updateSlot);
         Task DeleteSlotAsync(string id);
         Task<IEnumerable<Slot>> GetSlotsByExamIdAsync(string examId);
         Task<IEnumerable<Slot>> GetAvailableSlotsByExamId(string examId);
