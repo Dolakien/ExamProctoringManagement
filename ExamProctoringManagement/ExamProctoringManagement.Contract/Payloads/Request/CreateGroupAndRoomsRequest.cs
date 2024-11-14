@@ -9,8 +9,7 @@ namespace ExamProctoringManagement.Contract.Payloads.Request
 {
     public class CreateGroupAndRoomsRequest
     {
-        public Group Group { get; set; }
-        public List<string> GroupRoomIds { get; set; }
-        public List<string> RoomIds { get; set; }
+        public Group? Group { get; set; }
+        public string? RoomId { get; set; }
     }
 }

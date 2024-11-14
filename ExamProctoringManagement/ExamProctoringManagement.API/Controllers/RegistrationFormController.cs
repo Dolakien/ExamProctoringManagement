@@ -1,9 +1,11 @@
-﻿using ExamProctoringManagement.Contract.Common;
+﻿using ExamProctoringManagement.API.Extensions;
+using ExamProctoringManagement.Contract.Common;
 using ExamProctoringManagement.Contract.DTOs;
 using ExamProctoringManagement.Contract.Payloads.Response;
 using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
 using ExamProctoringManagement.Service.Usecases;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,10 +45,19 @@ namespace ExamProctoringManagement.API.Controllers
             return Ok(RegistrationForms);
         }
 
+        [HttpGet("registration_user")]
+        public async Task<ActionResult<IEnumerable<RegistrationForm>>> GetRegistrationFormByUserId()
+        {
+            var Id = User.GetID();
+            var RegistrationForms = await _RegistrationFormService.GetAllByUserIdAsync(Id);
+            return Ok(RegistrationForms);
+        }
+
         [HttpPost("create")]
         public async Task<ActionResult<GetRegisFormWithSlotsDto>> CreateRegistrationForm([FromBody] CreateRegistrationFormDto createRegistrationFormDto)
         {
-            var createdRegistrationForm = await _RegistrationFormService.CreateRegistrationFormAsync(createRegistrationFormDto);
+            var Id = User.GetID();
+            var createdRegistrationForm = await _RegistrationFormService.CreateRegistrationFormAsync(createRegistrationFormDto, Id);
             if (createdRegistrationForm != null)
                 return Ok(BaseResponse.Success(
                      Const.SUCCESS_CREATE_CODE,
@@ -54,6 +65,19 @@ namespace ExamProctoringManagement.API.Controllers
                      createdRegistrationForm
                  ));
             return BadRequest(BaseResponse.Failure(Const.FAIL_CODE, Const.FAIL_CREATE_MSG));
+        }
+
+        [HttpPut("swap")]
+        public async Task<IActionResult> SwapRegistrationForm([FromBody] SwapProctoring swapProctoring)
+        {
+            var swapRegistrationForm = await _RegistrationFormService.SwapProctoringAsync(swapProctoring);
+            if (swapRegistrationForm != null)
+                return Ok(BaseResponse.Success(
+                     Const.SUCCESS_UPDATE_CODE,
+                     Const.SUCCESS_UPDATE_MSG,
+                     swapRegistrationForm
+                 ));
+            return BadRequest(BaseResponse.Failure(Const.FAIL_CODE, Const.FAIL_UPDATE_MSG));
         }
 
         [HttpPut("update")]

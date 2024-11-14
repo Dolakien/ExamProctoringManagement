@@ -28,16 +28,21 @@ namespace ExamProctoringManagement.DAO
             return await _context.ProctoringSchedules.ToListAsync();
         }
 
-        public async Task<string> CreateAsync(ProctoringScheduleDTO proctoringSchedule)
+        public async Task<IEnumerable<ProctoringSchedule>> GetAllTrueStatus()
         {
-            var checker = await this._context.ProctoringSchedules.Where(x => x.ScheduleId.Equals(proctoringSchedule.ScheduleId)).FirstOrDefaultAsync();
-            if (checker != null)
-                return "failed";
+            return await _context.ProctoringSchedules
+                                 .Where(ps => ps.Status == true && ps.IsFinished == false) // Thêm điều kiện isFinished = false
+                                 .ToListAsync();
+        }
+
+
+        public async Task<string> CreateAsync(CreateProctoringRequest proctoringSchedule, string userId)
+        {
             var temp = new ProctoringSchedule()
             {
-                ScheduleId = "Schedule" + proctoringSchedule.ScheduleId,
-                IsFinished = proctoringSchedule.IsFinished,
-                UserId = proctoringSchedule.UserId,
+                ScheduleId = "Schedule" + Guid.NewGuid().ToString().Substring(0, 4),
+                IsFinished = false,
+                UserId = userId,
                 ProctorType = proctoringSchedule.ProctorType,
                 SlotReferenceId = proctoringSchedule.SlotReferenceId,
                 Count = proctoringSchedule.Count,
@@ -53,14 +58,18 @@ namespace ExamProctoringManagement.DAO
             var checker = await this._context.ProctoringSchedules.Where(x => x.ScheduleId.Equals(proctoringSchedule.ScheduleId)).FirstOrDefaultAsync();
             if (checker == null)
                 return "failed";
-            checker.IsFinished = proctoringSchedule.IsFinished ?? checker.IsFinished;
-            checker.UserId = proctoringSchedule.UserId ?? checker.UserId;
             checker.ProctorType = proctoringSchedule.ProctorType ?? checker.ProctorType;
             checker.SlotReferenceId = proctoringSchedule.SlotReferenceId ?? checker.SlotReferenceId;
-            checker.Status = proctoringSchedule.Status ?? checker.Status;
+            checker.Count = proctoringSchedule.Count;
             this._context.ProctoringSchedules.Update(checker);
             await this._context.SaveChangesAsync();
             return "success";
+        }
+        
+        public async Task UpdateProctoring(ProctoringSchedule proctoringSchedule)
+        {
+            _context.Update(proctoringSchedule);
+            await this._context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(string id)
@@ -79,6 +88,23 @@ namespace ExamProctoringManagement.DAO
             if (proctoring != null && proctoring.Count > 0)
             {
                 proctoring.Count--; // Giảm Count đi 1
+                await _context.SaveChangesAsync(); // Lưu thay đổi vào database
+
+                if(proctoring.Count == 0)
+                {
+                    proctoring.Status = false;
+                    await _context.SaveChangesAsync();
+                }
+            }
+        }
+
+        public async Task UpdateProctoringStatusAsync(string id)
+        {
+            var proctoring = await _context.ProctoringSchedules.FindAsync(id);
+
+            if (proctoring != null && proctoring.Count > 0)
+            {
+                proctoring.Status = false;
                 await _context.SaveChangesAsync(); // Lưu thay đổi vào database
             }
         }

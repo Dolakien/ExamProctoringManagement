@@ -12,7 +12,7 @@ namespace ExamProctoringManagement.Repository.Interfaces
     {
         Task<ProctoringSchedule> GetByIdAsync(string id);
         Task<IEnumerable<ProctoringSchedule>> GetAllAsync();
-        Task<string> CreateAsync(ProctoringScheduleDTO proctoringSchedule);
+        Task<string> CreateAsync(CreateProctoringRequest proctoringSchedule, string userId);
         Task<string> UpdateAsync(ProctoringScheduleDTO proctoringSchedule);
         Task DeleteAsync(string id);
         Task<IEnumerable<ProctoringSchedule>> GetByUserIdAsync(string userId);
@@ -20,6 +20,9 @@ namespace ExamProctoringManagement.Repository.Interfaces
         Task<bool> HasProctoringScheduleAsync(string slotReferenceId);
         Task<bool> HasProctoringScheduleWithStatusAsync(string slotReferenceId, bool status);
         Task CountProctoringAsync(string id);
+        Task<IEnumerable<ProctoringSchedule>> GetAllTrueStatus();
+        Task UpdateProctoringStatusAsync(string id);
 
+        Task UpdateProctoring(ProctoringSchedule proctoringSchedule);
     }
 }

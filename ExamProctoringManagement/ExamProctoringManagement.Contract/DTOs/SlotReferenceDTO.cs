@@ -12,9 +12,9 @@ namespace ExamProctoringManagement.Contract.DTOs
 
         public string SlotId { get; set; }
 
-        public string RoomId { get; set; }
+        public string? RoomId { get; set; }
 
-        public string GroupId { get; set; }
+        public string? GroupId { get; set; }
 
     }
 }

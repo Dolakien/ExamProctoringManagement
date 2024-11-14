@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace ExamProctoringManagement.Contract.DTOs
 {
-    public class CreateRegistrationFormDto
+    public class ProctoringGroupWithSlot
     {
-        public string ProctoringID { get; set; }
+        public string proctoringId { get; set; }
+        public ProctoringSlotDTO proctoringSlot { get; set; }
     }
 }

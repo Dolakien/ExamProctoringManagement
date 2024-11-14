@@ -15,5 +15,7 @@ namespace ExamProctoringManagement.Repository.Interfaces
         Task CreateAsync(RegistrationForm registrationForm);
         Task<RegistrationForm> UpdateAsync(RegisFormUpdateDto RegistrationForm);
         Task DeleteAsync(string id);
+        Task<List<RegistrationForm>> GetByUserIdAsync(string userId);
+        Task SwapProctoringAsync(SwapProctoring swapProctoring);
     }
 }

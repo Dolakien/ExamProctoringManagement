@@ -6,14 +6,19 @@ using System.Threading.Tasks;
 
 namespace ExamProctoringManagement.Contract.DTOs
 {
-    public class ProctoringSlotDTO
+    public class RegistrationFormUserDTO
     {
-        public string ProctoringId { get; set; }
-        public string UserID { get; set; }
-        public string ProctorType { get; set; }
+        public string FormId { get; set; }
+
+        public string UserId { get; set; }
+
+        public DateTime? CreateDate { get; set; }
+
+        public bool? Status { get; set; }
+        public string ScheduleID { get; set; }
+        public string ProctoringType { get; set; }
         public DateTime? Date { get; set; }
         public TimeOnly? StartDate { get; set; }
         public TimeOnly? EndDate { get; set; }
-        public int? count {  get; set; }
     }
 }

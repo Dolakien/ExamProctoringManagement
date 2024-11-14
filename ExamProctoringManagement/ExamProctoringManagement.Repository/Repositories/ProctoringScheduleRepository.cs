@@ -25,8 +25,8 @@ namespace ExamProctoringManagement.Repository.Repositories
             return await _ProctoringScheduleDAO.GetAllAsync();
         }
 
-        public async Task<string> CreateAsync(ProctoringScheduleDTO ProctoringSchedule)
-            => await this._ProctoringScheduleDAO.CreateAsync(ProctoringSchedule);
+        public async Task<string> CreateAsync(CreateProctoringRequest proctoringSchedule, string userId)
+            => await this._ProctoringScheduleDAO.CreateAsync(proctoringSchedule, userId);
 
 
         public async Task<string> UpdateAsync(ProctoringScheduleDTO ProctoringSchedule)
@@ -72,5 +72,14 @@ namespace ExamProctoringManagement.Repository.Repositories
 
         public async Task CountProctoringAsync(string id)
             => await _ProctoringScheduleDAO.CountProctoringAsync(id);
+
+        public async Task<IEnumerable<ProctoringSchedule>> GetAllTrueStatus()
+            => await _ProctoringScheduleDAO.GetAllTrueStatus();
+
+        public async Task UpdateProctoringStatusAsync(string id)
+            => await _ProctoringScheduleDAO.UpdateProctoringStatusAsync(id);
+
+        public async Task UpdateProctoring(ProctoringSchedule proctoringSchedule)
+            => await _ProctoringScheduleDAO.UpdateProctoring(proctoringSchedule);
     }
 }

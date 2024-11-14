@@ -59,16 +59,14 @@ namespace ExamProctoringManagement.Service.Usecases
                 return null;
             }
             await _groupRepository.CreateAsync(createGroupAndRoomsRequest.Group);
-            for (int i = 0; i < createGroupAndRoomsRequest.GroupRoomIds.Count; i++)
-            {
                 GroupRoom groupRoom = new GroupRoom
                 {
-                    GroupRoomId = createGroupAndRoomsRequest.GroupRoomIds[i],
+                    GroupRoomId = "GroupRom" + Guid.NewGuid().ToString().Substring(0, 5),
                     GroupId = createGroupAndRoomsRequest.Group.GroupId,
-                    RoomId = createGroupAndRoomsRequest.RoomIds[i]
+                    RoomId = createGroupAndRoomsRequest.RoomId
                 };
                 await _groupRoomRepository.CreateAsync(groupRoom);
-            }
+            
             return createGroupAndRoomsRequest.Group;
         }
 
