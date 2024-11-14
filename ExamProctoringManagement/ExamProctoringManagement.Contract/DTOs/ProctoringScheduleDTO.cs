@@ -19,5 +19,7 @@ namespace ExamProctoringManagement.Contract.DTOs
         public bool? Status { get; set; }
 
         public bool? IsFinished { get; set; }
+
+        public int Count { get; set; }
     }
 }

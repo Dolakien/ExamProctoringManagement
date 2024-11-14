@@ -42,10 +42,10 @@ namespace ExamProctoringManagement.API.Controllers
             return CreatedAtAction(nameof(GetSlot), new { id = createdSlot.SlotId }, createdSlot);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSlot(string id, [FromBody] Slot Slot)
+        [HttpPut]
+        public async Task<IActionResult> UpdateSlot([FromBody] Slot Slot)
         {
-            if (id != Slot.SlotId)
+            if (Slot.SlotId != null)
             {
                 return BadRequest();
             }

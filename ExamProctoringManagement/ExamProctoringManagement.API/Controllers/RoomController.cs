@@ -40,10 +40,10 @@ namespace ExamProctoringManagement.API.Controllers
             return CreatedAtAction(nameof(GetRoom), new { id = createdRoom.RoomId }, createdRoom);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateRoom(string id, [FromBody] Room Room)
+        [HttpPut]
+        public async Task<IActionResult> UpdateRoom([FromBody] Room Room)
         {
-            if (id != Room.RoomId)
+            if (Room.RoomId != null)
             {
                 return BadRequest();
             }

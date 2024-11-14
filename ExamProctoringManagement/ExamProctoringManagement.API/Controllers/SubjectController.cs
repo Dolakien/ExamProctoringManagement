@@ -42,10 +42,10 @@ namespace ExamProctoringManagement.API.Controllers
             return Ok(createdSubject);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSubject(string id, [FromBody] SubjectDto Subject)
+        [HttpPut]
+        public async Task<IActionResult> UpdateSubject([FromBody] SubjectDto Subject)
         {
-            if (id != Subject.SubjectId)
+            if (Subject.SubjectId != null)
             {
                 return BadRequest();
             }

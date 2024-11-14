@@ -41,10 +41,10 @@ namespace ExamProctoringManagement.API.Controllers
             return Ok(createdExam);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateExam(string id, [FromBody] ExamDTO exam)
+        [HttpPut]
+        public async Task<IActionResult> UpdateExam([FromBody] ExamDTO exam)
         {
-            if (id != exam.ExamId)
+            if (exam.ExamId != null)
             {
                 return BadRequest();
             }

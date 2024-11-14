@@ -17,5 +17,7 @@ namespace ExamProctoringManagement.Contract.DTOs
         public List<string> SlotIds { get; set; }
 
         public string ExamId { get; set; }
+
+        public string ProctoringID { get; set; }
     }
 }
