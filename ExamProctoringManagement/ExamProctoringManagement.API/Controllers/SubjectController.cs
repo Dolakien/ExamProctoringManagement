@@ -45,13 +45,8 @@ namespace ExamProctoringManagement.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateSubject([FromBody] SubjectDto Subject)
         {
-            if (Subject.SubjectId != null)
-            {
-                return BadRequest();
-            }
-
-            await _SubjectService.UpdateSubjectAsync(Subject);
-            return NoContent();
+            var response = await _SubjectService.UpdateSubjectAsync(Subject);
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]

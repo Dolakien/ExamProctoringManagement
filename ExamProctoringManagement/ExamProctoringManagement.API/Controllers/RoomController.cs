@@ -43,13 +43,8 @@ namespace ExamProctoringManagement.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateRoom([FromBody] Room Room)
         {
-            if (Room.RoomId != null)
-            {
-                return BadRequest();
-            }
-
             await _RoomService.UpdateRoomAsync(Room);
-            return NoContent();
+            return Ok();
         }
 
         [HttpDelete("{id}")]

@@ -45,13 +45,8 @@ namespace ExamProctoringManagement.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateSlotRoomSubject([FromBody] SlotRoomSubjectDTO SlotRoomSubject)
         {
-            if (SlotRoomSubject.SlotRoomSubjectId != null)
-            {
-                return BadRequest();
-            }
-
-            await _SlotRoomSubjectService.UpdateSlotRoomSubjectAsync(SlotRoomSubject);
-            return NoContent();
+            var response = await _SlotRoomSubjectService.UpdateSlotRoomSubjectAsync(SlotRoomSubject);
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]

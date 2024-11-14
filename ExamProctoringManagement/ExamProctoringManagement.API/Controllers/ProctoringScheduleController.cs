@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Contract.DTOs;
+﻿using Azure;
+using ExamProctoringManagement.Contract.DTOs;
 using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -44,13 +45,8 @@ namespace ExamProctoringManagement.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateProctoringSchedule([FromBody] ProctoringScheduleDTO ProctoringSchedule)
         {
-            if (ProctoringSchedule.ScheduleId != null)
-            {
-                return BadRequest();
-            }
-
-            await this._ProctoringScheduleService.UpdateProctoringScheduleAsync(ProctoringSchedule);
-            return NoContent();
+           var response = await this._ProctoringScheduleService.UpdateProctoringScheduleAsync(ProctoringSchedule);
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
