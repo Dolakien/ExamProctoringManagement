@@ -32,10 +32,11 @@ namespace ExamProctoringManagement.DAO
             var checker = await this._context.Subjects.FirstOrDefaultAsync(x => x.SubjectId == subject.SubjectId);
             if (checker != null)
                 return "failed";
+            
             var temp = new Subject()
             {
                 SubjectId = "Subject" + Guid.NewGuid().ToString().Substring(0, 5),
-                ExamId = subject.SubjectId,
+                ExamId = subject.ExamId,
                 SubjectName = subject.SubjectName,
             };
             await this._context.Subjects.AddAsync(temp);
