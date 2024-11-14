@@ -164,6 +164,7 @@ CREATE TABLE [dbo].[ProctoringSchedule](
 	[SlotReferenceID] [nvarchar](20) NULL,
 	[Status] [bit] NULL,
 	[IsFinished] [bit] NULL,
+	[Count] [varchar](3),
 PRIMARY KEY CLUSTERED 
 (
 	[ScheduleID] ASC
@@ -377,9 +378,9 @@ INSERT [dbo].[GroupRoom] ([GroupRoomID], [GroupID], [RoomID]) VALUES (N'7', N'3'
 INSERT [dbo].[GroupRoom] ([GroupRoomID], [GroupID], [RoomID]) VALUES (N'8', N'3', N'104')
 INSERT [dbo].[GroupRoom] ([GroupRoomID], [GroupID], [RoomID]) VALUES (N'9', N'3', N'105')
 GO
-INSERT [dbo].[ProctoringSchedule] ([ScheduleID], [UserID], [ProctorType], [SlotReferenceID], [Status], [IsFinished]) VALUES (N'1', N'3', N'Giám Thị Phòng', N'1', 1, 0)
-INSERT [dbo].[ProctoringSchedule] ([ScheduleID], [UserID], [ProctorType], [SlotReferenceID], [Status], [IsFinished]) VALUES (N'2', N'3', N'Giám Thị Phòng', N'2', 1, 0)
-INSERT [dbo].[ProctoringSchedule] ([ScheduleID], [UserID], [ProctorType], [SlotReferenceID], [Status], [IsFinished]) VALUES (N'3', N'4', N'Giám Thị Hành Lang', N'3', 1, 0)
+INSERT [dbo].[ProctoringSchedule] ([ScheduleID], [UserID], [ProctorType], [SlotReferenceID], [Status], [IsFinished], [Count]) VALUES (N'1', N'3', N'Giám Thị Phòng', N'1', 1, 0, 20)
+INSERT [dbo].[ProctoringSchedule] ([ScheduleID], [UserID], [ProctorType], [SlotReferenceID], [Status], [IsFinished], [Count]) VALUES (N'2', N'3', N'Giám Thị Phòng', N'2', 1, 0, 20)
+INSERT [dbo].[ProctoringSchedule] ([ScheduleID], [UserID], [ProctorType], [SlotReferenceID], [Status], [IsFinished], [Count]) VALUES (N'3', N'4', N'Giám Thị Hành Lang', N'3', 1, 0, 20)
 GO
 INSERT [dbo].[RegistrationForm] ([FormID], [UserID], [Status]) VALUES (N'1', N'3', 1)
 INSERT [dbo].[RegistrationForm] ([FormID], [UserID], [Status]) VALUES (N'2', N'4', 1)

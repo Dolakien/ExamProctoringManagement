@@ -35,7 +35,7 @@ namespace ExamProctoringManagement.DAO
                 return "failed";
             var temp = new Exam()
             {
-                ExamId = "Exam" + Guid.NewGuid().ToString().Substring(0, 5),
+                ExamId = exam.ExamId,
                 ExamName = exam.ExamName,
                 ToDate = exam.ToDate,
                 Type = exam.Type,

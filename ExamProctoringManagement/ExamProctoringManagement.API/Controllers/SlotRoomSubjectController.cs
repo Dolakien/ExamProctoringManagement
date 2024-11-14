@@ -42,10 +42,10 @@ namespace ExamProctoringManagement.API.Controllers
             return Ok(createdSlotRoomSubject);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSlotRoomSubject(string id, [FromBody] SlotRoomSubjectDTO SlotRoomSubject)
+        [HttpPut]
+        public async Task<IActionResult> UpdateSlotRoomSubject([FromBody] SlotRoomSubjectDTO SlotRoomSubject)
         {
-            if (id != SlotRoomSubject.SlotRoomSubjectId)
+            if (SlotRoomSubject.SlotRoomSubjectId != null)
             {
                 return BadRequest();
             }

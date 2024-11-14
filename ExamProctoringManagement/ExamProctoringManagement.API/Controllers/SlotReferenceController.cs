@@ -50,10 +50,10 @@ namespace ExamProctoringManagement.API.Controllers
             return Ok(createdSlotReference);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSlotReference(string id, [FromBody] SlotReferenceDTO SlotReference)
+        [HttpPut]
+        public async Task<IActionResult> UpdateSlotReference([FromBody] SlotReferenceDTO SlotReference)
         {
-            if (id != SlotReference.SlotReferenceId)
+            if (SlotReference.SlotReferenceId != null)
             {
                 return BadRequest();
             }

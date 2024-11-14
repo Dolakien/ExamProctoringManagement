@@ -41,10 +41,10 @@ namespace ExamProctoringManagement.API.Controllers
             return Ok(createdProctoringSchedule);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProctoringSchedule(string id, [FromBody] ProctoringScheduleDTO ProctoringSchedule)
+        [HttpPut]
+        public async Task<IActionResult> UpdateProctoringSchedule([FromBody] ProctoringScheduleDTO ProctoringSchedule)
         {
-            if (id != ProctoringSchedule.ScheduleId)
+            if (ProctoringSchedule.ScheduleId != null)
             {
                 return BadRequest();
             }

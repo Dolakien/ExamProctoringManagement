@@ -61,7 +61,7 @@ namespace ExamProctoringManagement.API.Controllers
             return CreatedAtAction(nameof(GetFormSwap), new { id = createdFormSwap.FormId }, createdFormSwap);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateFormSwap([FromBody] UpdateFormSwapDto updateFormSwapDto)
         {
             var response = await _formSwapService.UpdateFormSwapAsync(updateFormSwapDto);
