@@ -140,5 +140,8 @@ namespace ExamProctoringManagement.Service.Usecases
 
             return dto;
         }
+
+        public async Task CountProctoringAsync(string id)
+            => await _ProctoringScheduleRepository.CountProctoringAsync(id);
     }
 }

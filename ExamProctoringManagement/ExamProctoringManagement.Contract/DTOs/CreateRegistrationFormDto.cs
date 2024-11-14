@@ -12,12 +12,6 @@ namespace ExamProctoringManagement.Contract.DTOs
 
         public string UserId { get; set; }
 
-        public List<string> FormSlotIds { get; set; }
-
-        public List<string> SlotIds { get; set; }
-
-        public string ExamId { get; set; }
-
         public string ProctoringID { get; set; }
     }
 }

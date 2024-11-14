@@ -179,6 +179,9 @@ public partial class ExamProctoringManagementDBContext : DbContext
             entity.Property(e => e.UserId)
                 .HasMaxLength(20)
                 .HasColumnName("UserID");
+            entity.Property(e => e.Count)
+                    .HasColumnType("int")
+                    .IsRequired(false);
 
             entity.HasOne(d => d.SlotReference).WithMany(p => p.ProctoringSchedules)
                 .HasForeignKey(d => d.SlotReferenceId)

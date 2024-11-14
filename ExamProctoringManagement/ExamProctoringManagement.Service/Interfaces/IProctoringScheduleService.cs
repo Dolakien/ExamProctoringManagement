@@ -18,5 +18,7 @@ namespace ExamProctoringManagement.Service.Interfaces
         Task<IEnumerable<ProctoringSchedule>> GetProctoringSchedulesByUserIdAndIsFinishedAsync(string userId, bool f);
         Task<IEnumerable<ProctoringSchedule>> GetProctoringSchedulesByUserIdAsync(string userId);
         Task<FullProctoringScheduleDto> GetFullProctoringScheduleByIdAsync(string id);
+        Task CountProctoringAsync(string id);
+
     }
 }

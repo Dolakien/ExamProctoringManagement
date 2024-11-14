@@ -17,12 +17,15 @@ namespace ExamProctoringManagement.Service.Usecases
         private readonly IRegistrationFormRepository _RegistrationFormRepository;
         private readonly IFormSlotRepository _FormSlotRepository;
         private readonly ISlotRepository _SlotRepository;
-
-        public RegistrationFormService(IRegistrationFormRepository RegistrationFormRepository, IFormSlotRepository formSlotRepository, ISlotRepository slotRepository)
+        private readonly ISlotReferenceService _SlotReferenceService;
+        private readonly IProctoringScheduleService _ProctoringScheduleService;
+        public RegistrationFormService(IRegistrationFormRepository RegistrationFormRepository, IFormSlotRepository formSlotRepository, ISlotRepository slotRepository, ISlotReferenceService slotReferenceService, IProctoringScheduleService proctoringScheduleService)
         {
             _RegistrationFormRepository = RegistrationFormRepository;
             _FormSlotRepository = formSlotRepository;
             _SlotRepository = slotRepository;
+            _SlotReferenceService = slotReferenceService;
+            _ProctoringScheduleService = proctoringScheduleService;
         }
 
         public async Task<RegistrationForm> GetRegistrationFormByIdAsync(string id)
@@ -37,41 +40,48 @@ namespace ExamProctoringManagement.Service.Usecases
 
         public async Task<GetRegisFormWithSlotsDto> CreateRegistrationFormAsync(CreateRegistrationFormDto createRegistrationFormDto)
         {
+            // Bước 1: Tạo đối tượng RegistrationForm mới
             RegistrationForm registrationForm = new RegistrationForm();
-            registrationForm.FormId = createRegistrationFormDto.FormId; 
+            registrationForm.FormId = createRegistrationFormDto.FormId;
             registrationForm.UserId = createRegistrationFormDto.UserId;
             registrationForm.CreateDate = DateTime.Now;
-            registrationForm.Status = true;
+            registrationForm.Status = false;
             await _RegistrationFormRepository.CreateAsync(registrationForm);
 
-            for (int i = 0; i < createRegistrationFormDto.FormSlotIds.Count; i++)
+            var count = await _ProctoringScheduleService.GetProctoringScheduleByIdAsync(createRegistrationFormDto.ProctoringID);
+            if (count.Count > 0)
             {
-                FormSlot formSlot = new FormSlot
+                await _ProctoringScheduleService.CountProctoringAsync(createRegistrationFormDto.ProctoringID);
+            }
+            else {
+                throw new Exception("Hết Slot Đăng Kí!");
+            }
+            var slotRefer = await _SlotReferenceService.GetSlotReferenceByIdAsync(count.SlotReferenceId);
+
+            FormSlot formSlot = new FormSlot
                 {
-                    FormSlotId = createRegistrationFormDto.FormSlotIds[i],
-                    FormId = createRegistrationFormDto.FormId,
-                    SlotId = createRegistrationFormDto.SlotIds[i],
+                    FormSlotId = "FormSlot" + Guid.NewGuid().ToString().Substring(0, 5),
+                    FormId = registrationForm.FormId,
+                    SlotId = slotRefer.SlotId,
                     Status = true
                 };
+
+                // Lưu FormSlot vào cơ sở dữ liệu
                 await _FormSlotRepository.CreateAsync(formSlot);
-            }
+            
 
-            GetRegisFormWithSlotsDto dto = new GetRegisFormWithSlotsDto();
-            dto.FormId = createRegistrationFormDto.FormId;
-            dto.UserId = createRegistrationFormDto.UserId;
-            dto.CreateDate = DateTime.Now;
-            dto.Status = true;
-
-            var slots = new List<Slot>();             
-            foreach (var slotId in createRegistrationFormDto.SlotIds)
+            // Bước 3: Tạo đối tượng GetRegisFormWithSlotsDto để trả về
+            GetRegisFormWithSlotsDto dto = new GetRegisFormWithSlotsDto
             {
-                Slot slot = await _SlotRepository.GetByIdAsync(slotId);
-                slots.Add(slot);
-            }
-            dto.Slots = slots;
+                FormId = registrationForm.FormId,
+                UserId = registrationForm.UserId,
+                CreateDate = DateTime.Now,
+                Status = true
+            };
 
             return dto;
         }
+
 
         public async Task<RegistrationForm> UpdateRegistrationFormAsync(RegisFormUpdateDto RegistrationForm)
         {
