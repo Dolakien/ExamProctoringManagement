@@ -44,13 +44,8 @@ namespace ExamProctoringManagement.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateExam([FromBody] ExamDTO exam)
         {
-            if (exam.ExamId != null)
-            {
-                return BadRequest();
-            }
-
-            await _examService.UpdateExamAsync(exam);
-            return NoContent();
+            var response = await _examService.UpdateExamAsync(exam);
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]

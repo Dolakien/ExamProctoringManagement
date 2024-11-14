@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Contract.DTOs;
+﻿using Azure;
+using ExamProctoringManagement.Contract.DTOs;
 using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -53,13 +54,8 @@ namespace ExamProctoringManagement.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateSlotReference([FromBody] SlotReferenceDTO SlotReference)
         {
-            if (SlotReference.SlotReferenceId != null)
-            {
-                return BadRequest();
-            }
-
-            await _SlotReferenceService.UpdateSlotReferenceAsync(SlotReference);
-            return NoContent();
+            var response = await _SlotReferenceService.UpdateSlotReferenceAsync(SlotReference);
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]

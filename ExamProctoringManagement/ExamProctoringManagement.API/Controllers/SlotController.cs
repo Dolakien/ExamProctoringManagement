@@ -1,4 +1,5 @@
-﻿using ExamProctoringManagement.Contract.DTOs;
+﻿using Azure;
+using ExamProctoringManagement.Contract.DTOs;
 using ExamProctoringManagement.Data.Models;
 using ExamProctoringManagement.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -45,13 +46,8 @@ namespace ExamProctoringManagement.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateSlot([FromBody] Slot Slot)
         {
-            if (Slot.SlotId != null)
-            {
-                return BadRequest();
-            }
-
             await _SlotService.UpdateSlotAsync(Slot);
-            return NoContent();
+            return Ok();
         }
 
         [HttpDelete("{id}")]

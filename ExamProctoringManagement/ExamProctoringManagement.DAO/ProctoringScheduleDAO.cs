@@ -34,7 +34,7 @@ namespace ExamProctoringManagement.DAO
                 return "failed";
             var temp = new ProctoringSchedule()
             {
-                ScheduleId = "Schedule" + Guid.NewGuid().ToString().Substring(0, 5),
+                ScheduleId = "Schedule" + proctoringSchedule.ScheduleId,
                 IsFinished = proctoringSchedule.IsFinished,
                 UserId = proctoringSchedule.UserId,
                 ProctorType = proctoringSchedule.ProctorType,
